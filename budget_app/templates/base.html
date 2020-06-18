@@ -1,0 +1,38 @@
+{% load static %}
+
+<!doctype html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta content="width=device-width, initial-scale=1">
+        <title> {% block title %} MineApp! {% endblock %} </title>
+        <link rel="stylesheet" href="{% static 'style.css' %}">
+    </head>
+
+    <body>
+    {% block sidebar %}
+        <div class="sidenav">
+            <center>
+            {{zalogowany.email}}   <br>
+            {{now}}
+            <br><br><br><br>
+         <br>
+            <a href="{% url 'budget' %}">Budżet</a>&nbsp;&nbsp;
+            <a href="{% url 'skarbonki' %}">Skarbonki</a>&nbsp;&nbsp;
+            <a href="{% url 'akc' %}">Akc</a>&nbsp;
+                <br>
+                <br>
+     </center>
+        </div>
+        {% endblock %}
+
+    <div class="main">
+        {% block content %}
+
+    :)<br>
+
+        {% endblock %}
+</div>
+
+    </body>
+</html>

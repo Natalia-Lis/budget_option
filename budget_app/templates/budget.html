@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <a href="{% url 'months-budget' %}"><strong>&nbsp;Dotychczasowe budżety -></strong></a><br>
+
+    <br><br>
+    Aktualne pozycje w Twoim budżecie:<br>
+    Jeśli coś już jest nieaktualne - wyrzuć pozycję!
+<br>
+    <table border="1">
+        <tr>
+        <th>Nazwa</th>
+        <th>Kwota</th>
+        <th>Kwota max???</th>
+        <th>Miesięcznie?</th>
+        <th>Opis</th>
+        <th>Kolumna zapasowa</th>
+        <th>Modyfikuj!</th>
+            <th>Usuń</th>
+</tr>
+    {% for element in pozycje %}
+        <tr>
+        <td>{{ element.name }}</td>
+        <td>{{ element.money_min }}</td>
+
+        <td>{% if element.money_max %}
+            {{ element.money_max }}
+            {% else %}&nbsp;
+            {% endif %}</td>
+
+        <td>{% if element.monthly == True %}
+{#            <ul style="color: blue; list-style-type: circle;"><li>Tak</li></ul>#}
+            Tak
+            {% elif element.monthly == False %} &nbsp;
+            {% endif %}</td>
+
+        <td>{{ element.opis }}</td>
+        <td>{{ element.zapasowa }}</td>
+        <td><a href="{% url 'modify-budget' element.id %}"> Modyfikuj!</a></td>
+        <td><a href="{% url 'delete-budget' element.id %}"> Usuń</a></td>
+        </tr>
+    {% endfor %}
+</table>
+    <br>
+    Opłaty na miesiąc - minimum {{ kalkulacje }} <br>
+    ******** + ?
+<br>
+    <br>
+
+     <a href="{% url 'budget' %}">&nbsp;Zapisz miesięczny budżet -></a><br>
+     <a href="{% url 'budget' %}">&nbsp; + ?? -></a><br>
+<br>
+         <form action="" method="post">
+         {% csrf_token %}
+             <br><strong>Dodaj nową pozycję do budżetu:</strong><br>
+    Nazwa<input type="text" name="name"><br>
+    Kwota min<input type="text" name="money_min"><br>
+    Kwota max (rzeczywista, z dodatk. kosztami)<input type="text" name="money_max"><br>
+    Miesięcznie?<br>
+             TAK<input type="radio" value="True" name="monthly"><br>
+            NIE<input type="radio" value="False" name="monthly"><br>
+
+    Dodatkowy opis<input type="text" name="opis"><br>
+
+         <input type="submit" value="send">
+     </form>
+
+{% endblock %}

@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+{% load static %}
+{% block content %}
+        <table border="1">
+        <tr>
+        <th>Nazwa</th>
+        <th>Kwota</th>
+        <th>Dodatkowy opis</th>
+        <th>Modyfikuj</th>
+        <th>Usuń</th>
+        </tr>
+    {% for element in this_months_budget %}
+        <tr>
+    <td>{{ element.chosen_name_of_month }}</td>
+        <td>{{ element.month_cost }}</td>
+        <td>{{ element.description }}</td>
+        <td><a href="{% url 'modify-months' element.id %}"> Modyfikuj!</a></td>
+        <td><a href="{% url 'delete-months' element.id %}"> Usuń</a></td>
+        </tr>
+    {% endfor %}
+</table>
+
+         <form action="" method="post">
+         {% csrf_token %}
+             <br><strong>Dodaj nową pozycję:</strong><br>
+    Krótka nazwa<input type="text" name="chosen_name_of_month"><br>
+    Kwota<input type="text" name="month_cost"><br>
+    Opis?<input type="text" name="description"><br>
+         <input type="submit" value="send">
+     </form><br>
+    <img src="{% static "wykres.png" %}" alt="Not found" >
+{% endblock %}
