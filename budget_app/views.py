@@ -76,6 +76,17 @@ class BudgetView(View):
         return render(request, 'budget.html', {"pozycje":pozycje, "form":form, "kalkulacje":kalkulacje})
 
     def post(self, request):
+        zapasowa = request.POST.get('zapasowa')
+        dolicz2 = request.POST.get('dolicz2')
+        my_sum = 0
+        for elem in zapasowa:
+#############################################################################################33
+            new_elem=elem.replace(".", ",")
+            float(new_elem)
+            my_sum+=new_elem
+        # for element in dolicz2:
+        #     float(element)
+        #     my_sum+=element
         form = BudgetForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
@@ -84,7 +95,7 @@ class BudgetView(View):
             monthly = form.cleaned_data['monthly']
             opis = form.cleaned_data['opis']
             Budget.objects.create(name=name, money_min=money_min, money_max=money_max, monthly=monthly, opis=opis)
-            return redirect('budget')
+            return render(request, 'budget.html', {"my_sum":my_sum, "pozycje":pozycje, "form":form, "kalkulacje":kalkulacje})
 
 
 class MonthsBudgetView(View):
@@ -145,6 +156,11 @@ class DeleteSkarbonki(DeleteView):
 class DeleteMonths(DeleteView):
     model = MonthsBudget
     success_url = '/months-budget'
+
+
+class DeleteStock(DeleteView):
+    model = Stock
+    success_url = '/akc'
 
 
 class SkarbonkiView(View):
@@ -218,6 +234,39 @@ class ModifySkarbonki(View):
             return redirect('skar-cele')
 
 
+class ModifyStock(View):
+
+    def get(self, request, id):
+        pozycja=Stock.objects.get(id=id)
+        form = StockForm(instance=pozycja)
+        return render(request, 'modify-stock.html', {"pozycja":pozycja, "form":form})
+
+    def post(self, request, id):
+        form = StockForm(request.POST)
+        pozycja = Stock.objects.get(id=id)
+        form = StockForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            enter_price = form.cleaned_data['enter_price']
+            interests = form.cleaned_data['interests']
+            value_of = form.cleaned_data['value_of']
+            price = form.cleaned_data['price']
+            dividend = form.cleaned_data['dividend']
+            type_of_market = form.cleaned_data['type_of_market']
+            www = form.cleaned_data['www']
+            pozycja.name=name
+            pozycja.enter_price=enter_price
+            pozycja.interests=interests
+            pozycja.value_of=value_of
+            pozycja.price=price
+            pozycja.dividend=dividend
+            pozycja.type_of_market=type_of_market
+            pozycja.www=www
+            pozycja.save()
+            return redirect('akc')
+
+
+
 class SkarbonkiNowy(View):
     def get(self, request):
         return render(request, 'skar-nowy.html')
@@ -269,9 +318,10 @@ class SkarbonkiKwota(View):
 
 class Akc(View):
     def get(self, request):
+        form = StockForm()
         spolka = "cdr"
         p = {"s": spolka}
-
+        ctx = Stock.objects.all()
         odpowiedz = requests.get("http://stooq.pl/q/", params=p)
         soup = BeautifulSoup(odpowiedz.text, 'html.parser')
 
@@ -284,6 +334,11 @@ class Akc(View):
         # # podejście 2a: po napisie, a potem find
         znacznik_kurs = soup.find(text="Kurs").parent.find("span")
         kurs = float(znacznik_kurs.text)
+        if kurs:
+            cdr_interests=Stock.objects.get(name='CDR')
+            jednostki_cdr = cdr_interests.interests
+            value_of_cdr = jednostki_cdr * kurs
+
         # print(f"Podejście 2a, kurs = {kurs}")
         #
         # # zmiana kursu
@@ -301,12 +356,31 @@ class Akc(View):
         znacznik_transakcje = soup.find(text="Transakcje").next_element.next_element
         transakcje = int(znacznik_transakcje.text.replace(" ", ""))
         # print(f"Podejście 2b, transakcje = {transakcje}")
-        return render(request, 'akc.html', {"kurs":kurs, "zmiana_bezwzgledna":zmiana_wzgledna,
+
+
+
+
+        return render(request, 'akc.html', {"kurs":kurs,
+                                            "value_of_cdr":value_of_cdr,
+                                            "zmiana_bezwzgledna":zmiana_wzgledna,
                                             "zmiana_wzgledna":zmiana_wzgledna,
-                                            "transakcje":transakcje})
-
-
-
+                                            "transakcje":transakcje,
+                                            "ctx":ctx,
+                                            "form":form})
+    def post(self, request):
+        form = StockForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            enter_price = form.cleaned_data['enter_price']
+            interests = form.cleaned_data['interests']
+            value_of = form.cleaned_data['value_of']
+            price = form.cleaned_data['price']
+            dividend = form.cleaned_data['dividend']
+            type_of_market = form.cleaned_data['type_of_market']
+            www = form.cleaned_data['www']
+            Stock.objects.create(name=name, enter_price=enter_price, interests=interests, value_of=value_of,
+                                 price=price,dividend=dividend,type_of_market=type_of_market,www=www)
+            return redirect('akc')
 
 
 

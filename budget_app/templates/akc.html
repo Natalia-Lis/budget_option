@@ -2,20 +2,72 @@
 
 {% block content %}
 
-    <br>
-    Interesuje Cię jakaś firma? (tylko opjca, lepiej wybrac ze 3)<br>
-    Szczegóły dotyczące firm -><br>
-    Na skróty: wykresy?<br>
-    DB - kalk, czyli jakie masz akcje wpisane do db, oblicz dzisiejszą cenę
-            za akcję, porównaj z ceną wejścia, może dodatkowo obliczenie procentowe straty/zysku<br>
-    Obecna cena za akcję CDR: {{ kurs }}
-<br>
-    Czy chcesz dodać firmę, którą chcesz obserwować?
-    Twoja nazwa
-    Adres, który umożliwi wyświetlenie
-    <br>
-    zm. bezwzgl.{{ zmiana_bezwzgledna }}, zmi.wzgl{{ zmiana_wzgledna }}
-    <br>
-    trans: {{ transakcje }}
+ <table border="1">
+        <tr>
+        <th>Nazwa</th>
+        <th>Kwota wejścia</th>
+        <th>Udziały</th>
+        <th>Wartość</th>
+        <th>Cena</th>
+        <th>Dywidenda?</th>
+        <th>Rodzaj rynku</th>
+        <th>Modyfikuj!</th>
+            <th>Usuń</th>
+</tr>
+    {% for element in ctx %}
+        <tr>
+        <td>{{ element.name }}</td>
+        <td>{{ element.enter_price }}</td>
+        <td>{{ element.interests }}</td>
+        <td>{{ element.value_of }}</td>
+        <td>{{ element.price }}</td>
+        <td>{{ element.dividend }}</td>
+        <td>{{ element.type_of_market }}</td>
+        <td><a href="{% url 'modify-stock' element.id %}"> Modyfikuj!</a></td>
+        <td><a href="{% url 'delete-stock' element.id %}"> Usuń</a></td>
 
+        </tr>
+    {% endfor %}
+</table>
+    Obecna cena za akcję CDR: {% if kurs %}{{ kurs }}{% else %}Odśwież stronę{% endif %}<br>
+    Twoje aktualne akcje CDR: {% if value_of_cdr %}{{ value_of_cdr }}{% else %}Odśwież stronę{% endif %}<br>
+    <br>
+    Szczegóły dotyczące firm -><br>
+    {% for elem in ctx %}
+        {% if elem.www %}
+        <a href="{{ elem.www }}"> strona iwestora {{ elem.name }}</a><br>
+        {% endif %}
+        {% endfor %}
+Jeśli nie wyświetla się link do strony, dodaj link do modelu!<br>
+<br>
+{#    Na skróty: wykresy?<br>#}
+{#    ???DB - kalk, czyli jakie masz akcje wpisane do db, oblicz dzisiejszą cenę#}
+{#            za akcję, porównaj z ceną wejścia, może dodatkowo obliczenie procentowe straty/zysku<br>#}
+{##}
+{#<br>#}
+{#    ???????Czy chcesz dodać firmę, którą chcesz obserwować?#}
+{#    Twoja nazwa#}
+{#    Adres, który umożliwi wyświetlenie#}
+{#    <br>#}
+{#    zm. bezwzgl.{{ zmiana_bezwzgledna }}, zmi.wzgl{{ zmiana_wzgledna }}#}
+{#    <br>#}
+{#    trans: {{ transakcje }}#}
+<br><br>
+             <form action="" method="post">
+         {% csrf_token %}
+             <br><strong>Dodaj nową pozycję:</strong><br>
+    Nazwa<input type="text" name="name" /><br>
+    Kwota wejścia<input type="number" step="any" name="enter_price" /><br>
+    Udziały<input type="number" name="interests" /><br>
+    Wartość<input type="number" step="any" name="value_of" /><br>
+    Cena<input type="number" step="any" name="price" /><br>
+    Dywidenda<br>
+ <input type="radio" value="True" name="dividend" />Tak<br>
+<input type="radio" value="False" name="dividend" />Nie<br>
+<input type="radio" value="Null" name="dividend" />Byćmoże<br>
+    Rodzaj rynku<input type="text" name="type_of_market" /><br>
+    Strona www<input type="text" name="www" /><br>
+
+         <input type="submit" value="send">
+     </form>
 {% endblock %}

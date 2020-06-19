@@ -35,5 +35,7 @@ urlpatterns = [
     path('delete-skarb/<int:pk>/', DeleteSkarbonki.as_view(), name='delete-skarb'),
     path('modify-months/<int:id>/', ModifyMonths.as_view(), name='modify-months'),
     path('delete-months/<int:pk>/', DeleteMonths.as_view(), name='delete-months'),
+    path('modify-stock/<int:id>/', ModifyStock.as_view(), name='modify-stock'),
+    path('delete-stock/<int:pk>/', DeleteStock.as_view(), name='delete-stock'),
 
 ]

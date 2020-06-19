@@ -46,3 +46,18 @@ class MonthsBudget(models.Model):
 
     def get_absolute_url(self):
         return reverse('months-budget', kwargs={'pk': self.pk})
+
+
+class Stock(models.Model):
+    name = models.CharField(max_length=64)
+    enter_price = models.FloatField()
+    interests = models.IntegerField()
+    value_of = models.FloatField(null=True)
+    price = models.FloatField(null=True)
+    dividend = models.NullBooleanField(default=False)
+    type_of_market = models.CharField(max_length=64, null=True)
+    www = models.CharField(max_length=256, null=True)
+
+    def __str__(self):
+        return self.name
+

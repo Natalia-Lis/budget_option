@@ -32,3 +32,15 @@ class MonthsBudgetForm(forms.ModelForm):
         super(MonthsBudgetForm, self).__init__(*args, **kwargs)
         self.fields['description'].required = False
 
+
+class StockForm(forms.ModelForm):
+    class Meta:
+        model = Stock
+        fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super(StockForm, self).__init__(*args, **kwargs)
+        self.fields['value_of'].required = False
+        self.fields['price'].required = False
+        self.fields['dividend'].required = False
+        self.fields['type_of_market'].required = False
+        self.fields['www'].required = False
