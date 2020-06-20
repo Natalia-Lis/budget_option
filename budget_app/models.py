@@ -59,3 +59,16 @@ class Stock(models.Model):
     def __str__(self):
         return self.name
 
+
+class AlreadyCollected(models.Model):
+    collected = models.FloatField(default=0)
+    target = models.ManyToManyField(Skarbonki, through='PaymentDay')
+
+
+
+
+class PaymentDay(models.Model):
+    date_of = models.DateField(auto_now_add=True)
+    payment_skarbonki = models.ForeignKey(Skarbonki, on_delete=models.CASCADE)
+    payment_collected = models.ForeignKey(AlreadyCollected, on_delete=models.CASCADE)
+

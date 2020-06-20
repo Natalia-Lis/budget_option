@@ -1,5 +1,4 @@
 from datetime import date
-
 import requests
 from bs4 import BeautifulSoup
 from django.contrib.auth import logout, login, authenticate
@@ -58,6 +57,53 @@ def wykres_month():
     plt.tick_params(axis='x', rotation=290)
     # plt.show()
     savefig('static/wykres.png')
+
+def wykres_month2():
+    style.use('ggplot')
+
+    plt.title('wykres')
+    plt.xlabel('oś X')
+    plt.ylabel('oś Y')
+    plt.grid(True)
+
+    queryset = MonthsBudget.objects.all().order_by('-month_date')
+    q=PaymentDay.objects.all()
+    q2=PaymentDay.objects.get(id=1)
+    a=AlreadyCollected.objects.all()
+    a2=AlreadyCollected.objects.get(target=q2.payment_skarbonki_id)
+
+    # q2.date_of
+    # q2.payment_skarbonki
+    # q2.payment_skarbonki_id
+    # q2.payment_collected
+    # q2.payment_collected_id
+
+    # q2.get_next_by_date_of()
+
+    x=[]
+    y=[]
+    for el in queryset:
+        x.append(el.chosen_name_of_month)
+        # x.append(el.month_date)
+        y.append(el.month_cost)
+    x1=x[0:12]
+    y1=y[0:12]
+    x1.reverse()
+    y1.reverse()
+
+    plt.bar(x1,y1)
+    plt.tick_params(axis='x', rotation=290)
+    # plt.show()
+    savefig('static/wykres.png')
+
+class CreditView(View):
+
+    def get(self, request):
+
+        return render(request, 'credit.html')
+
+    def post(self, request):
+        return redirect('credit')
 
 
 class BudgetView(View):#
@@ -220,7 +266,60 @@ class SkarbonkiCele(View):
             opis = form.cleaned_data['opis']
             # zapasowa = form.cleaned_data['zapasowa']
             Skarbonki.objects.create(money_for=money_for, m_min=m_min, m_max=m_max, month=month, opis=opis)
-            return redirect('skar-cele')
+
+            s1 = Skarbonki.objects.get(money_for=money_for)
+            a1 = AlreadyCollected.objects.create(collected=0)
+            PaymentDay.objects.create(payment_skarbonki=s1,payment_collected=a1)
+
+            zlap=PaymentDay.objects.get(payment_skarbonki_id=s1)
+            # zlapany = AlreadyCollected.objects.get(target=zlap) zle
+
+            # return redirect('skar-cele')
+            return render(request, 'skar-cele.html', {"form": form, "zlap":zlap})
+
+class AlreadyCollectedView(View):
+
+    def get(self, request):
+        collected = AlreadyCollected.objects.all()
+        skarbonki = Skarbonki.objects.all()
+        return render(request, 'skar-pilnuj.html', {"collected":collected, "skarbonki":skarbonki})
+
+    def post(self, request):
+        collected = AlreadyCollected.objects.all()
+        skarbonki = Skarbonki.objects.all()
+        try:
+            choose = request.POST.get('choose')
+            chosen = int(choose)
+            zlap = PaymentDay.objects.get(payment_skarbonki_id=chosen)
+            zlapany = AlreadyCollected.objects.get(target=zlap.payment_skarbonki_id)
+            return render(request, 'skar-pilnuj.html', {"chosen": chosen,
+                                                        "collected": collected,
+                                                        "skarbonki": skarbonki,
+                                                            "zlap": zlap,
+                                                            "zlapany": zlapany})
+        except:
+            congrats = request.POST.get('congrats')
+            zlap_z_templ = request.POST.get('zlap_z_templ')
+            zlap_z_templ2 = int(zlap_z_templ)
+            congrats2 = float(congrats)
+            zlapany2 = AlreadyCollected.objects.get(id=zlap_z_templ2)
+            zlapany2.collected += congrats2
+            zlapany2.save()
+            return render(request, 'skar-pilnuj.html', {"collected": collected,
+                                                        "skarbonki": skarbonki})
+
+
+class SkarbonkiNowy(View):
+
+    def get(self, request):
+        collected = AlreadyCollected.objects.all()
+        skarbonki = Skarbonki.objects.all()
+        return render(request, 'skar-nowy.html', {"collected":collected, "skarbonki":skarbonki})
+    def post(self, request):
+        collected = AlreadyCollected.objects.all()
+        skarbonki = Skarbonki.objects.all()
+        return render(request, 'skar-nowy.html', {"collected": collected,
+                                            "skarbonki": skarbonki})
 
 
 class ModifyMonths(View):
@@ -302,9 +401,6 @@ class ModifyStock(View):
 
 
 
-class SkarbonkiNowy(View):
-    def get(self, request):
-        return render(request, 'skar-nowy.html')
 
 lista_wynikow = []
 lista_wynikow2 = []

@@ -3,6 +3,18 @@
 {% block content %}
 
 {#    <br>czy dodać własny order punktowy, ale nie unique, a potem przy wyświetlaniu order_by po nim?<br>#}
+           <form action="" method="post">
+         {% csrf_token %}
+   {% for element in skarbonki %}
+    <input type="radio" name="choose" value="{{ element.money_for }}">{{ element.money_for }}<br>
+    {% endfor %}
+         <input type="submit" value="send">
+     </form>
+
+    {% if chosen %}
+        <input type="number" step="any" name="congrats">
+    {% endif %}
+
     Twoje obecne cele: <br>
     <table border="1">
         <tr>
@@ -30,17 +42,5 @@
 </table>
 
 <br>
-         <form action="" method="post">
-         {% csrf_token %}
-    <br>Dodaj nową pozycję:<br>
-    Nazwa celu<input type="text" name="money_for"><br>
-    Kwota min<input type="text" name="m_min"><br>
-    Kwota max? (rzeczywista, z dodatk. kosztami)<input type="text" name="m_max"><br>
-    Miesięcznie?<input type="text" name="month"><br>
-    Dodatkowy opis<input type="text" name="opis"><br>
 
-         <input type="submit" value="send">
-     </form>
-
-    {{ zlap }}<br>{{ zlap.payment_skarbonki }}
 {% endblock %}

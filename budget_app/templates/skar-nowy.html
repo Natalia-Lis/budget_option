@@ -1,13 +1,19 @@
 {% extends "base.html" %}
 
 {% block content %}
-
-    <br>??????????????????????
-    Trudno oszczędzać? Teraz może być łatwiej...<br>
-    <a href="{% url 'skar-cele' %}">&nbsp;Zobacz dotychczasowe cele -></a><br>
-    <a href="{% url 'skar-nowy' %}">&nbsp;Ustal nowy cel, dostosuj warunki!</a><br>
-    <a href="{% url 'skar-czas' %}">&nbsp;Na skróty: ile czasu muszę odkładać aby coś mieć?</a><br>
-    <a href="{% url 'skar-kwota' %}">&nbsp;Na skróty: jaką kwotę powinno się odkładać, żeby mieć w określonym czasie.</a><br>
-    <br>
+<br><br>
+           <form action="" method="post">
+         {% csrf_token %}
+                                   <fieldset>
+                  <legend>Którego celu chcesz dopilnować?</legend>
+   {% for element in skarbonki %}
+    <li><input type="radio" name="choose" value="{{ element.id }}">
+      {{ element.money_for }}</li><hr>
+    {% endfor %}
+         <input type="submit" value="send">
+                         </fieldset>
+     </form><br><br>
+hm
+<br>
 
 {% endblock %}

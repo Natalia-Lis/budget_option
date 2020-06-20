@@ -28,6 +28,8 @@ urlpatterns = [
     path('skar-nowy/', SkarbonkiNowy.as_view(), name='skar-nowy'),
     path('skar-czas/', SkarbonkiCzas.as_view(), name='skar-czas'),
     path('skar-kwota/', SkarbonkiKwota.as_view(), name='skar-kwota'),
+    # path('skar-nowy/', SkarbonkiN.as_view(), name='skar-nowy'),
+    path('skar-collected/', AlreadyCollectedView.as_view(), name='skar-collected'),
     path('months-budget/', MonthsBudgetView.as_view(), name='months-budget'),
     path('modify-budget/<int:id>/', ModifyBudget.as_view(), name='modify-budget'),
     path('delete-budget/<int:pk>/', DeleteBudget.as_view(), name='delete-budget'),
@@ -38,5 +40,6 @@ urlpatterns = [
     path('modify-stock/<int:id>/', ModifyStock.as_view(), name='modify-stock'),
     path('delete-stock/<int:pk>/', DeleteStock.as_view(), name='delete-stock'),
     path('months-budget-proposition3/', MonthsBudgetPropositionView.as_view(), name='months-budget-proposition3'),
+    path('credit/', CreditView.as_view(), name='credit'),
 
 ]
