@@ -3,16 +3,15 @@
 {% block content %}
 
     <a href="{% url 'months-budget' %}"><strong>&nbsp;Dotychczasowe budżety -></strong></a><br>
-
     <br><br>
     Aktualne pozycje w Twoim budżecie:<br>
-    Jeśli coś już jest nieaktualne - wyrzuć pozycję!
+    <small>Jeśli coś już jest nieaktualne - wyrzuć pozycję!</small>
 <br>
     <table border="1">
         <tr>
         <th>Nazwa</th>
         <th>Kwota</th>
-        <th>Kwota max???</th>
+        <th>Dopłata?</th>
         <th>Miesięcznie?</th>
         <th>Opis</th>
         <th>Obliczyć?</th>
@@ -23,17 +22,15 @@
         <tr>
         <td>{{ element.name }}</td>
         <td>{{ element.money_min }}</td>
-
         <td>
-<input type="checkbox" name="dolicz" value="dolicz" onclick="document.getElementById('dodatkowo').style.display = this.checked ? 'block' : 'none'; this.form.elements['dolicz2'].disabled = !this.checked">
-<div id="dodatkowo" style="display: none">
-<input type="number" step="any" name="dolicz2">
+     <form action="" method="post">
+         {% csrf_token %}
+<input type="checkbox" name="dolicz{{ element.id }}"
+onclick="document.getElementById('dodatkowo{{ element.id }}').style.display = this.checked ?
+        'block' : 'none'; this.form.elements['{{ element.id }}'].disabled = !this.checked">
+<div id="dodatkowo{{ element.id }}" style="display: none">
+<input type="number" step="any" name="{{ element.id }}">
 </div>
-
-{#            {% if element.money_max %}#}
-{#            {{ element.money_max }}#}
-{#            {% else %}&nbsp;#}
-{#            {% endif %}#}
         </td>
 
         <td>{% if element.monthly == True %}
@@ -43,8 +40,7 @@
             {% endif %}</td>
 
         <td>{{ element.opis }}</td>
-        <td>         <form action="" method="post">
-         {% csrf_token %}
+        <td>
             {% if element.monthly == True %}
             <input type="checkbox" name="zapasowa" value="{{ element.money_min }}" checked>
             {% elif element.monthly == False %} &nbsp;
@@ -56,30 +52,32 @@
         <td><a href="{% url 'delete-budget' element.id %}"> Usuń</a></td>
         </tr>
     {% endfor %}
-</table><input type="submit" value="oblicz">
+</table><input type="submit" value="oblicz wydatki">
      </form>
     <br>
-    Opłaty na miesiąc - minimum {{ kalkulacje }} <br>
-    ******** + ?
-<br>
-    <br>
 
-     <a href="{% url 'budget' %}">&nbsp;Zapisz miesięczny budżet -></a><br>
-     <a href="{% url 'budget' %}">&nbsp; + ?? -></a><br>
-<br>
+        {% if my_sum %}    <br>
+                Twoje obliczenia: {{ my_sum }}<br>
+            <a href="{% url 'months-budget-proposition3' %}"><button>
+            Zapisz Twoje wyliczenia jako wydatki na ten miesiąc
+            </button></a><br>
+    {% endif %}
+<br><br>
          <form action="" method="post">
          {% csrf_token %}
-             <br><strong>Dodaj nową pozycję do budżetu:</strong><br>
+               <fieldset>
+                  <legend>Dodaj nową pozycję do budżetu</legend>
+
     Nazwa<input type="text" name="name"><br>
     Kwota min<input type="text" name="money_min"><br>
-    Kwota max (rzeczywista, z dodatk. kosztami)<input type="text" name="money_max"><br>
+
     Miesięcznie?<br>
              TAK<input type="radio" value="True" name="monthly"><br>
             NIE<input type="radio" value="False" name="monthly"><br>
 
     Dodatkowy opis<input type="text" name="opis"><br>
 
-         <input type="submit" value="send">
+         <input type="submit" value="send"></fieldset>
      </form>
 
 {% endblock %}

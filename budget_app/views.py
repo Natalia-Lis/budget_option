@@ -1,3 +1,5 @@
+from datetime import date
+
 import requests
 from bs4 import BeautifulSoup
 from django.contrib.auth import logout, login, authenticate
@@ -58,53 +60,88 @@ def wykres_month():
     savefig('static/wykres.png')
 
 
-class BudgetView(View):
+class BudgetView(View):#
 
     def get(self, request):
         pozycje=Budget.objects.all()
         form = BudgetForm()
         wykres_month()
-
-        for_calculation = []
-        kalkulacje = 0
-        for element in pozycje:
-            # for_calculation = np.array(element.money_min, dtype=np.float32)
-            for_calculation.append(element.money_min)
-            # for_calculation = [float(element.money_min) for element.money_min in pozycje]
-        for elem in for_calculation:
-            kalkulacje += elem
-        return render(request, 'budget.html', {"pozycje":pozycje, "form":form, "kalkulacje":kalkulacje})
+        return render(request, 'budget.html', {"pozycje":pozycje, "form":form})
 
     def post(self, request):
-        zapasowa = request.POST.get('zapasowa')
-        dolicz2 = request.POST.get('dolicz2')
+        pozycje=Budget.objects.all()
+        # for_calculation = []
+        # kalkulacje = 0
+        # for element in pozycje:
+        #     for_calculation.append(element.money_min)
+        # for elem in for_calculation:
+        #     kalkulacje += elem
+
+        doliczyc = []
+        zapasowa = request.POST.getlist('zapasowa')
+        for elements in pozycje:
+            doliczyc.append(request.POST.get(f'{elements.id}'))
+
         my_sum = 0
-        for elem in zapasowa:
-#############################################################################################33
-            new_elem=elem.replace(".", ",")
-            float(new_elem)
-            my_sum+=new_elem
-        # for element in dolicz2:
-        #     float(element)
-        #     my_sum+=element
+        while zapasowa != []:
+            elemencik = float(zapasowa.pop())
+            my_sum += elemencik
+        if doliczyc != []:
+            for ell in doliczyc:
+                if ell == '':
+                    pass
+                else:
+                    do_sumy=float(ell)
+                    my_sum += do_sumy
+
+        def set_session(request):
+            request.session["suma_przekazana"] = my_sum
+        set_session(request)
         form = BudgetForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
             money_min = form.cleaned_data['money_min']
-            money_max = form.cleaned_data['money_max']
             monthly = form.cleaned_data['monthly']
             opis = form.cleaned_data['opis']
-            Budget.objects.create(name=name, money_min=money_min, money_max=money_max, monthly=monthly, opis=opis)
-            return render(request, 'budget.html', {"my_sum":my_sum, "pozycje":pozycje, "form":form, "kalkulacje":kalkulacje})
+            Budget.objects.create(name=name, money_min=money_min, monthly=monthly, opis=opis)
+            return render(request, 'budget.html', {"zapasowa":zapasowa,
+                                                   "my_sum":my_sum,
+                                                   "pozycje":pozycje,
+                                                   "doliczyc": doliczyc,
+                                                   "form":form})
+        return render(request, 'budget.html', {"zapasowa": zapasowa,
+                                               "my_sum": my_sum,
+                                               "doliczyc":doliczyc,
+                                               "pozycje": pozycje,
+                                               "form": form})
+
+class MonthsBudgetPropositionView(View):#
+
+    def get(self, request):
+        form = MonthsBudgetForm(initial={'month_cost': request.session.get("suma_przekazana"),
+                                         'month_date':date.today()})
+        return render(request, 'budget-months-3.html', {"form":form})
+
+    def post(self, request):
+        form = MonthsBudgetForm(request.POST)
+        if form.is_valid():
+            chosen_name_of_month = form.cleaned_data['chosen_name_of_month']
+            month_cost = form.cleaned_data['month_cost']
+            description = form.cleaned_data['description']
+            MonthsBudget.objects.create(chosen_name_of_month=chosen_name_of_month,
+                                        month_cost=month_cost,
+                                        description=description)
+            return redirect('months-budget')
 
 
-class MonthsBudgetView(View):
+class MonthsBudgetView(View):#
 
     def get(self, request):
         this_months_budget = MonthsBudget.objects.all()
         form = MonthsBudgetForm()
         wykresik = wykres_month()
-        return render(request, 'budget-months.html', {"this_months_budget":this_months_budget, "form":form, "wykresik":wykresik})
+        return render(request, 'budget-months.html', {"this_months_budget":this_months_budget,
+                                                      "form":form, "wykresik":wykresik})
 
     def post(self, request):
         form = MonthsBudgetForm(request.POST)
@@ -131,12 +168,10 @@ class ModifyBudget(View):
         if form.is_valid():
             name = form.cleaned_data['name']
             money_min = form.cleaned_data['money_min']
-            money_max = form.cleaned_data['money_max']
             monthly = form.cleaned_data['monthly']
             opis = form.cleaned_data['opis']
             pozycja.name=name
             pozycja.money_min=money_min
-            pozycja.money_max=money_max
             pozycja.monthly=monthly
             pozycja.opis=opis
             pozycja.save()
@@ -356,9 +391,6 @@ class Akc(View):
         znacznik_transakcje = soup.find(text="Transakcje").next_element.next_element
         transakcje = int(znacznik_transakcje.text.replace(" ", ""))
         # print(f"Podejście 2b, transakcje = {transakcje}")
-
-
-
 
         return render(request, 'akc.html', {"kurs":kurs,
                                             "value_of_cdr":value_of_cdr,

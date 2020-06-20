@@ -37,5 +37,6 @@ urlpatterns = [
     path('delete-months/<int:pk>/', DeleteMonths.as_view(), name='delete-months'),
     path('modify-stock/<int:id>/', ModifyStock.as_view(), name='modify-stock'),
     path('delete-stock/<int:pk>/', DeleteStock.as_view(), name='delete-stock'),
+    path('months-budget-proposition3/', MonthsBudgetPropositionView.as_view(), name='months-budget-proposition3'),
 
 ]

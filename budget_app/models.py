@@ -8,10 +8,8 @@ from django.urls import reverse
 class Budget(models.Model):
     name = models.CharField(max_length=64)
     money_min = models.FloatField()
-    money_max = models.FloatField(null=True)
     monthly = models.BooleanField(default=True)
     opis = models.TextField(null=True)
-    zapasowa = models.CharField(max_length=64, null=True)
 
     def __str__(self):
         return self.name
