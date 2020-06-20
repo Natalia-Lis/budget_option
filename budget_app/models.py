@@ -69,6 +69,7 @@ class AlreadyCollected(models.Model):
 
 class PaymentDay(models.Model):
     date_of = models.DateField(auto_now_add=True)
+    value_of = models.FloatField(default=0)
     payment_skarbonki = models.ForeignKey(Skarbonki, on_delete=models.CASCADE)
     payment_collected = models.ForeignKey(AlreadyCollected, on_delete=models.CASCADE)
 

@@ -58,43 +58,62 @@ def wykres_month():
     # plt.show()
     savefig('static/wykres.png')
 
-def wykres_month2():
-    style.use('ggplot')
 
-    plt.title('wykres')
-    plt.xlabel('oś X')
-    plt.ylabel('oś Y')
-    plt.grid(True)
 
-    queryset = MonthsBudget.objects.all().order_by('-month_date')
-    q=PaymentDay.objects.all()
-    q2=PaymentDay.objects.get(id=1)
-    a=AlreadyCollected.objects.all()
-    a2=AlreadyCollected.objects.get(target=q2.payment_skarbonki_id)
+#
+# def wykres_month2():
+#     s0=Skarbonki.objects.all().first()
+#     # s=Skarbonki.objects.get(id=1)
+#     # s2=s.get_next_in_order
+#     # q=PaymentDay.objects.all()
+#     i=1
+#     for elem in s0:
+#         nazwa{i}=PaymentDay.objects.all().filter(payment_skarbonki=elem.id)
+#         i+=1
+#
+#     # tworze=PaymentDay.objects.all().first()
+#     # q2=PaymentDay.objects.get(id=1)
+#     # a=AlreadyCollected.objects.all()
+#     # a2=AlreadyCollected.objects.get(target=q2.payment_skarbonki_id)
+#
+# # for element in q:
+#     style.use('ggplot')
+#     plt.title('wykres')
+#     plt.xlabel('oś X')
+#     plt.ylabel('oś Y')
+#     plt.grid(True)
+#     # y=element.date_of
+#
+#     x=[]
+#     y=[]
+#     for eleme in nazwa{i}:
+#         x+=eleme.date_of
+#         y+=eleme.value_of
+#     # nazwa1 queryset --moze duzo
+#
+#     # q2.date_of
+#     # q2.payment_skarbonki
+#     # q2.payment_skarbonki_id
+#     # q2.payment_collected
+#     # q2.payment_collected_id
+#
+#     # q2.get_next_by_date_of()
+#
+#     # for el in queryset:
+#     #     x.append(el.chosen_name_of_month)
+#     #     # x.append(el.month_date)
+#     #     y.append(el.month_cost)
+#     # x1=x[0:12]
+#     # y1=y[0:12]
+#     # x1.reverse()
+#     # y1.reverse()
+#     #
+#     # plt.bar(x1,y1)
+#     # plt.tick_params(axis='x', rotation=290)
+#     # savefig('static/wykres.png')
 
-    # q2.date_of
-    # q2.payment_skarbonki
-    # q2.payment_skarbonki_id
-    # q2.payment_collected
-    # q2.payment_collected_id
 
-    # q2.get_next_by_date_of()
 
-    x=[]
-    y=[]
-    for el in queryset:
-        x.append(el.chosen_name_of_month)
-        # x.append(el.month_date)
-        y.append(el.month_cost)
-    x1=x[0:12]
-    y1=y[0:12]
-    x1.reverse()
-    y1.reverse()
-
-    plt.bar(x1,y1)
-    plt.tick_params(axis='x', rotation=290)
-    # plt.show()
-    savefig('static/wykres.png')
 
 class CreditView(View):
 
@@ -303,6 +322,10 @@ class AlreadyCollectedView(View):
             zlap_z_templ2 = int(zlap_z_templ)
             congrats2 = float(congrats)
             zlapany2 = AlreadyCollected.objects.get(id=zlap_z_templ2)
+            pp=PaymentDay.objects.get(payment_collected_id=zlap_z_templ2)
+            # pp.value_of = zlapany2.collected
+            pp.value_of = congrats2
+            pp.save()
             zlapany2.collected += congrats2
             zlapany2.save()
             return render(request, 'skar-pilnuj.html', {"collected": collected,
