@@ -7,10 +7,7 @@
     {% if chosen %}
         <form action="" method="post">
          {% csrf_token %}
-{#{{ form }}#}
-{#        Wybrany cel: {{ chosen_obj.target }}<br>#}
-{#        Zebrane: {{ chosen_obj.collected }}<br>#}
-{#        Daty: {{ chosen_obj.date_of }}<br>#}
+
         <input type="number" step="any" name="congrats">
         <input type="number"  name="zlap_z_templ" value="{{ zlapany.id }}" hidden>
                 <input type="submit" value="send">

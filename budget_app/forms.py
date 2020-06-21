@@ -43,12 +43,12 @@ class StockForm(forms.ModelForm):
         self.fields['type_of_market'].required = False
         self.fields['www'].required = False
 
-
-class AlreadyCollectedForm(forms.Form): #?
-    date_of = models.DateField(auto_now_add=True)
-    payment_skarbonki = models.ForeignKey(Skarbonki, on_delete=models.CASCADE)
-    payment_collected = models.ForeignKey(AlreadyCollected, on_delete=models.CASCADE)
-    value_of = models.FloatField(default=0)
-
-    collected = models.FloatField(default=0)
-    target = models.ManyToManyField(Skarbonki, through='PaymentDay')
+#
+# class AlreadyCollectedForm(forms.Form): #?
+#     date_of = models.DateField(auto_now_add=True)
+#     payment_skarbonki = models.ForeignKey(Skarbonki, on_delete=models.CASCADE)
+#     payment_collected = models.ForeignKey(AlreadyCollected, on_delete=models.CASCADE)
+#     value_of = models.FloatField(default=0)
+#
+#     collected = models.FloatField(default=0)
+#     target = models.ManyToManyField(Skarbonki, through='PaymentDay')

@@ -164,7 +164,15 @@ class BudgetView(View):#
         #     for_calculation.append(element.money_min)
         # for elem in for_calculation:
         #     kalkulacje += elem
-
+        form = BudgetForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            money_min = form.cleaned_data['money_min']
+            monthly = form.cleaned_data['monthly']
+            opis = form.cleaned_data['opis']
+            Budget.objects.create(name=name, money_min=money_min, monthly=monthly, opis=opis)
+            return render(request, 'budget.html', {"pozycje":pozycje,
+                                                   "form":form})
         doliczyc = []
         zapasowa = request.POST.getlist('zapasowa')
         for elements in pozycje:
@@ -185,18 +193,7 @@ class BudgetView(View):#
         def set_session(request):
             request.session["suma_przekazana"] = my_sum
         set_session(request)
-        form = BudgetForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            money_min = form.cleaned_data['money_min']
-            monthly = form.cleaned_data['monthly']
-            opis = form.cleaned_data['opis']
-            Budget.objects.create(name=name, money_min=money_min, monthly=monthly, opis=opis)
-            return render(request, 'budget.html', {"zapasowa":zapasowa,
-                                                   "my_sum":my_sum,
-                                                   "pozycje":pozycje,
-                                                   "doliczyc": doliczyc,
-                                                   "form":form})
+
         return render(request, 'budget.html', {"zapasowa": zapasowa,
                                                "my_sum": my_sum,
                                                "doliczyc":doliczyc,
@@ -305,19 +302,19 @@ class DeleteMonths(DeleteView):
 
 
 
-class SkarbonkiView(View):
+class PiggyBanksView(View):
     def get(self, request):
-        return render(request, 'skarbonki.html')
+        return render(request, 'piggy-banks.html')
 
 
-class SkarbonkiCele(View):
+class SavingGoals(View):
 
     def get(self, request):
         skarbonki = Skarbonki.objects.all()
         form = SkarbonkiForm()
         s0 = Skarbonki.objects.all().first()
         eli=PaymentDay.objects.all().filter(payment_skarbonki=s0.id)
-        return render(request, 'skar-cele.html', {"skarbonki":skarbonki, "form":form, "eli":eli})
+        return render(request, 'saving-goals.html', {"skarbonki":skarbonki, "form":form, "eli":eli})
 
     def post(self, request):
         skarbonki = Skarbonki.objects.all()
@@ -333,7 +330,7 @@ class SkarbonkiCele(View):
             PaymentDay.objects.create(payment_skarbonki=s1,payment_collected=a1)
 
             zlap=PaymentDay.objects.get(payment_skarbonki_id=s1)
-            return render(request, 'skar-cele.html', {"skarbonki":skarbonki, "form": form, "zlap":zlap})
+            return render(request, 'saving-goals.html', {"skarbonki":skarbonki, "form": form, "zlap":zlap})
 
 
 class SkarbonkiNowy(View):
@@ -349,12 +346,12 @@ class SkarbonkiNowy(View):
                                             "skarbonki": skarbonki})
 
 
-class ModifySkarbonki(View):
+class ModifySaving(View):
 
     def get(self, request, id):
         pozycja=Skarbonki.objects.get(id=id)
         form = SkarbonkiForm(instance=pozycja)
-        return render(request, 'modify-skarb.html', {"pozycja":pozycja, "form":form})
+        return render(request, 'modify-saving.html', {"pozycja":pozycja, "form":form})
 
     def post(self, request, id):
         form = SkarbonkiForm(request.POST)
@@ -367,10 +364,10 @@ class ModifySkarbonki(View):
             pozycja.m_min=m_min
             pozycja.opis=opis
             pozycja.save()
-            return redirect('skar-cele')
+            return redirect('saving-goals')
 
 
-class SkarbonkiMistake(View):
+class SavingMistake(View):
     def get(self, request):
         msg = "Dziś już wpłacono na owy cel! Czyżby nastąpiła pomyłka przy wpisywaniu kwoty?"
         skarbonki = Skarbonki.objects.all()
@@ -388,14 +385,13 @@ class SkarbonkiMistake(View):
         last_mistake=PaymentDay.objects.all().filter(payment_skarbonki_id=mistake_id).last()
         last_to_change=AlreadyCollected.objects.get(id=last_mistake.payment_collected_id)
 
-        last_mistake.value_of -= mistake_value_float
-        last_mistake.value_of =+ correct_value_float
+        last_mistake.value_of = correct_value_float
         last_mistake.save()
         last_to_change.collected -= mistake_value_float
-        last_to_change.collected -= correct_value_float
+        last_to_change.collected += correct_value_float
         last_to_change.save()
 
-        return redirect('skarbonki')
+        return redirect('piggy-banks')
 
 
 
@@ -406,10 +402,10 @@ lista_wynikow = []
 lista_wynikow2 = []
 
 
-class SkarbonkiCzas(View):
+class SavingTime(View):
 
     def get(self, request):
-        return render(request, 'skar-czas.html')
+        return render(request, 'saving-time.html')
 
     def post(self, request):
         kwota1 = request.POST.get('kwota')
@@ -429,13 +425,13 @@ class SkarbonkiCzas(View):
         # f.write('\n')
         # f.close()
         lista_wynikow.reverse()
-        return render(request, 'skar-czas.html', {'wynik1':wynik1, "lista_wynikow":lista_wynikow})
+        return render(request, 'saving-time.html', {'wynik1':wynik1, "lista_wynikow":lista_wynikow})
 
 
-class SkarbonkiKwota(View):
+class SavingAmount(View):
 
     def get(self, request):
-        return render(request, 'skar-kwota.html')
+        return render(request, 'saving-amount.html')
 
     def post(self, request):
         kwota1 = request.POST.get('kwota')
@@ -444,12 +440,12 @@ class SkarbonkiKwota(View):
         wynik1 = Decimal("%.2f" % wynik0)
         lista_wynikow2.append(f"{kwota1} : {kwota_mies2} = {wynik1} \n")
         lista_wynikow2.reverse()
-        return render(request, 'skar-kwota.html', {'wynik1':wynik1, "lista_wynikow2":lista_wynikow2})
+        return render(request, 'saving-amount.html', {'wynik1':wynik1, "lista_wynikow2":lista_wynikow2})
 
 
-class DeleteSkarbonki(DeleteView):#
+class DeleteSaving(DeleteView):#
     model = Skarbonki
-    success_url = '/skar-cele'
+    success_url = '/saving-goals'
 
 
 
@@ -497,7 +493,7 @@ class AlreadyCollectedView(View):
                 PaymentDay.objects.get(payment_skarbonki_id=moj_x_nowy, date_of=date.today())
                 dzisiejszy_stary=PaymentDay.objects.get(payment_skarbonki_id=moj_x_nowy, date_of=date.today())
 
-                return redirect('skar-mistake')
+                return redirect('saving-mistake')
 
             except:
                 dzisiejszy_nowy=PaymentDay.objects.create(payment_skarbonki_id=moj_x_nowy, date_of=date.today(), payment_collected_id=moj_obiekt.payment_collected_id, value_of=moj_obiekt.value_of)
@@ -513,7 +509,7 @@ class AlreadyCollectedView(View):
                                                         "skarbonki": skarbonki})
 
 
-class Akc(View):
+class StockView(View):
     def get(self, request):
         form = StockForm()
         spolka = "cdr"
@@ -554,7 +550,7 @@ class Akc(View):
         transakcje = int(znacznik_transakcje.text.replace(" ", ""))
         # print(f"Podejście 2b, transakcje = {transakcje}")
 
-        return render(request, 'akc.html', {"kurs":kurs,
+        return render(request, 'stock.html', {"kurs":kurs,
                                             "value_of_cdr":value_of_cdr,
                                             "zmiana_bezwzgledna":zmiana_wzgledna,
                                             "zmiana_wzgledna":zmiana_wzgledna,
@@ -574,7 +570,7 @@ class Akc(View):
             www = form.cleaned_data['www']
             Stock.objects.create(name=name, enter_price=enter_price, interests=interests, value_of=value_of,
                                  price=price,dividend=dividend,type_of_market=type_of_market,www=www)
-            return redirect('akc')
+            return redirect('stock')
 
 
 
@@ -607,12 +603,12 @@ class ModifyStock(View):
             pozycja.type_of_market=type_of_market
             pozycja.www=www
             pozycja.save()
-            return redirect('akc')
+            return redirect('stock')
 
 
 class DeleteStock(DeleteView):
     model = Stock
-    success_url = '/akc'
+    success_url = '/stock'
 
 
 

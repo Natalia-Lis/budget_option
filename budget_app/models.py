@@ -27,7 +27,7 @@ class Skarbonki(models.Model):
         return self.money_for
 
     def get_absolute_url(self):
-        return reverse('delete-skarb', kwargs={'pk': self.pk})
+        return reverse('delete-saving', kwargs={'pk': self.pk})
 
 
 class MonthsBudget(models.Model):
@@ -60,8 +60,6 @@ class Stock(models.Model):
 class AlreadyCollected(models.Model):
     collected = models.FloatField(default=0)
     target = models.ManyToManyField(Skarbonki, through='PaymentDay')
-
-
 
 
 class PaymentDay(models.Model):

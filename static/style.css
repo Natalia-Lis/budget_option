@@ -7,10 +7,10 @@ body {
     margin-right: 20px;
 }
 
-a, a:hover, a:visited {
-    color: cornflowerblue;
-    text-decoration: none;
-}
+/*a, a:visited {*/
+/*    color: cornflowerblue;*/
+/*    text-decoration: none;*/
+/*}*/
 
 .sidenav {
   height: 100%;
@@ -25,12 +25,13 @@ a, a:hover, a:visited {
   color: cornflowerblue;
 }
 
-.sidenav a {
+.sidenav a, a:visited {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
-  font-size: 22px;
+  font-size: 16px;
   color: cornflowerblue;
   display: block;
+  background-color: #111;
 }
 
 .sidenav a:hover {

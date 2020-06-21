@@ -1,0 +1,27 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <br><br>
+<p style="text-align: center">
+    <a href="{% url 'saving-goals' %}">&nbsp;Zobacz dotychczasowe cele -></a>
+    <br><br>
+<a href="{% url 'saving-collected' %}">&nbsp;Pilnuj realizacji celów</a>
+    <br><br>
+<a href="{% url 'saving-mistake' %}">&nbsp;Pomyłka w twojej wpłacie na określony cel? Zmień to!</a>
+    <br><br>
+<a href="{% url 'skar-nowy' %}">&nbsp;w trakcie - nowy-wykresy</a>
+<br><br><br><br>
+<a href="{% url 'saving-time' %}">&nbsp;Oblicz: ile czasu muszę odkładać, aby coś mieć?</a>
+<br><br>
+<a href="{% url 'saving-amount' %}">&nbsp;Oblicz: jaką kwotę powinno się odkładać,
+                                            żeby mieć coś w określonym czasie.</a>
+</p>
+<br>
+
+
+
+
+    <br>
+
+{% endblock %}

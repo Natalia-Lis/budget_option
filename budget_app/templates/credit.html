@@ -35,8 +35,8 @@
         <td>{{ element.month }}</td>
         <td>{{ element.opis }}</td>
         <td>{{ element.zapas}}</td>
-        <td><a href="{% url 'modify-skarb' element.id %}"> Modyfikuj!</a></td>
-        <td><a href="{% url 'delete-skarb' element.id %}"> Usuń</a></td>
+        <td><a href="{% url 'modify-saving' element.id %}"> Modyfikuj!</a></td>
+        <td><a href="{% url 'delete-saving' element.id %}"> Usuń</a></td>
         </tr>
     {% endfor %}
 </table>

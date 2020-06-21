@@ -13,15 +13,14 @@
     {% block sidebar %}
         <div class="sidenav">
             <center>
-            {{zalogowany.email}}   <br>
             {{now}}
-            <br><br><br><br>
+            <br><br><br><br><br><br>
          <br>
-            <a href="{% url 'budget' %}">Budżet</a>&nbsp;&nbsp;
-            <a href="{% url 'skarbonki' %}">Skarbonki</a>&nbsp;&nbsp;
-            <a href="{% url 'akc' %}">Akc</a>&nbsp;
-                <br>
-                <br>
+                <a href="{% url 'budget' %}">Budżet</a><br>
+                <a href="{% url 'months-budget' %}">Miesięczne budżety</a><br>
+             <a href="{% url 'piggy-banks' %}">Skarbonki</a><br>
+                <a href="{% url 'stock' %}">Akcje</a><br>
+                    <a href="{% url 'credit' %}">Kredyty</a><br>
      </center>
         </div>
         {% endblock %}
@@ -33,6 +32,7 @@
 
         {% endblock %}
 </div>
-
+{#           <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>#}
+{#<script src="{% static 'js2.js' %}"></script>#}
     </body>
 </html>
