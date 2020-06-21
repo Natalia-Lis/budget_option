@@ -142,14 +142,10 @@ def wykres_month2():
 
 
 
-class CreditView(View):
-
+class IndexView(View):
     def get(self, request):
-        wykres_month2()
-        return render(request, 'credit.html')
+        return render(request, 'base.html')
 
-    def post(self, request):
-        return redirect('credit')
 
 
 class BudgetView(View):#
@@ -207,44 +203,6 @@ class BudgetView(View):#
                                                "pozycje": pozycje,
                                                "form": form})
 
-class MonthsBudgetPropositionView(View):#
-
-    def get(self, request):
-        form = MonthsBudgetForm(initial={'month_cost': request.session.get("suma_przekazana"),
-                                         'month_date':date.today()})
-        return render(request, 'budget-months-3.html', {"form":form})
-
-    def post(self, request):
-        form = MonthsBudgetForm(request.POST)
-        if form.is_valid():
-            chosen_name_of_month = form.cleaned_data['chosen_name_of_month']
-            month_cost = form.cleaned_data['month_cost']
-            description = form.cleaned_data['description']
-            MonthsBudget.objects.create(chosen_name_of_month=chosen_name_of_month,
-                                        month_cost=month_cost,
-                                        description=description)
-            return redirect('months-budget')
-
-
-class MonthsBudgetView(View):#
-
-    def get(self, request):
-        this_months_budget = MonthsBudget.objects.all()
-        form = MonthsBudgetForm()
-        wykresik = wykres_month()
-        return render(request, 'budget-months.html', {"this_months_budget":this_months_budget,
-                                                      "form":form, "wykresik":wykresik})
-
-    def post(self, request):
-        form = MonthsBudgetForm(request.POST)
-        if form.is_valid():
-            chosen_name_of_month = form.cleaned_data['chosen_name_of_month']
-            month_cost = form.cleaned_data['month_cost']
-            description = form.cleaned_data['description']
-            MonthsBudget.objects.create(chosen_name_of_month=chosen_name_of_month,
-                                        month_cost=month_cost,
-                                        description=description)
-            return redirect('months-budget')
 
 
 class ModifyBudget(View):
@@ -275,128 +233,47 @@ class DeleteBudget(DeleteView):
     success_url = '/budget'
 
 
-class DeleteSkarbonki(DeleteView):
-    model = Skarbonki
-    success_url = '/skar-cele'
 
 
-class DeleteMonths(DeleteView):
-    model = MonthsBudget
-    success_url = '/months-budget'
-
-
-class DeleteStock(DeleteView):
-    model = Stock
-    success_url = '/akc'
-
-
-class SkarbonkiView(View):
-    def get(self, request):
-        return render(request, 'skarbonki.html')
-
-
-class SkarbonkiCele(View):
+class MonthsBudgetView(View):#
 
     def get(self, request):
-        skarbonki = Skarbonki.objects.all()
-        form = SkarbonkiForm()
-        s0 = Skarbonki.objects.all().first()
-        eli=PaymentDay.objects.all().filter(payment_skarbonki=s0.id)
-        return render(request, 'skar-cele.html', {"skarbonki":skarbonki, "form":form, "eli":eli})
+        this_months_budget = MonthsBudget.objects.all()
+        form = MonthsBudgetForm()
+        wykresik = wykres_month()
+        return render(request, 'budget-months.html', {"this_months_budget":this_months_budget,
+                                                      "form":form, "wykresik":wykresik})
 
     def post(self, request):
-        skarbonki = Skarbonki.objects.all()
-        form = SkarbonkiForm(request.POST)
+        form = MonthsBudgetForm(request.POST)
         if form.is_valid():
-            money_for = form.cleaned_data['money_for']
-            m_min = form.cleaned_data['m_min']
-            opis = form.cleaned_data['opis']
-            # zapasowa = form.cleaned_data['zapasowa']
-            Skarbonki.objects.create(money_for=money_for, m_min=m_min, opis=opis)
-
-            s1 = Skarbonki.objects.get(money_for=money_for)
-            a1 = AlreadyCollected.objects.create(collected=0)
-            PaymentDay.objects.create(payment_skarbonki=s1,payment_collected=a1)
-
-            zlap=PaymentDay.objects.get(payment_skarbonki_id=s1)
-            # zlapany = AlreadyCollected.objects.get(target=zlap) zle
-
-            # return redirect('skar-cele')
-            return render(request, 'skar-cele.html', {"skarbonki":skarbonki, "form": form, "zlap":zlap})
+            chosen_name_of_month = form.cleaned_data['chosen_name_of_month']
+            month_cost = form.cleaned_data['month_cost']
+            description = form.cleaned_data['description']
+            MonthsBudget.objects.create(chosen_name_of_month=chosen_name_of_month,
+                                        month_cost=month_cost,
+                                        description=description)
+            return redirect('months-budget')
 
 
-class AlreadyCollectedView(View):
+
+class MonthsBudgetPropositionView(View):#
 
     def get(self, request):
-        collected = AlreadyCollected.objects.all()
-        skarbonki = Skarbonki.objects.all()
-        return render(request, 'skar-pilnuj.html', {"collected":collected, "skarbonki":skarbonki})
+        form = MonthsBudgetForm(initial={'month_cost': request.session.get("suma_przekazana"),
+                                         'month_date':date.today()})
+        return render(request, 'budget-months-3.html', {"form":form})
 
     def post(self, request):
-        collected = AlreadyCollected.objects.all()
-        skarbonki = Skarbonki.objects.all()
-        try:
-            choose = request.POST.get('choose')
-            chosen = int(choose)
-            # if PaymentDay.objects.get(payment_skarbonki_id=chosen, date_of=date.today()):
-            # try:
-            #     zlap = PaymentDay.objects.get(payment_skarbonki_id=chosen, date_of=date.today())
-            # except:
-
-            def set_session2(request):
-                # request.session["id_of_payment"] = zlap.id #platnosc z data
-                request.session["chosen_id"] = chosen # id skarbonki
-
-            set_session2(request)
-
-            # zlapany = AlreadyCollected.objects.get(target=zlap.payment_skarbonki_id)
-            # else:
-            #     stworz = PaymentDay.objects.create(payment_skarbonki_id=chosen, date_of=date.today(), payment_collected_id=)
-            return render(request, 'skar-pilnuj.html', {"chosen": chosen,
-                                                        "collected": collected,
-                                                        "skarbonki": skarbonki,
-                                                            # "zlap": zlap,
-                                                            # "zlapany": zlapany
-                                                        })
-        except:
-            moj_x=request.session.get("chosen_id"),
-            for e in moj_x:
-                moj_x_nowy = e
-            congrats = request.POST.get('congrats')
-            congrats2 = float(congrats)
-            moj_obiekt=PaymentDay.objects.filter(payment_skarbonki_id=moj_x_nowy).last()
-            try:
-                PaymentDay.objects.get(payment_skarbonki_id=moj_x_nowy, date_of=date.today())
-                dzisiejszy_stary=PaymentDay.objects.get(payment_skarbonki_id=moj_x_nowy, date_of=date.today())
-                msg="dziś już wpłaciłeś. Jeśli chcesz zmienić wartość - - - zmodyfikuj wpis (usun wpis o id jakims,\
-                odejmij kwote z tego, stworz nowy id i dodaj wartosc nowa)"
-                return HttpResponse(msg)
-
-            except:
-                dzisiejszy_nowy=PaymentDay.objects.create(payment_skarbonki_id=moj_x_nowy, date_of=date.today(), payment_collected_id=moj_obiekt.payment_collected_id, value_of=moj_obiekt.value_of)
-                dzisiejszy_nowy.payment_skarbonki_id=moj_x_nowy
-                dzisiejszy_nowy.payment_collected_id=moj_obiekt.payment_collected_id
-                dzisiejszy_nowy.save()
-                alr_powieksz = AlreadyCollected.objects.get(id=dzisiejszy_nowy.payment_collected_id)
-                alr_powieksz.collected += congrats2
-                alr_powieksz.save()
-                dzisiejszy_nowy.value_of += congrats2
-                dzisiejszy_nowy.save()
-            return render(request, 'skar-pilnuj.html', {"collected": collected,
-                                                        "skarbonki": skarbonki})
-
-
-class SkarbonkiNowy(View):
-
-    def get(self, request):
-        collected = AlreadyCollected.objects.all()
-        skarbonki = Skarbonki.objects.all()
-        return render(request, 'skar-nowy.html', {"collected":collected, "skarbonki":skarbonki})
-    def post(self, request):
-        collected = AlreadyCollected.objects.all()
-        skarbonki = Skarbonki.objects.all()
-        return render(request, 'skar-nowy.html', {"collected": collected,
-                                            "skarbonki": skarbonki})
+        form = MonthsBudgetForm(request.POST)
+        if form.is_valid():
+            chosen_name_of_month = form.cleaned_data['chosen_name_of_month']
+            month_cost = form.cleaned_data['month_cost']
+            description = form.cleaned_data['description']
+            MonthsBudget.objects.create(chosen_name_of_month=chosen_name_of_month,
+                                        month_cost=month_cost,
+                                        description=description)
+            return redirect('months-budget')
 
 
 class ModifyMonths(View):
@@ -420,6 +297,58 @@ class ModifyMonths(View):
             return redirect('months-budget')
 
 
+class DeleteMonths(DeleteView):
+    model = MonthsBudget
+    success_url = '/months-budget'
+
+
+
+
+
+class SkarbonkiView(View):
+    def get(self, request):
+        return render(request, 'skarbonki.html')
+
+
+class SkarbonkiCele(View):
+
+    def get(self, request):
+        skarbonki = Skarbonki.objects.all()
+        form = SkarbonkiForm()
+        s0 = Skarbonki.objects.all().first()
+        eli=PaymentDay.objects.all().filter(payment_skarbonki=s0.id)
+        return render(request, 'skar-cele.html', {"skarbonki":skarbonki, "form":form, "eli":eli})
+
+    def post(self, request):
+        skarbonki = Skarbonki.objects.all()
+        form = SkarbonkiForm(request.POST)
+        if form.is_valid():
+            money_for = form.cleaned_data['money_for']
+            m_min = form.cleaned_data['m_min']
+            opis = form.cleaned_data['opis']
+            Skarbonki.objects.create(money_for=money_for, m_min=m_min, opis=opis)
+
+            s1 = Skarbonki.objects.get(money_for=money_for)
+            a1 = AlreadyCollected.objects.create(collected=0)
+            PaymentDay.objects.create(payment_skarbonki=s1,payment_collected=a1)
+
+            zlap=PaymentDay.objects.get(payment_skarbonki_id=s1)
+            return render(request, 'skar-cele.html', {"skarbonki":skarbonki, "form": form, "zlap":zlap})
+
+
+class SkarbonkiNowy(View):
+
+    def get(self, request):
+        collected = AlreadyCollected.objects.all()
+        skarbonki = Skarbonki.objects.all()
+        return render(request, 'skar-nowy.html', {"collected":collected, "skarbonki":skarbonki})
+    def post(self, request):
+        collected = AlreadyCollected.objects.all()
+        skarbonki = Skarbonki.objects.all()
+        return render(request, 'skar-nowy.html', {"collected": collected,
+                                            "skarbonki": skarbonki})
+
+
 class ModifySkarbonki(View):
 
     def get(self, request, id):
@@ -441,36 +370,34 @@ class ModifySkarbonki(View):
             return redirect('skar-cele')
 
 
-class ModifyStock(View):
+class SkarbonkiMistake(View):
+    def get(self, request):
+        msg = "Dziś już wpłacono na owy cel! Czyżby nastąpiła pomyłka przy wpisywaniu kwoty?"
+        skarbonki = Skarbonki.objects.all()
+        return render(request, 'mistake.html', {"skarbonki":skarbonki, "msg":msg})
+    def post(self, request):
 
-    def get(self, request, id):
-        pozycja=Stock.objects.get(id=id)
-        form = StockForm(instance=pozycja)
-        return render(request, 'modify-stock.html', {"pozycja":pozycja, "form":form})
+        mistake_in = request.POST.get('mistake_in')
+        mistake_id = int(mistake_in)
+        mistake_value = request.POST.get('mistake_value')
+        mistake_value_float = float(mistake_value)
+        correct_value = request.POST.get('correct_value')
+        correct_value_float = float(correct_value)
 
-    def post(self, request, id):
-        form = StockForm(request.POST)
-        pozycja = Stock.objects.get(id=id)
-        form = StockForm(request.POST)
-        if form.is_valid():
-            name = form.cleaned_data['name']
-            enter_price = form.cleaned_data['enter_price']
-            interests = form.cleaned_data['interests']
-            value_of = form.cleaned_data['value_of']
-            price = form.cleaned_data['price']
-            dividend = form.cleaned_data['dividend']
-            type_of_market = form.cleaned_data['type_of_market']
-            www = form.cleaned_data['www']
-            pozycja.name=name
-            pozycja.enter_price=enter_price
-            pozycja.interests=interests
-            pozycja.value_of=value_of
-            pozycja.price=price
-            pozycja.dividend=dividend
-            pozycja.type_of_market=type_of_market
-            pozycja.www=www
-            pozycja.save()
-            return redirect('akc')
+        # mistake_object=Skarbonki.objects.get(id=mistake_in.id)
+        last_mistake=PaymentDay.objects.all().filter(payment_skarbonki_id=mistake_id).last()
+        last_to_change=AlreadyCollected.objects.get(id=last_mistake.payment_collected_id)
+
+        last_mistake.value_of -= mistake_value_float
+        last_mistake.value_of =+ correct_value_float
+        last_mistake.save()
+        last_to_change.collected -= mistake_value_float
+        last_to_change.collected -= correct_value_float
+        last_to_change.save()
+
+        return redirect('skarbonki')
+
+
 
 
 
@@ -518,6 +445,72 @@ class SkarbonkiKwota(View):
         lista_wynikow2.append(f"{kwota1} : {kwota_mies2} = {wynik1} \n")
         lista_wynikow2.reverse()
         return render(request, 'skar-kwota.html', {'wynik1':wynik1, "lista_wynikow2":lista_wynikow2})
+
+
+class DeleteSkarbonki(DeleteView):#
+    model = Skarbonki
+    success_url = '/skar-cele'
+
+
+
+class AlreadyCollectedView(View):
+
+    def get(self, request):
+        collected = AlreadyCollected.objects.all()
+        skarbonki = Skarbonki.objects.all()
+        return render(request, 'skar-pilnuj.html', {"collected":collected, "skarbonki":skarbonki})
+
+    def post(self, request):
+        collected = AlreadyCollected.objects.all()
+        skarbonki = Skarbonki.objects.all()
+        try:
+            choose = request.POST.get('choose')
+            chosen = int(choose)
+            # if PaymentDay.objects.get(payment_skarbonki_id=chosen, date_of=date.today()):
+            # try:
+            #     zlap = PaymentDay.objects.get(payment_skarbonki_id=chosen, date_of=date.today())
+            # except:
+
+            def set_session2(request):
+                # request.session["id_of_payment"] = zlap.id #platnosc z data
+                request.session["chosen_id"] = chosen # id skarbonki
+
+            set_session2(request)
+
+            # zlapany = AlreadyCollected.objects.get(target=zlap.payment_skarbonki_id)
+            # else:
+            #     stworz = PaymentDay.objects.create(payment_skarbonki_id=chosen, date_of=date.today(), payment_collected_id=)
+            return render(request, 'skar-pilnuj.html', {"chosen": chosen,
+                                                        "collected": collected,
+                                                        "skarbonki": skarbonki,
+                                                            # "zlap": zlap,
+                                                            # "zlapany": zlapany
+                                                        })
+        except:
+            moj_x=request.session.get("chosen_id"),
+            for e in moj_x:
+                moj_x_nowy = e
+            congrats = request.POST.get('congrats')
+            congrats2 = float(congrats)
+            moj_obiekt=PaymentDay.objects.filter(payment_skarbonki_id=moj_x_nowy).last()
+            try:
+                PaymentDay.objects.get(payment_skarbonki_id=moj_x_nowy, date_of=date.today())
+                dzisiejszy_stary=PaymentDay.objects.get(payment_skarbonki_id=moj_x_nowy, date_of=date.today())
+
+                return redirect('skar-mistake')
+
+            except:
+                dzisiejszy_nowy=PaymentDay.objects.create(payment_skarbonki_id=moj_x_nowy, date_of=date.today(), payment_collected_id=moj_obiekt.payment_collected_id, value_of=moj_obiekt.value_of)
+                dzisiejszy_nowy.payment_skarbonki_id=moj_x_nowy
+                dzisiejszy_nowy.payment_collected_id=moj_obiekt.payment_collected_id
+                dzisiejszy_nowy.save()
+                alr_powieksz = AlreadyCollected.objects.get(id=dzisiejszy_nowy.payment_collected_id)
+                alr_powieksz.collected += congrats2
+                alr_powieksz.save()
+                dzisiejszy_nowy.value_of += congrats2
+                dzisiejszy_nowy.save()
+            return render(request, 'skar-pilnuj.html', {"collected": collected,
+                                                        "skarbonki": skarbonki})
 
 
 class Akc(View):
@@ -585,10 +578,50 @@ class Akc(View):
 
 
 
+class ModifyStock(View):
 
-class IndexView(View):
+    def get(self, request, id):
+        pozycja=Stock.objects.get(id=id)
+        form = StockForm(instance=pozycja)
+        return render(request, 'modify-stock.html', {"pozycja":pozycja, "form":form})
+
+    def post(self, request, id):
+        form = StockForm(request.POST)
+        pozycja = Stock.objects.get(id=id)
+        form = StockForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            enter_price = form.cleaned_data['enter_price']
+            interests = form.cleaned_data['interests']
+            value_of = form.cleaned_data['value_of']
+            price = form.cleaned_data['price']
+            dividend = form.cleaned_data['dividend']
+            type_of_market = form.cleaned_data['type_of_market']
+            www = form.cleaned_data['www']
+            pozycja.name=name
+            pozycja.enter_price=enter_price
+            pozycja.interests=interests
+            pozycja.value_of=value_of
+            pozycja.price=price
+            pozycja.dividend=dividend
+            pozycja.type_of_market=type_of_market
+            pozycja.www=www
+            pozycja.save()
+            return redirect('akc')
+
+
+class DeleteStock(DeleteView):
+    model = Stock
+    success_url = '/akc'
+
+
+
+class CreditView(View):
+
     def get(self, request):
-        return render(request, 'base.html')
+        wykres_month2()
+        return render(request, 'credit.html')
 
-
+    def post(self, request):
+        return redirect('credit')
 
