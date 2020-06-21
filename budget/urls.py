@@ -28,7 +28,6 @@ urlpatterns = [
     path('skar-nowy/', SkarbonkiNowy.as_view(), name='skar-nowy'),
     path('skar-czas/', SkarbonkiCzas.as_view(), name='skar-czas'),
     path('skar-kwota/', SkarbonkiKwota.as_view(), name='skar-kwota'),
-    # path('skar-nowy/', SkarbonkiN.as_view(), name='skar-nowy'),
     path('skar-collected/', AlreadyCollectedView.as_view(), name='skar-collected'),
     path('months-budget/', MonthsBudgetView.as_view(), name='months-budget'),
     path('modify-budget/<int:id>/', ModifyBudget.as_view(), name='modify-budget'),

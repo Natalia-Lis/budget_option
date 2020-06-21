@@ -15,11 +15,11 @@ class BudgetForm(forms.ModelForm):
 class SkarbonkiForm(forms.ModelForm):
     class Meta:
         model = Skarbonki
-        exclude = ['zapas']
+        fields = '__all__'
     def __init__(self, *args, **kwargs):
         super(SkarbonkiForm, self).__init__(*args, **kwargs)
         self.fields['opis'].required = False
-        self.fields['m_max'].required = False
+
 
 
 class MonthsBudgetForm(forms.ModelForm):

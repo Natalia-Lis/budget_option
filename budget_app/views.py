@@ -60,22 +60,43 @@ def wykres_month():
 
 
 
-#
-# def wykres_month2():
-#     s0=Skarbonki.objects.all().first()
-#     # s=Skarbonki.objects.get(id=1)
-#     # s2=s.get_next_in_order
-#     # q=PaymentDay.objects.all()
-#     i=1
-#     for elem in s0:
-#         nazwa{i}=PaymentDay.objects.all().filter(payment_skarbonki=elem.id)
-#         i+=1
-#
-#     # tworze=PaymentDay.objects.all().first()
-#     # q2=PaymentDay.objects.get(id=1)
-#     # a=AlreadyCollected.objects.all()
-#     # a2=AlreadyCollected.objects.get(target=q2.payment_skarbonki_id)
-#
+
+def wykres_month2():
+    s0=Skarbonki.objects.all()
+    # s=Skarbonki.objects.get(id=1)
+    # s2=s.get_next_in_order
+    # q=PaymentDay.objects.all()
+    j=0
+    for elem in s0:
+        elll=PaymentDay.objects.all().filter(payment_skarbonki=elem.id)
+
+        x = [0]
+        y = [0]
+        for el in elll:
+            new_val=str(el.value_of)
+            y += new_val
+            new_dat=str(el.date_of)
+            x += new_dat
+
+            style.use('ggplot')
+            plt.title('wykres')
+            plt.xlabel('oś X')
+            plt.ylabel('oś Y')
+            plt.grid(True)
+            plt.plot(x, y)
+            plt.tick_params(axis='x', rotation=290)
+
+            savefig('static/wykres-inny1.png')
+            j+=1
+
+        # nazwa{i}=PaymentDay.objects.all().filter(payment_skarbonki=elem.id)
+        # i+=1
+
+    # tworze=PaymentDay.objects.all().first()
+    # q2=PaymentDay.objects.get(id=1)
+    # a=AlreadyCollected.objects.all()
+    # a2=AlreadyCollected.objects.get(target=q2.payment_skarbonki_id)
+
 # # for element in q:
 #     style.use('ggplot')
 #     plt.title('wykres')
@@ -86,31 +107,37 @@ def wykres_month():
 #
 #     x=[]
 #     y=[]
-#     for eleme in nazwa{i}:
+#     j=0
+#     for eleme in nazwa{j}:
 #         x+=eleme.date_of
 #         y+=eleme.value_of
-#     # nazwa1 queryset --moze duzo
-#
-#     # q2.date_of
-#     # q2.payment_skarbonki
-#     # q2.payment_skarbonki_id
-#     # q2.payment_collected
-#     # q2.payment_collected_id
-#
-#     # q2.get_next_by_date_of()
-#
-#     # for el in queryset:
-#     #     x.append(el.chosen_name_of_month)
-#     #     # x.append(el.month_date)
-#     #     y.append(el.month_cost)
-#     # x1=x[0:12]
-#     # y1=y[0:12]
-#     # x1.reverse()
-#     # y1.reverse()
-#     #
-#     # plt.bar(x1,y1)
-#     # plt.tick_params(axis='x', rotation=290)
-#     # savefig('static/wykres.png')
+#         plt.bar(x,y)
+#         plt.tick_params(axis='x', rotation=290)
+#         savefig(f'static/wykres-inny{j}.png')
+#         j+=1
+
+    # nazwa1 queryset --moze duzo
+
+    # q2.date_of
+    # q2.payment_skarbonki
+    # q2.payment_skarbonki_id
+    # q2.payment_collected
+    # q2.payment_collected_id
+
+    # q2.get_next_by_date_of()
+
+    # for el in queryset:
+    #     x.append(el.chosen_name_of_month)
+    #     # x.append(el.month_date)
+    #     y.append(el.month_cost)
+    # x1=x[0:12]
+    # y1=y[0:12]
+    # x1.reverse()
+    # y1.reverse()
+    #
+    # plt.bar(x1,y1)
+    # plt.tick_params(axis='x', rotation=290)
+    # savefig('static/wykres.png')
 
 
 
@@ -118,7 +145,7 @@ def wykres_month():
 class CreditView(View):
 
     def get(self, request):
-
+        wykres_month2()
         return render(request, 'credit.html')
 
     def post(self, request):
@@ -273,18 +300,19 @@ class SkarbonkiCele(View):
     def get(self, request):
         skarbonki = Skarbonki.objects.all()
         form = SkarbonkiForm()
-        return render(request, 'skar-cele.html', {"skarbonki":skarbonki, "form":form})
+        s0 = Skarbonki.objects.all().first()
+        eli=PaymentDay.objects.all().filter(payment_skarbonki=s0.id)
+        return render(request, 'skar-cele.html', {"skarbonki":skarbonki, "form":form, "eli":eli})
 
     def post(self, request):
+        skarbonki = Skarbonki.objects.all()
         form = SkarbonkiForm(request.POST)
         if form.is_valid():
             money_for = form.cleaned_data['money_for']
             m_min = form.cleaned_data['m_min']
-            m_max = form.cleaned_data['m_max']
-            month = form.cleaned_data['month']
             opis = form.cleaned_data['opis']
             # zapasowa = form.cleaned_data['zapasowa']
-            Skarbonki.objects.create(money_for=money_for, m_min=m_min, m_max=m_max, month=month, opis=opis)
+            Skarbonki.objects.create(money_for=money_for, m_min=m_min, opis=opis)
 
             s1 = Skarbonki.objects.get(money_for=money_for)
             a1 = AlreadyCollected.objects.create(collected=0)
@@ -294,7 +322,8 @@ class SkarbonkiCele(View):
             # zlapany = AlreadyCollected.objects.get(target=zlap) zle
 
             # return redirect('skar-cele')
-            return render(request, 'skar-cele.html', {"form": form, "zlap":zlap})
+            return render(request, 'skar-cele.html', {"skarbonki":skarbonki, "form": form, "zlap":zlap})
+
 
 class AlreadyCollectedView(View):
 
@@ -309,25 +338,50 @@ class AlreadyCollectedView(View):
         try:
             choose = request.POST.get('choose')
             chosen = int(choose)
-            zlap = PaymentDay.objects.get(payment_skarbonki_id=chosen)
-            zlapany = AlreadyCollected.objects.get(target=zlap.payment_skarbonki_id)
+            # if PaymentDay.objects.get(payment_skarbonki_id=chosen, date_of=date.today()):
+            # try:
+            #     zlap = PaymentDay.objects.get(payment_skarbonki_id=chosen, date_of=date.today())
+            # except:
+
+            def set_session2(request):
+                # request.session["id_of_payment"] = zlap.id #platnosc z data
+                request.session["chosen_id"] = chosen # id skarbonki
+
+            set_session2(request)
+
+            # zlapany = AlreadyCollected.objects.get(target=zlap.payment_skarbonki_id)
+            # else:
+            #     stworz = PaymentDay.objects.create(payment_skarbonki_id=chosen, date_of=date.today(), payment_collected_id=)
             return render(request, 'skar-pilnuj.html', {"chosen": chosen,
                                                         "collected": collected,
                                                         "skarbonki": skarbonki,
-                                                            "zlap": zlap,
-                                                            "zlapany": zlapany})
+                                                            # "zlap": zlap,
+                                                            # "zlapany": zlapany
+                                                        })
         except:
+            moj_x=request.session.get("chosen_id"),
+            for e in moj_x:
+                moj_x_nowy = e
             congrats = request.POST.get('congrats')
-            zlap_z_templ = request.POST.get('zlap_z_templ')
-            zlap_z_templ2 = int(zlap_z_templ)
             congrats2 = float(congrats)
-            zlapany2 = AlreadyCollected.objects.get(id=zlap_z_templ2)
-            pp=PaymentDay.objects.get(payment_collected_id=zlap_z_templ2)
-            # pp.value_of = zlapany2.collected
-            pp.value_of = congrats2
-            pp.save()
-            zlapany2.collected += congrats2
-            zlapany2.save()
+            moj_obiekt=PaymentDay.objects.filter(payment_skarbonki_id=moj_x_nowy).last()
+            try:
+                PaymentDay.objects.get(payment_skarbonki_id=moj_x_nowy, date_of=date.today())
+                dzisiejszy_stary=PaymentDay.objects.get(payment_skarbonki_id=moj_x_nowy, date_of=date.today())
+                msg="dziś już wpłaciłeś. Jeśli chcesz zmienić wartość - - - zmodyfikuj wpis (usun wpis o id jakims,\
+                odejmij kwote z tego, stworz nowy id i dodaj wartosc nowa)"
+                return HttpResponse(msg)
+
+            except:
+                dzisiejszy_nowy=PaymentDay.objects.create(payment_skarbonki_id=moj_x_nowy, date_of=date.today(), payment_collected_id=moj_obiekt.payment_collected_id, value_of=moj_obiekt.value_of)
+                dzisiejszy_nowy.payment_skarbonki_id=moj_x_nowy
+                dzisiejszy_nowy.payment_collected_id=moj_obiekt.payment_collected_id
+                dzisiejszy_nowy.save()
+                alr_powieksz = AlreadyCollected.objects.get(id=dzisiejszy_nowy.payment_collected_id)
+                alr_powieksz.collected += congrats2
+                alr_powieksz.save()
+                dzisiejszy_nowy.value_of += congrats2
+                dzisiejszy_nowy.save()
             return render(request, 'skar-pilnuj.html', {"collected": collected,
                                                         "skarbonki": skarbonki})
 
@@ -379,13 +433,9 @@ class ModifySkarbonki(View):
         if form.is_valid():
             money_for = form.cleaned_data['money_for']
             m_min = form.cleaned_data['m_min']
-            m_max = form.cleaned_data['m_max']
-            month = form.cleaned_data['month']
             opis = form.cleaned_data['opis']
             pozycja.money_for=money_for
             pozycja.m_min=m_min
-            pozycja.m_max=m_max
-            pozycja.month=month
             pozycja.opis=opis
             pozycja.save()
             return redirect('skar-cele')

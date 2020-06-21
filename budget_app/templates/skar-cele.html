@@ -8,10 +8,7 @@
         <tr>
         <th>Nazwa</th>
         <th>Kwota</th>
-        <th>Kwota maksymalna???</th>
-        <th>Miesięcznie?</th>
         <th>Opis</th>
-        <th>zapas</th>
         <td> Modyfikuj!</td>
         <td> Usuń</td>
         </tr>
@@ -19,10 +16,7 @@
         <tr>
     <td>{{ element.money_for }}</td>
         <td>{{ element.m_min }}</td>
-        <td>{{ element.m_max }}</td>
-        <td>{{ element.month }}</td>
         <td>{{ element.opis }}</td>
-        <td>{{ element.zapas}}</td>
         <td><a href="{% url 'modify-skarb' element.id %}"> Modyfikuj!</a></td>
         <td><a href="{% url 'delete-skarb' element.id %}"> Usuń</a></td>
         </tr>
@@ -35,12 +29,10 @@
     <br>Dodaj nową pozycję:<br>
     Nazwa celu<input type="text" name="money_for"><br>
     Kwota min<input type="text" name="m_min"><br>
-    Kwota max? (rzeczywista, z dodatk. kosztami)<input type="text" name="m_max"><br>
-    Miesięcznie?<input type="text" name="month"><br>
     Dodatkowy opis<input type="text" name="opis"><br>
 
          <input type="submit" value="send">
      </form>
-
-    {{ zlap }}<br>{{ zlap.payment_skarbonki }}
+{{ eli }}
+{#    {{ zlap }}<br>{{ zlap.payment_skarbonki }}#}
 {% endblock %}

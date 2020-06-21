@@ -21,10 +21,7 @@ class Budget(models.Model):
 class Skarbonki(models.Model):
     money_for = models.CharField(max_length=64)
     m_min = models.FloatField()
-    m_max = models.FloatField(null=True)
-    month = models.BooleanField(default=True)
     opis = models.TextField(null=True)
-    zapas = models.CharField(max_length=64, null=True)
 
     def __str__(self):
         return self.money_for
