@@ -21,7 +21,7 @@
     {% for element in pozycje %}
         <tr>
         <td>{{ element.name }}</td>
-        <td>{{ element.money_min }}</td>
+        <td>{{ element.money }}</td>
         <td>
      <form action="" method="post">
          {% csrf_token %}
@@ -39,12 +39,12 @@ onclick="document.getElementById('dodatkowo{{ element.id }}').style.display = th
             {% elif element.monthly == False %} &nbsp;
             {% endif %}</td>
 
-        <td>{{ element.opis }}</td>
+        <td>{{ element.description }}</td>
         <td>
             {% if element.monthly == True %}
-            <input type="checkbox" name="zapasowa" value="{{ element.money_min }}" checked>
+            <input type="checkbox" name="zapasowa" value="{{ element.money }}" checked>
             {% elif element.monthly == False %} &nbsp;
-            <input type="checkbox" name="zapasowa" value="{{ element.money_min }}">
+            <input type="checkbox" name="zapasowa" value="{{ element.money }}">
             {% endif %}
 
             </td>
@@ -69,13 +69,13 @@ onclick="document.getElementById('dodatkowo{{ element.id }}').style.display = th
                   <legend>Dodaj nową pozycję do budżetu</legend>
 
     Nazwa<input type="text" name="name"><br>
-    Kwota min<input type="text" name="money_min"><br>
+    Kwota min<input type="text" name="money"><br>
 
     Miesięcznie?<br>
              TAK<input type="radio" value="True" name="monthly"><br>
             NIE<input type="radio" value="False" name="monthly"><br>
 
-    Dodatkowy opis<input type="text" name="opis"><br>
+    Dodatkowy opis<input type="text" name="description"><br>
 
          <input type="submit" value="send"></fieldset>
      </form>

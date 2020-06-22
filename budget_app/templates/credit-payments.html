@@ -1,0 +1,20 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+    <br>
+
+       <form action="" method="post">
+         {% csrf_token %}
+Jaką kwotą chcesz nadpłacić kredyt?
+        <input type="number" step="any" name="congrats2">
+                <input type="submit" value="send">
+       </form>
+
+  <br><br>
+w razie pomyłki: ...
+<br><br>
+tu będzie wykres
+
+{% endblock %}
+

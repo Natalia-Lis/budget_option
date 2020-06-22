@@ -2,13 +2,14 @@ body {
     background-image: url(bg.jpg);
     background-color: antiquewhite;
     background-size: cover;
-    color: darkblue;
+
+    color: #0f0f93;
     font-family: Monospaced;
     margin-right: 20px;
 }
 
-a, a:visited {
-    color: cornflowerblue;
+a, a:link, a:visited {
+    color: #0f0f93;
     text-decoration: none;
 }
 
@@ -25,10 +26,10 @@ a, a:visited {
   color: cornflowerblue;
 }
 
-.sidenav a,{
+.sidenav a, a:visited {
   padding: 6px 8px 6px 16px;
   text-decoration: none;
-  font-size: 18px;
+  font-size: 22px;
   color: cornflowerblue;
   display: block;
   background-color: #111;
@@ -41,7 +42,8 @@ a, a:visited {
 .main {
   margin-left: 200px;
   margin-right: 20px;
-  font-size: 18px;
+  font-size: 22px;
   padding: 0px 10px;
+  color: #0f0f93;
 }
 

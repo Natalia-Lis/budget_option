@@ -9,16 +9,16 @@ class BudgetForm(forms.ModelForm):
         fields = '__all__'
     def __init__(self, *args, **kwargs):
         super(BudgetForm, self).__init__(*args, **kwargs)
-        self.fields['opis'].required = False
+        self.fields['description'].required = False
 
 
-class SkarbonkiForm(forms.ModelForm):
+class PiggyBanksForm(forms.ModelForm):
     class Meta:
-        model = Skarbonki
+        model = PiggyBanks
         fields = '__all__'
     def __init__(self, *args, **kwargs):
-        super(SkarbonkiForm, self).__init__(*args, **kwargs)
-        self.fields['opis'].required = False
+        super(PiggyBanksForm, self).__init__(*args, **kwargs)
+        self.fields['description'].required = False
 
 
 
@@ -43,6 +43,15 @@ class StockForm(forms.ModelForm):
         self.fields['type_of_market'].required = False
         self.fields['www'].required = False
 
+
+class CreditsForm(forms.ModelForm):
+    class Meta:
+        model = Credits
+        fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super(CreditsForm, self).__init__(*args, **kwargs)
+        self.fields['description'].required = False
+        self.fields['should_end_on'].required = False
 #
 # class AlreadyCollectedForm(forms.Form): #?
 #     date_of = models.DateField(auto_now_add=True)

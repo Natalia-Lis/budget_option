@@ -1,9 +1,11 @@
 {% extends "base.html" %}
 {% load static %}
 {% block content %}
-<br><br>
 
+    <br><br>
+    <img src="{% static 'wykres-innego-typu.png' %}" alt="Not found" ><br>
 
-<img src="{% static 'wykres-innego-typu.png' %}" alt="Not found" ><br>
+    <br><br>
+    <a href="{% url 'charts' %}">&nbsp;<- Wykresy</a>
 
 {% endblock %}

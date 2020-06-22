@@ -31,7 +31,7 @@ urlpatterns = [
     path('piggy-banks/', PiggyBanksView.as_view(), name='piggy-banks'),
     path('saving-goals/', SavingGoals.as_view(), name='saving-goals'),
 
-    path('saving-nowy/', SavingCharts.as_view(), name='saving-nowy'),
+    path('charts/', SavingCharts.as_view(), name='charts'),
 
     path('saving-time/', SavingTime.as_view(), name='saving-time'),
     path('saving-amount/', SavingAmount.as_view(), name='saving-amount'),
@@ -44,7 +44,10 @@ urlpatterns = [
     path('modify-stock/<int:id>/', ModifyStock.as_view(), name='modify-stock'),
     path('delete-stock/<int:pk>/', DeleteStock.as_view(), name='delete-stock'),
 
-    path('credit/', CreditView.as_view(), name='credit'),
+    path('credits/', CreditView.as_view(), name='credits'),
+    path('credit-payments/<int:id>/', CreditPayments.as_view(), name='credit-payments'),
+    path('modify-credit/<int:id>/', ModifyCredit.as_view(), name='modify-credit'),
+    path('delete-credit/<int:pk>/', DeleteCredit.as_view(), name='delete-credit'),
 
     path('chart1/', ChartSaving1.as_view(), name='chart1'),
     path('chart2/', ChartSaving2.as_view(), name='chart2'),

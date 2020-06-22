@@ -59,8 +59,8 @@ def wykres_month():
 def wykres8():
     x = []
     y = []
-    s8 = Skarbonki.objects.get(id=8)
-    payments_for_obj = PaymentDay.objects.all().filter(payment_skarbonki=s8.id).order_by('date_of')
+    s8 = PiggyBanks.objects.get(id=8)
+    payments_for_obj = PaymentDay.objects.all().filter(payment_piggybanks=s8.id).order_by('date_of')
     max_y = s8.m_min
     obj_name = s8.money_for
     for el in payments_for_obj:
@@ -83,8 +83,8 @@ def wykres8():
 def wykres9():
     x9 = []
     y9 = []
-    s9 = Skarbonki.objects.get(id=9)
-    payments_for_obj9 = PaymentDay.objects.all().filter(payment_skarbonki=s9.id).order_by('date_of')
+    s9 = PiggyBanks.objects.get(id=9)
+    payments_for_obj9 = PaymentDay.objects.all().filter(payment_piggybanks=s9.id).order_by('date_of')
     max_y9 = s9.m_min
     obj9_name = s9.money_for
     for el in payments_for_obj9:
@@ -106,8 +106,8 @@ def wykres9():
 def wykres10():
     x10 = []
     y10 = []
-    s10 = Skarbonki.objects.get(id=10)
-    payments_for_obj10 = PaymentDay.objects.all().filter(payment_skarbonki=s10.id).order_by('date_of')
+    s10 = PiggyBanks.objects.get(id=10)
+    payments_for_obj10 = PaymentDay.objects.all().filter(payment_piggybanks=s10.id).order_by('date_of')
     max_y10 = s10.m_min
     obj10_name = s10.money_for
     for el in payments_for_obj10:
@@ -130,8 +130,8 @@ def wykres10():
 def wykres15():
     x15 = []
     y15 = []
-    s15 = Skarbonki.objects.get(id=15)
-    payments_for_obj15 = PaymentDay.objects.all().filter(payment_skarbonki=s15.id).order_by('date_of')
+    s15 = PiggyBanks.objects.get(id=15)
+    payments_for_obj15 = PaymentDay.objects.all().filter(payment_piggybanks=s15.id).order_by('date_of')
     max_y15 = s15.m_min
     obj15_name = s15.money_for
     for el in payments_for_obj15:
@@ -154,8 +154,8 @@ def wykres15():
 def wykres16():
     x16 = []
     y16 = []
-    s16 = Skarbonki.objects.get(id=16)
-    payments_for_obj16 = PaymentDay.objects.all().filter(payment_skarbonki=s16.id).order_by('date_of')
+    s16 = PiggyBanks.objects.get(id=16)
+    payments_for_obj16 = PaymentDay.objects.all().filter(payment_piggybanks=s16.id).order_by('date_of')
     max_y16 = s16.m_min
     obj16_name = s16.money_for
     for el in payments_for_obj16:
@@ -178,8 +178,8 @@ def wykres16():
 def wykres24():
     x24 = []
     y24 = []
-    s24 = Skarbonki.objects.get(id=24)
-    payments_for_obj24 = PaymentDay.objects.all().filter(payment_skarbonki=s24.id).order_by('date_of')
+    s24 = PiggyBanks.objects.get(id=24)
+    payments_for_obj24 = PaymentDay.objects.all().filter(payment_piggybanks=s24.id).order_by('date_of')
     max_y24 = s24.m_min
     obj24_name = s24.money_for
     for el in payments_for_obj24:
@@ -202,10 +202,8 @@ def wykres24():
 def wykres_innego_typu():
     x = []
     y = []
-    s8 = Skarbonki.objects.get(id=8)
-    payments_for_obj = PaymentDay.objects.all().filter(payment_skarbonki=s8.id).order_by('date_of')
-    max_y = s8.m_min
-    obj_name = s8.money_for
+    s8 = PiggyBanks.objects.get(id=8)
+    payments_for_obj = PaymentDay.objects.all().filter(payment_piggybanks=s8.id).order_by('date_of')
     for el in payments_for_obj:
         new_value = el.value_of
         y.append(new_value)
@@ -213,10 +211,8 @@ def wykres_innego_typu():
         x.append(new_date)
     x9 = []
     y9 = []
-    s9 = Skarbonki.objects.get(id=9)
-    payments_for_obj9 = PaymentDay.objects.all().filter(payment_skarbonki=s9.id).order_by('date_of')
-    max_y9 = s9.m_min
-    obj9_name = s9.money_for
+    s9 = PiggyBanks.objects.get(id=9)
+    payments_for_obj9 = PaymentDay.objects.all().filter(payment_piggybanks=s9.id).order_by('date_of')
     for el in payments_for_obj9:
         new_value = el.value_of
         y9.append(new_value)
@@ -224,10 +220,8 @@ def wykres_innego_typu():
         x9.append(new_date)
     x10 = []
     y10 = []
-    s10 = Skarbonki.objects.get(id=10)
-    payments_for_obj10 = PaymentDay.objects.all().filter(payment_skarbonki=s10.id).order_by('date_of')
-    max_y10 = s10.m_min
-    obj10_name = s10.money_for
+    s10 = PiggyBanks.objects.get(id=10)
+    payments_for_obj10 = PaymentDay.objects.all().filter(payment_piggybanks=s10.id).order_by('date_of')
     for el in payments_for_obj10:
         new_value = el.value_of
         y10.append(new_value)
@@ -235,10 +229,8 @@ def wykres_innego_typu():
         x10.append(new_date)
     x15 = []
     y15 = []
-    s15 = Skarbonki.objects.get(id=15)
-    payments_for_obj15 = PaymentDay.objects.all().filter(payment_skarbonki=s15.id).order_by('date_of')
-    max_y15 = s15.m_min
-    obj15_name = s15.money_for
+    s15 = PiggyBanks.objects.get(id=15)
+    payments_for_obj15 = PaymentDay.objects.all().filter(payment_piggybanks=s15.id).order_by('date_of')
     for el in payments_for_obj15:
         new_value = el.value_of
         y15.append(new_value)
@@ -246,10 +238,8 @@ def wykres_innego_typu():
         x15.append(new_date)
     x16 = []
     y16 = []
-    s16 = Skarbonki.objects.get(id=16)
-    payments_for_obj16 = PaymentDay.objects.all().filter(payment_skarbonki=s16.id).order_by('date_of')
-    max_y16 = s16.m_min
-    obj16_name = s16.money_for
+    s16 = PiggyBanks.objects.get(id=16)
+    payments_for_obj16 = PaymentDay.objects.all().filter(payment_piggybanks=s16.id).order_by('date_of')
     for el in payments_for_obj16:
         new_value = el.value_of
         y16.append(new_value)
@@ -257,27 +247,44 @@ def wykres_innego_typu():
         x16.append(new_date)
     x24 = []
     y24 = []
-    s24 = Skarbonki.objects.get(id=24)
-    payments_for_obj24 = PaymentDay.objects.all().filter(payment_skarbonki=s24.id).order_by('date_of')
-    max_y24 = s24.m_min
-    obj24_name = s24.money_for
+    s24 = PiggyBanks.objects.get(id=24)
+    payments_for_obj24 = PaymentDay.objects.all().filter(payment_piggybanks=s24.id).order_by('date_of')
     for el in payments_for_obj24:
         new_value = el.value_of
         y24.append(new_value)
         new_date = str(el.date_of)
         x24.append(new_date)
 
+
     plt.figure(8)
-    # plt.subplot()
+    plt.subplot()
+    plt.plot(x, y, marker='o',  label="TV", linewidth=3)
+    plt.plot(x9, y9, marker='o', label="strój", linewidth=3, linestyle='--')
+    plt.plot(x10, y10, marker='o', label="kons.", linewidth=3)
+    plt.plot(x15, y15, marker='o', label="rower", linewidth=3, linestyle='--')
+    plt.plot(x16, y16, marker='o', label="zmyw.", linewidth=3)
+    plt.plot(x24, y24, marker='o', label="cel", linewidth=3, linestyle='--')
+
+
+    # Place a legend above this subplot, expanding itself to
+    # fully use the given bounding box.
+    # plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
+    #            ncol=2, mode="expand", borderaxespad=0.)
+    plt.legend(bbox_to_anchor=(0.95, 1), loc='upper left', borderaxespad=0.)#boczna legenda
     plt.title('wykres wpłat dla celu')
     plt.xlabel('DATY')
     plt.ylabel('kwoty')
     plt.grid(True)
     plt.margins(0.1)
-    plt.plot(x, y, x9, y9, x10, y10, x15, y15, x16, y16, x24, y24)
+    # plt.subplot(x, y)
+    # plt.subplot(x9, y9)
+    # plt.subplot(x10, y10)
+    # plt.subplot(x15, y15)
+    # plt.subplot(x16, y16)
+    # plt.subplot(x24, y24)
+    # plt.plot(x, y, x9, y9, x10, y10, x15, y15, x16, y16, x24, y24)
     # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-innego-typu.png')
-
 
 
 
@@ -304,7 +311,6 @@ def wykres_innego_typu():
 
 #subplots 	Create a figure and a set of subplots.
     # subplot    # Add a subplot to the current figure.
-
 # imread # Read an image from a file into an array.
 # imsave # Save an array as an image file.
 # text # Add text to the axes.
@@ -313,21 +319,18 @@ def wykres_innego_typu():
 
 
 
-
 class IndexView(View):
     def get(self, request):
-        s0 = Skarbonki.objects.all()
-        # s=Skarbonki.objects.get(id=1)
-        # s2=s.get_next_in_order
-        # q=PaymentDay.objects.all()
+        s0 = PiggyBanks.objects.all()
+
         j = 0
 
         x = [0, ]
         y = [0, ]
-        s0 = Skarbonki.objects.get(id=8)
-        elll=PaymentDay.objects.all().filter(payment_skarbonki=s0.id).order_by('date_of')
+        s0 = PiggyBanks.objects.get(id=8)
+        elll=PaymentDay.objects.all().filter(payment_piggybanks=s0.id).order_by('date_of')
         # for elem in s0:
-        #     elll{j} = PaymentDay.objects.all().filter(payment_skarbonki=elem.id).order_by('date_of')
+        #     elll{j} = PaymentDay.objects.all().filter(payment_piggybanks=elem.id).order_by('date_of')
         #     j+=1
         for el in elll:
             new_val = el.value_of
@@ -372,10 +375,10 @@ class BudgetView(View):#
         form = BudgetForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
-            money_min = form.cleaned_data['money_min']
+            money = form.cleaned_data['money']
             monthly = form.cleaned_data['monthly']
-            opis = form.cleaned_data['opis']
-            Budget.objects.create(name=name, money_min=money_min, monthly=monthly, opis=opis)
+            description = form.cleaned_data['description']
+            Budget.objects.create(name=name, money=money, monthly=monthly, description=description)
             return render(request, 'budget.html', {"pozycje":pozycje,
                                                    "form":form})
         doliczyc = []
@@ -419,13 +422,13 @@ class ModifyBudget(View):
         pozycja = Budget.objects.get(id=id)
         if form.is_valid():
             name = form.cleaned_data['name']
-            money_min = form.cleaned_data['money_min']
+            money = form.cleaned_data['money']
             monthly = form.cleaned_data['monthly']
-            opis = form.cleaned_data['opis']
+            description = form.cleaned_data['description']
             pozycja.name=name
-            pozycja.money_min=money_min
+            pozycja.money=money
             pozycja.monthly=monthly
-            pozycja.opis=opis
+            pozycja.description=description
             pozycja.save()
             return redirect('budget')
 
@@ -515,33 +518,33 @@ class PiggyBanksView(View):
 class SavingGoals(View):
 
     def get(self, request):
-        skarbonki = Skarbonki.objects.all()
-        form = SkarbonkiForm()
-        s0 = Skarbonki.objects.all().first()
-        eli=PaymentDay.objects.all().filter(payment_skarbonki=s0.id)
-        return render(request, 'saving-goals.html', {"skarbonki":skarbonki, "form":form, "eli":eli})
+        skarbonki = PiggyBanks.objects.all()
+        form = PiggyBanksForm()
+        s0 = PiggyBanks.objects.all().first()
+        # eli=PaymentDay.objects.all().filter(payment_piggybanks=s0.id)
+        return render(request, 'saving-goals.html', {"skarbonki":skarbonki, "form":form})
 
     def post(self, request):
-        skarbonki = Skarbonki.objects.all()
-        form = SkarbonkiForm(request.POST)
+        skarbonki = PiggyBanks.objects.all()
+        form = PiggyBanksForm(request.POST)
         if form.is_valid():
             money_for = form.cleaned_data['money_for']
             m_min = form.cleaned_data['m_min']
-            opis = form.cleaned_data['opis']
-            Skarbonki.objects.create(money_for=money_for, m_min=m_min, opis=opis)
+            description = form.cleaned_data['description']
+            PiggyBanks.objects.create(money_for=money_for, m_min=m_min, description=description)
 
-            s1 = Skarbonki.objects.get(money_for=money_for)
+            s1 = PiggyBanks.objects.get(money_for=money_for)
             a1 = AlreadyCollected.objects.create(collected=0)
-            PaymentDay.objects.create(payment_skarbonki=s1,payment_collected=a1)
+            PaymentDay.objects.create(payment_piggybanks=s1, payment_collected=a1)
 
-            zlap=PaymentDay.objects.get(payment_skarbonki_id=s1)
+            zlap=PaymentDay.objects.get(payment_piggybanks_id=s1) #chyba niepotrz
             return render(request, 'saving-goals.html', {"skarbonki":skarbonki, "form": form, "zlap":zlap})
 
 
 class SavingCharts(View):
 
     def get(self, request):
-        # sss=Skarbonki.objects.all()
+        # sss=PiggyBanks.objects.all()
 
         # s1=sss.first()
         # s2=sss.filter(pk__gt=s1.pk).order_by('pk').first()
@@ -553,14 +556,14 @@ class SavingCharts(View):
         #     if o == object:
         #         next = True
         #
-        s2=Skarbonki.objects.values_list('money_for', flat=True).order_by('pk')
+        s2=PiggyBanks.objects.values_list('money_for', flat=True).order_by('pk')
         chart_name1=s2[0]
         chart_name2=s2[1]
         chart_name3=s2[2]
         chart_name4=s2[3]
         chart_name5=s2[4]
         chart_name6=s2[5]
-        # Skarbonki.objects.values_list('money_for', flat=True).distinct()
+        # PiggyBanks.objects.values_list('money_for', flat=True).distinct()
 
         # def get_next(queryset, obj):
         #     it = iter(queryset)
@@ -579,46 +582,45 @@ class SavingCharts(View):
         #         prev = obj
         #     return prev
 
-        return render(request, 'skar-nowy.html', {"chart_name1":chart_name1,
+        return render(request, 'charts.html', {"chart_name1":chart_name1,
                                                   "chart_name2":chart_name2,
                                                   "chart_name3":chart_name3,
                                                   "chart_name4":chart_name4,
                                                   "chart_name5":chart_name5,
                                                   "chart_name6":chart_name6,
-                                                  })
+                                               })
 
 
 
 class ChartSaving1(View):
     def get(self, request):
-        wykres_month8()
+        wykres8()
         return render(request, 'chart1.html')
 
 class ChartSaving2(View):
     def get(self, request):
-        wykres_month8()
+        wykres9()
         return render(request, 'chart2.html')
 
 class ChartSaving3(View):
     def get(self, request):
-        wykres_month9()
+        wykres10()
         return render(request, 'chart3.html')
 
 class ChartSaving4(View):
     def get(self, request):
-        wykres_month10()
+        wykres15()
         return render(request, 'chart4.html')
 
 class ChartSaving5(View):
     def get(self, request):
-        wykres_month15()
+        wykres16()
         return render(request, 'chart5.html')
 
 class ChartSaving6(View):
     def get(self, request):
-        wykres16()
+        wykres24()
         return render(request, 'chart6.html')
-
 
 class ChartSaving7(View):
     def get(self, request):
@@ -630,20 +632,20 @@ class ChartSaving7(View):
 class ModifySaving(View):
 
     def get(self, request, id):
-        pozycja=Skarbonki.objects.get(id=id)
-        form = SkarbonkiForm(instance=pozycja)
+        pozycja=PiggyBanks.objects.get(id=id)
+        form = PiggyBanksForm(instance=pozycja)
         return render(request, 'modify-saving.html', {"pozycja":pozycja, "form":form})
 
     def post(self, request, id):
-        form = SkarbonkiForm(request.POST)
-        pozycja = Skarbonki.objects.get(id=id)
+        form = PiggyBanksForm(request.POST)
+        pozycja = PiggyBanks.objects.get(id=id)
         if form.is_valid():
             money_for = form.cleaned_data['money_for']
             m_min = form.cleaned_data['m_min']
-            opis = form.cleaned_data['opis']
+            description = form.cleaned_data['description']
             pozycja.money_for=money_for
             pozycja.m_min=m_min
-            pozycja.opis=opis
+            pozycja.description=description
             pozycja.save()
             return redirect('saving-goals')
 
@@ -651,7 +653,7 @@ class ModifySaving(View):
 class SavingMistake(View):
     def get(self, request):
         msg = "Dziś już wpłacono na owy cel! Czyżby nastąpiła pomyłka przy wpisywaniu kwoty?"
-        skarbonki = Skarbonki.objects.all()
+        skarbonki = PiggyBanks.objects.all()
         return render(request, 'mistake.html', {"skarbonki":skarbonki, "msg":msg})
     def post(self, request):
 
@@ -662,8 +664,8 @@ class SavingMistake(View):
         correct_value = request.POST.get('correct_value')
         correct_value_float = float(correct_value)
 
-        # mistake_object=Skarbonki.objects.get(id=mistake_in.id)
-        last_mistake=PaymentDay.objects.all().filter(payment_skarbonki_id=mistake_id).last()
+        # mistake_object=PiggyBanks.objects.get(id=mistake_in.id)
+        last_mistake=PaymentDay.objects.all().filter(payment_piggybanks_id=mistake_id).last()
         last_to_change=AlreadyCollected.objects.get(id=last_mistake.payment_collected_id)
 
         last_mistake.value_of = correct_value_float
@@ -725,7 +727,7 @@ class SavingAmount(View):
 
 
 class DeleteSaving(DeleteView):#
-    model = Skarbonki
+    model = PiggyBanks
     success_url = '/saving-goals'
 
 
@@ -734,12 +736,12 @@ class AlreadyCollectedView(View):
 
     def get(self, request):
         collected = AlreadyCollected.objects.all()
-        skarbonki = Skarbonki.objects.all()
-        return render(request, 'skar-pilnuj.html', {"collected":collected, "skarbonki":skarbonki})
+        skarbonki = PiggyBanks.objects.all()
+        return render(request, 'saving-collected.html', {"collected":collected, "skarbonki":skarbonki})
 
     def post(self, request):
         collected = AlreadyCollected.objects.all()
-        skarbonki = Skarbonki.objects.all()
+        skarbonki = PiggyBanks.objects.all()
         try:
             choose = request.POST.get('choose')
             chosen = int(choose)
@@ -747,38 +749,37 @@ class AlreadyCollectedView(View):
             # try:
             #     zlap = PaymentDay.objects.get(payment_skarbonki_id=chosen, date_of=date.today())
             # except:
-
             def set_session2(request):
                 # request.session["id_of_payment"] = zlap.id #platnosc z data
                 request.session["chosen_id"] = chosen # id skarbonki
-
             set_session2(request)
 
             # zlapany = AlreadyCollected.objects.get(target=zlap.payment_skarbonki_id)
             # else:
             #     stworz = PaymentDay.objects.create(payment_skarbonki_id=chosen, date_of=date.today(), payment_collected_id=)
-            return render(request, 'skar-pilnuj.html', {"chosen": chosen,
+            return render(request, 'saving-collected.html', {"chosen": chosen,
                                                         "collected": collected,
                                                         "skarbonki": skarbonki,
-                                                            # "zlap": zlap,
-                                                            # "zlapany": zlapany
-                                                        })
+                                                             # "zlap": zlap,
+                                                             # "zlapany": zlapany
+                                                             })
         except:
             moj_x=request.session.get("chosen_id"),
             for e in moj_x:
                 moj_x_nowy = e
             congrats = request.POST.get('congrats')
             congrats2 = float(congrats)
-            moj_obiekt=PaymentDay.objects.filter(payment_skarbonki_id=moj_x_nowy).last()
+            moj_obiekt=PaymentDay.objects.filter(payment_piggybanks_id=moj_x_nowy).last()
+            # moj_obiekt=PaymentDay.objects.filter(payment_piggybanks_id=moj_x_nowy) #powinnobyc? analiza
             try:
-                PaymentDay.objects.get(payment_skarbonki_id=moj_x_nowy, date_of=date.today())
-                dzisiejszy_stary=PaymentDay.objects.get(payment_skarbonki_id=moj_x_nowy, date_of=date.today())
+                PaymentDay.objects.get(payment_piggybanks_id=moj_x_nowy, date_of=date.today())
+                dzisiejszy_stary=PaymentDay.objects.get(payment_piggybanks_id=moj_x_nowy, date_of=date.today())
 
                 return redirect('saving-mistake')
 
             except:
-                dzisiejszy_nowy=PaymentDay.objects.create(payment_skarbonki_id=moj_x_nowy, date_of=date.today(), payment_collected_id=moj_obiekt.payment_collected_id, value_of=moj_obiekt.value_of)
-                dzisiejszy_nowy.payment_skarbonki_id=moj_x_nowy
+                dzisiejszy_nowy=PaymentDay.objects.create(payment_piggybanks_id=moj_x_nowy, date_of=date.today(), payment_collected_id=moj_obiekt.payment_collected_id, value_of=moj_obiekt.value_of)
+                dzisiejszy_nowy.payment_piggybanks_id=moj_x_nowy
                 dzisiejszy_nowy.payment_collected_id=moj_obiekt.payment_collected_id
                 dzisiejszy_nowy.save()
                 alr_powieksz = AlreadyCollected.objects.get(id=dzisiejszy_nowy.payment_collected_id)
@@ -786,7 +787,7 @@ class AlreadyCollectedView(View):
                 alr_powieksz.save()
                 dzisiejszy_nowy.value_of += congrats2
                 dzisiejszy_nowy.save()
-            return render(request, 'skar-pilnuj.html', {"collected": collected,
+            return render(request, 'saving-collected.html', {"collected": collected,
                                                         "skarbonki": skarbonki})
 
 
@@ -892,13 +893,80 @@ class DeleteStock(DeleteView):
     success_url = '/stock'
 
 
-
 class CreditView(View):
 
     def get(self, request):
-        wykres_innego_typu()
-        return render(request, 'credit.html')
+        # wykres_innego_typu()
+        credits_objects = Credits.objects.all()
+        form = CreditsForm()
+        return render(request, 'credit.html', {"credits_objects":credits_objects, "form":form})
 
     def post(self, request):
-        return redirect('credit')
+        credits_objects = Credits.objects.all()
+        form = CreditsForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            credit_amount = form.cleaned_data['credit_amount']
+            should_end_on = form.cleaned_data['should_end_on']
+            description = form.cleaned_data['description']
+            Credits.objects.create(name=name, credit_amount=credit_amount, should_end_on=should_end_on, description=description)
+            c1 = Credits.objects.get(name=name)
+            r1 = Repayment.objects.create(collected_money=0)
 
+            RepaymentDay.objects.create(repayment_credits=c1, repayment_collected=r1)
+            return render(request, 'credit.html', {"credits_objects": credits_objects, "form": form})
+        # return render(request, 'credit.html', {"credits_objects": credits_objects, "form": form})
+
+
+
+class ModifyCredit(View):
+
+    def get(self, request, id):
+        credits_objects=Credits.objects.get(id=id)
+        form = CreditsForm(instance=credits_objects)
+        return render(request, 'modify-credit.html', {"credits_objects": credits_objects, "form":form})
+
+    def post(self, request, id):
+        # form.save() ?
+        credits_objects=Credits.objects.get(id=id)
+        form = CreditsForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            credit_amount = form.cleaned_data['credit_amount']
+            should_end_on = form.cleaned_data['should_end_on']
+            description = form.cleaned_data['description']
+            credits_objects.name=name
+            credits_objects.credit_amount=credit_amount
+            credits_objects.should_end_on=should_end_on
+            credits_objects.description=description
+            credits_objects.save()
+            # +++++++++++++++++++++++++++++++++++++
+            return redirect('credits')
+
+
+class DeleteCredit(DeleteView):
+    model = Credits
+    success_url = '/credits'
+
+
+class CreditPayments(View):
+    pass
+#     def get(self, request):
+#
+#         credits_objects = Credits.objects.all()
+#
+#         return render(request, 'credit.html', {"credits_objects":credits_objects})
+#
+#     def post(self, request):
+#         congrats2 = request.POST.get('congrats2')
+#
+#         Credits.objects.create(date)
+#         form = CreditsForm(request.POST)
+#         if form.is_valid():
+#             name = form.cleaned_data['name']
+#             credit_amount = form.cleaned_data['credit_amount']
+#             should_end_on = form.cleaned_data['should_end_on']
+#             description = form.cleaned_data['description']
+#             Credits.objects.create(name=name, credit_amount=credit_amount,
+#                                    should_end_on=should_end_on, description=description)
+#         return render(request, 'credit.html', {"credits_objects": credits_objects, "form": form})
