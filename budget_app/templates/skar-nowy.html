@@ -1,19 +1,15 @@
 {% extends "base.html" %}
 
 {% block content %}
-<br><br>
-           <form action="" method="post">
-         {% csrf_token %}
-                                   <fieldset>
-                  <legend>Którego celu chcesz dopilnować?</legend>
-   {% for element in skarbonki %}
-    <li><input type="radio" name="choose" value="{{ element.id }}">
-      {{ element.money_for }}</li><hr>
-    {% endfor %}
-         <input type="submit" value="send">
-                         </fieldset>
-     </form><br><br>
-hm
-<br>
-
+    <br><br>
+    Wykresy dla dotychczasowych celów: <br><br>
+<ol>
+    <li><a href="{% url 'chart1' %}">{{ chart_name1 }}</a></li><br>
+    <li><a href="{% url 'chart2' %}">{{ chart_name2 }}</a></li><br>
+    <li><a href="{% url 'chart3' %}">{{ chart_name3 }}</a></li><br>
+    <li><a href="{% url 'chart4' %}">{{ chart_name4 }}</a></li><br>
+    <li><a href="{% url 'chart5' %}">{{ chart_name5 }}</a></li><br>
+    <li><a href="{% url 'chart6' %}">{{ chart_name6 }}</a></li><br>
+    <li><a href="{% url 'chart7' %}">Dotychczasowe cele-wykres wspólny</a></li><br>
+</ol>
 {% endblock %}

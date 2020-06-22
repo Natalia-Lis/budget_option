@@ -34,117 +34,322 @@ def kalkul():
 
 
 def wykres_month():
-    style.use('ggplot')
-
+    plt.figure(1)
     plt.title('wykres z ostatnich 12 miesięcy')
     plt.xlabel('oś X')
     plt.ylabel('oś Y')
-    plt.grid(True)
-
     queryset = MonthsBudget.objects.all().order_by('-month_date')
-    x=[]
-    y=[]
+    xmonth=[]
+    ymonth=[]
     for el in queryset:
-        x.append(el.chosen_name_of_month)
+        xmonth.append(el.chosen_name_of_month)
         # x.append(el.month_date)
-        y.append(el.month_cost)
-    x1=x[0:12]
-    y1=y[0:12]
-    x1.reverse()
-    y1.reverse()
-
-    plt.bar(x1,y1)
+        ymonth.append(el.month_cost)
+    xmonth1=xmonth[0:12]
+    ymonth1=ymonth[0:12]
+    xmonth1.reverse()
+    ymonth1.reverse()
+    plt.bar(xmonth1,ymonth1)
     plt.tick_params(axis='x', rotation=290)
     # plt.show()
     savefig('static/wykres.png')
 
 
 
-
-def wykres_month2():
-    s0=Skarbonki.objects.all()
-    # s=Skarbonki.objects.get(id=1)
-    # s2=s.get_next_in_order
-    # q=PaymentDay.objects.all()
-    j=0
-    for elem in s0:
-        elll=PaymentDay.objects.all().filter(payment_skarbonki=elem.id)
-
-        x = [0]
-        y = [0]
-        for el in elll:
-            new_val=str(el.value_of)
-            y += new_val
-            new_dat=str(el.date_of)
-            x += new_dat
-
-            style.use('ggplot')
-            plt.title('wykres')
-            plt.xlabel('oś X')
-            plt.ylabel('oś Y')
-            plt.grid(True)
-            plt.plot(x, y)
-            plt.tick_params(axis='x', rotation=290)
-
-            savefig('static/wykres-inny1.png')
-            j+=1
-
-        # nazwa{i}=PaymentDay.objects.all().filter(payment_skarbonki=elem.id)
-        # i+=1
-
-    # tworze=PaymentDay.objects.all().first()
-    # q2=PaymentDay.objects.get(id=1)
-    # a=AlreadyCollected.objects.all()
-    # a2=AlreadyCollected.objects.get(target=q2.payment_skarbonki_id)
-
-# # for element in q:
-#     style.use('ggplot')
-#     plt.title('wykres')
-#     plt.xlabel('oś X')
-#     plt.ylabel('oś Y')
-#     plt.grid(True)
-#     # y=element.date_of
-#
-#     x=[]
-#     y=[]
-#     j=0
-#     for eleme in nazwa{j}:
-#         x+=eleme.date_of
-#         y+=eleme.value_of
-#         plt.bar(x,y)
-#         plt.tick_params(axis='x', rotation=290)
-#         savefig(f'static/wykres-inny{j}.png')
-#         j+=1
-
-    # nazwa1 queryset --moze duzo
-
-    # q2.date_of
-    # q2.payment_skarbonki
-    # q2.payment_skarbonki_id
-    # q2.payment_collected
-    # q2.payment_collected_id
-
-    # q2.get_next_by_date_of()
-
-    # for el in queryset:
-    #     x.append(el.chosen_name_of_month)
-    #     # x.append(el.month_date)
-    #     y.append(el.month_cost)
-    # x1=x[0:12]
-    # y1=y[0:12]
-    # x1.reverse()
-    # y1.reverse()
-    #
-    # plt.bar(x1,y1)
+def wykres8():
+    x = []
+    y = []
+    s8 = Skarbonki.objects.get(id=8)
+    payments_for_obj = PaymentDay.objects.all().filter(payment_skarbonki=s8.id).order_by('date_of')
+    max_y = s8.m_min
+    obj_name = s8.money_for
+    for el in payments_for_obj:
+        new_value = el.value_of
+        y.append(new_value)
+        new_date = str(el.date_of)
+        x.append(new_date)
+    plt.figure(2)
+    plt.title(f'wykres wpłat dla celu "{obj_name}"')
+    plt.xlabel('DATY')
+    plt.ylabel(f'Twój cel: {max_y}')
+    plt.grid(True)
+    plt.margins(0.1)
+    plt.plot(x, y, 'r*', markersize=18) # gwiazdka
     # plt.tick_params(axis='x', rotation=290)
-    # savefig('static/wykres.png')
+    savefig('static/wykres-inny8.png')
+
+
+
+def wykres9():
+    x9 = []
+    y9 = []
+    s9 = Skarbonki.objects.get(id=9)
+    payments_for_obj9 = PaymentDay.objects.all().filter(payment_skarbonki=s9.id).order_by('date_of')
+    max_y9 = s9.m_min
+    obj9_name = s9.money_for
+    for el in payments_for_obj9:
+        new_value = el.value_of
+        y9.append(new_value)
+        new_date = str(el.date_of)
+        x9.append(new_date)
+    plt.figure(3)
+    plt.subplot()
+    plt.title(f'wykres wpłat dla celu "{obj9_name}"')
+    plt.xlabel('DATY')
+    plt.ylabel(f'Twój cel: {max_y9}')
+    plt.margins(0.1)
+    plt.bar(x9, y9)
+    # plt.tick_params(axis='x', rotation=290)
+    savefig('static/wykres-inny9.png')
+
+
+def wykres10():
+    x10 = []
+    y10 = []
+    s10 = Skarbonki.objects.get(id=10)
+    payments_for_obj10 = PaymentDay.objects.all().filter(payment_skarbonki=s10.id).order_by('date_of')
+    max_y10 = s10.m_min
+    obj10_name = s10.money_for
+    for el in payments_for_obj10:
+        new_value = el.value_of
+        y10.append(new_value)
+        new_date = str(el.date_of)
+        x10.append(new_date)
+    plt.figure(4)
+    # plt.subplot()
+    plt.title(f'wykres wpłat dla celu "{obj10_name}"')
+    plt.xlabel('DATY')
+    plt.ylabel(f'Twój cel: {max_y10}')
+    plt.grid(True)
+    plt.margins(0.1)
+    plt.plot(x10, y10, 'r--',  linewidth=2.5)
+    # plt.tick_params(axis='x', rotation=290)
+    savefig('static/wykres-inny10.png')
+
+
+def wykres15():
+    x15 = []
+    y15 = []
+    s15 = Skarbonki.objects.get(id=15)
+    payments_for_obj15 = PaymentDay.objects.all().filter(payment_skarbonki=s15.id).order_by('date_of')
+    max_y15 = s15.m_min
+    obj15_name = s15.money_for
+    for el in payments_for_obj15:
+        new_value = el.value_of
+        y15.append(new_value)
+        new_date = str(el.date_of)
+        x15.append(new_date)
+    plt.figure(5)
+    # plt.subplot()
+    plt.title(f'wykres wpłat dla celu "{obj15_name}"')
+    plt.xlabel('DATY')
+    plt.ylabel(f'Twój cel: {max_y15}')
+    plt.grid(True)
+    plt.margins(0.1)
+    plt.barh(x15, y15)
+    # plt.tick_params(axis='x', rotation=290)
+    savefig('static/wykres-inny15.png')
+
+
+def wykres16():
+    x16 = []
+    y16 = []
+    s16 = Skarbonki.objects.get(id=16)
+    payments_for_obj16 = PaymentDay.objects.all().filter(payment_skarbonki=s16.id).order_by('date_of')
+    max_y16 = s16.m_min
+    obj16_name = s16.money_for
+    for el in payments_for_obj16:
+        new_value = el.value_of
+        y16.append(new_value)
+        new_date = str(el.date_of)
+        x16.append(new_date)
+    plt.figure(6)
+    # plt.subplot()
+    plt.title(f'wykres wpłat dla celu "{obj16_name}"')
+    plt.xlabel('DATY')
+    plt.ylabel(f'Twój cel: {max_y16}')
+    plt.grid(True)
+    plt.margins(0.1)
+    plt.plot(x16, y16, 'go', markersize=18)
+    # plt.tick_params(axis='x', rotation=290)
+    savefig('static/wykres-inny16.png')
+
+
+def wykres24():
+    x24 = []
+    y24 = []
+    s24 = Skarbonki.objects.get(id=24)
+    payments_for_obj24 = PaymentDay.objects.all().filter(payment_skarbonki=s24.id).order_by('date_of')
+    max_y24 = s24.m_min
+    obj24_name = s24.money_for
+    for el in payments_for_obj24:
+        new_value = el.value_of
+        y24.append(new_value)
+        new_date = str(el.date_of)
+        x24.append(new_date)
+    plt.figure(7)
+    # plt.subplot()
+    plt.title(f'wykres wpłat dla celu "{obj24_name}"')
+    plt.xlabel('DATY')
+    plt.ylabel(f'Twój cel: {max_y24}')
+    plt.grid(True)
+    plt.margins(0.1)
+    plt.plot(x24, y24, linewidth=5.0)
+    # plt.tick_params(axis='x', rotation=290)
+    savefig('static/wykres-inny24.png')
+
+
+def wykres_innego_typu():
+    x = []
+    y = []
+    s8 = Skarbonki.objects.get(id=8)
+    payments_for_obj = PaymentDay.objects.all().filter(payment_skarbonki=s8.id).order_by('date_of')
+    max_y = s8.m_min
+    obj_name = s8.money_for
+    for el in payments_for_obj:
+        new_value = el.value_of
+        y.append(new_value)
+        new_date = str(el.date_of)
+        x.append(new_date)
+    x9 = []
+    y9 = []
+    s9 = Skarbonki.objects.get(id=9)
+    payments_for_obj9 = PaymentDay.objects.all().filter(payment_skarbonki=s9.id).order_by('date_of')
+    max_y9 = s9.m_min
+    obj9_name = s9.money_for
+    for el in payments_for_obj9:
+        new_value = el.value_of
+        y9.append(new_value)
+        new_date = str(el.date_of)
+        x9.append(new_date)
+    x10 = []
+    y10 = []
+    s10 = Skarbonki.objects.get(id=10)
+    payments_for_obj10 = PaymentDay.objects.all().filter(payment_skarbonki=s10.id).order_by('date_of')
+    max_y10 = s10.m_min
+    obj10_name = s10.money_for
+    for el in payments_for_obj10:
+        new_value = el.value_of
+        y10.append(new_value)
+        new_date = str(el.date_of)
+        x10.append(new_date)
+    x15 = []
+    y15 = []
+    s15 = Skarbonki.objects.get(id=15)
+    payments_for_obj15 = PaymentDay.objects.all().filter(payment_skarbonki=s15.id).order_by('date_of')
+    max_y15 = s15.m_min
+    obj15_name = s15.money_for
+    for el in payments_for_obj15:
+        new_value = el.value_of
+        y15.append(new_value)
+        new_date = str(el.date_of)
+        x15.append(new_date)
+    x16 = []
+    y16 = []
+    s16 = Skarbonki.objects.get(id=16)
+    payments_for_obj16 = PaymentDay.objects.all().filter(payment_skarbonki=s16.id).order_by('date_of')
+    max_y16 = s16.m_min
+    obj16_name = s16.money_for
+    for el in payments_for_obj16:
+        new_value = el.value_of
+        y16.append(new_value)
+        new_date = str(el.date_of)
+        x16.append(new_date)
+    x24 = []
+    y24 = []
+    s24 = Skarbonki.objects.get(id=24)
+    payments_for_obj24 = PaymentDay.objects.all().filter(payment_skarbonki=s24.id).order_by('date_of')
+    max_y24 = s24.m_min
+    obj24_name = s24.money_for
+    for el in payments_for_obj24:
+        new_value = el.value_of
+        y24.append(new_value)
+        new_date = str(el.date_of)
+        x24.append(new_date)
+
+    plt.figure(8)
+    # plt.subplot()
+    plt.title('wykres wpłat dla celu')
+    plt.xlabel('DATY')
+    plt.ylabel('kwoty')
+    plt.grid(True)
+    plt.margins(0.1)
+    plt.plot(x, y, x9, y9, x10, y10, x15, y15, x16, y16, x24, y24)
+    # plt.tick_params(axis='x', rotation=290)
+    savefig('static/wykres-innego-typu.png')
+
+
+
+
+    # plt('xlabel', 'ylabel', data=elll) # jeśli obiekt byłby kompatybilny...
+    # plt.plot(x, y, 'H',markersize=22, label="test1") # heksagon
+    # plt.plot([3, 20], label="test2")
+    # plt.plot([13, 29], label="test3")
+    # plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
+    #            ncol=2, mode="expand", borderaxespad=0.)
+    # plt.plot(x, y, 'D') # diament
+    # plt.plot(x, y, 'x') # x
+    # plt.plot(x, y, 'o') # kółko
+    # plt.plot(x, y,'r+',markersize=22) # czerwone plusy, razem ze zmianą rozmiaru
+    # plt.plot(x, y,'r--') # kreska przerywana czerwona?
+    # plt.plot(x, y,'bs') # niebieskie kwadraty
+    # plt.plot(x, y,'g^') # zielone trójkąty
+    # plt.plot(x, y, linewidth=5.0) # kreska -grubość
+    # plt.plot(x, y, 'ro') #->czerwone kropki
+    #line, = plt.plot(x, y, '-') -> line.set_antialiased(False)  # turn off antialiasing ?
+    # plt.bar(x,y) # słupki
+    # plt.barh(x,y) # słupki boczne
+    # plt.hist(x,y) # ? histogram
+    # plt.pie(x,y) # ? pie...
+
+#subplots 	Create a figure and a set of subplots.
+    # subplot    # Add a subplot to the current figure.
+
+# imread # Read an image from a file into an array.
+# imsave # Save an array as an image file.
+# text # Add text to the axes.
+    # plt.axis([0,10,0,1000]) # ramka z określonymi wartościami
+    # plt.scatter(x, y) #kropki
 
 
 
 
 class IndexView(View):
     def get(self, request):
-        return render(request, 'base.html')
+        s0 = Skarbonki.objects.all()
+        # s=Skarbonki.objects.get(id=1)
+        # s2=s.get_next_in_order
+        # q=PaymentDay.objects.all()
+        j = 0
+
+        x = [0, ]
+        y = [0, ]
+        s0 = Skarbonki.objects.get(id=8)
+        elll=PaymentDay.objects.all().filter(payment_skarbonki=s0.id).order_by('date_of')
+        # for elem in s0:
+        #     elll{j} = PaymentDay.objects.all().filter(payment_skarbonki=elem.id).order_by('date_of')
+        #     j+=1
+        for el in elll:
+            new_val = el.value_of
+            y.append(new_val)
+            new_dat = str(el.date_of)
+            x.append(new_dat)
+
+        return render(request, 'base.html', {"new_dat":new_dat, "new_val":new_val, "elll":elll,"x": x, "y": y})
+            # return render(request, 'base.html', {"x": x, "y": y})
+
+        #         style.use('ggplot')
+        #         plt.title('wykres')
+        #         plt.xlabel('oś X')
+        #         plt.ylabel('oś Y')
+        #         plt.grid(True)
+        #         plt.plot(x, y)
+        #         plt.tick_params(axis='x', rotation=290)
+        #
+        #         savefig('static/wykres-inny1.png')
+        #         j += 1
+        #
+        # return render(request, 'base.html')
 
 
 
@@ -333,17 +538,93 @@ class SavingGoals(View):
             return render(request, 'saving-goals.html', {"skarbonki":skarbonki, "form": form, "zlap":zlap})
 
 
-class SkarbonkiNowy(View):
+class SavingCharts(View):
 
     def get(self, request):
-        collected = AlreadyCollected.objects.all()
-        skarbonki = Skarbonki.objects.all()
-        return render(request, 'skar-nowy.html', {"collected":collected, "skarbonki":skarbonki})
-    def post(self, request):
-        collected = AlreadyCollected.objects.all()
-        skarbonki = Skarbonki.objects.all()
-        return render(request, 'skar-nowy.html', {"collected": collected,
-                                            "skarbonki": skarbonki})
+        # sss=Skarbonki.objects.all()
+
+        # s1=sss.first()
+        # s2=sss.filter(pk__gt=s1.pk).order_by('pk').first()
+        #
+        # next = False
+        # for o in sss:
+        #     if next:
+        #         return o
+        #     if o == object:
+        #         next = True
+        #
+        s2=Skarbonki.objects.values_list('money_for', flat=True).order_by('pk')
+        chart_name1=s2[0]
+        chart_name2=s2[1]
+        chart_name3=s2[2]
+        chart_name4=s2[3]
+        chart_name5=s2[4]
+        chart_name6=s2[5]
+        # Skarbonki.objects.values_list('money_for', flat=True).distinct()
+
+        # def get_next(queryset, obj):
+        #     it = iter(queryset)
+        #     while obj is not next(it):
+        #         pass
+        #     try:
+        #         return next(it)
+        #     except StopIteraction:
+        #         return None
+        #
+        # def get_prev(queryset, obj):
+        #     prev = None
+        #     for o in queryset:
+        #         if o is obj:
+        #             break
+        #         prev = obj
+        #     return prev
+
+        return render(request, 'skar-nowy.html', {"chart_name1":chart_name1,
+                                                  "chart_name2":chart_name2,
+                                                  "chart_name3":chart_name3,
+                                                  "chart_name4":chart_name4,
+                                                  "chart_name5":chart_name5,
+                                                  "chart_name6":chart_name6,
+                                                  })
+
+
+
+class ChartSaving1(View):
+    def get(self, request):
+        wykres_month8()
+        return render(request, 'chart1.html')
+
+class ChartSaving2(View):
+    def get(self, request):
+        wykres_month8()
+        return render(request, 'chart2.html')
+
+class ChartSaving3(View):
+    def get(self, request):
+        wykres_month9()
+        return render(request, 'chart3.html')
+
+class ChartSaving4(View):
+    def get(self, request):
+        wykres_month10()
+        return render(request, 'chart4.html')
+
+class ChartSaving5(View):
+    def get(self, request):
+        wykres_month15()
+        return render(request, 'chart5.html')
+
+class ChartSaving6(View):
+    def get(self, request):
+        wykres16()
+        return render(request, 'chart6.html')
+
+
+class ChartSaving7(View):
+    def get(self, request):
+        wykres_innego_typu()
+        return render(request, 'chart7.html')
+
 
 
 class ModifySaving(View):
@@ -615,7 +896,7 @@ class DeleteStock(DeleteView):
 class CreditView(View):
 
     def get(self, request):
-        wykres_month2()
+        wykres_innego_typu()
         return render(request, 'credit.html')
 
     def post(self, request):
