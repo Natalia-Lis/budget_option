@@ -1,3 +1,4 @@
+import math
 from datetime import date
 import requests
 from bs4 import BeautifulSoup
@@ -321,38 +322,9 @@ def wykres_innego_typu():
 
 class IndexView(View):
     def get(self, request):
-        s0 = PiggyBanks.objects.all()
 
-        j = 0
+        return render(request, 'base.html')
 
-        x = [0, ]
-        y = [0, ]
-        s0 = PiggyBanks.objects.get(id=8)
-        elll=PaymentDay.objects.all().filter(payment_piggybanks=s0.id).order_by('date_of')
-        # for elem in s0:
-        #     elll{j} = PaymentDay.objects.all().filter(payment_piggybanks=elem.id).order_by('date_of')
-        #     j+=1
-        for el in elll:
-            new_val = el.value_of
-            y.append(new_val)
-            new_dat = str(el.date_of)
-            x.append(new_dat)
-
-        return render(request, 'base.html', {"new_dat":new_dat, "new_val":new_val, "elll":elll,"x": x, "y": y})
-            # return render(request, 'base.html', {"x": x, "y": y})
-
-        #         style.use('ggplot')
-        #         plt.title('wykres')
-        #         plt.xlabel('oś X')
-        #         plt.ylabel('oś Y')
-        #         plt.grid(True)
-        #         plt.plot(x, y)
-        #         plt.tick_params(axis='x', rotation=290)
-        #
-        #         savefig('static/wykres-inny1.png')
-        #         j += 1
-        #
-        # return render(request, 'base.html')
 
 
 
@@ -520,8 +492,6 @@ class SavingGoals(View):
     def get(self, request):
         skarbonki = PiggyBanks.objects.all()
         form = PiggyBanksForm()
-        s0 = PiggyBanks.objects.all().first()
-        # eli=PaymentDay.objects.all().filter(payment_piggybanks=s0.id)
         return render(request, 'saving-goals.html', {"skarbonki":skarbonki, "form":form})
 
     def post(self, request):
@@ -537,8 +507,8 @@ class SavingGoals(View):
             a1 = AlreadyCollected.objects.create(collected=0)
             PaymentDay.objects.create(payment_piggybanks=s1, payment_collected=a1)
 
-            zlap=PaymentDay.objects.get(payment_piggybanks_id=s1) #chyba niepotrz
-            return render(request, 'saving-goals.html', {"skarbonki":skarbonki, "form": form, "zlap":zlap})
+
+            return render(request, 'saving-goals.html', {"skarbonki":skarbonki, "form": form})
 
 
 class SavingCharts(View):
@@ -694,8 +664,9 @@ class SavingTime(View):
         kwota1 = request.POST.get('kwota')
         kwota_mies2 = request.POST.get('kwota_mies')
         wynik0 = float(kwota1) / float(kwota_mies2)
-        wynik1 = Decimal("%.2f" % wynik0)
-        lista_wynikow.append(f"{kwota1} : {kwota_mies2} = {wynik1} \n")
+        wynik1 = math.ceil(wynik0)
+        # wynik1 = Decimal("%.2f" % wynik0)
+        lista_wynikow.append(f"{kwota1} : {kwota_mies2} = {wynik1} miesięcy \n")
 
         # napis = f"{kwota1}, ' : ',  {kwota_mies2}, ' = ', {wynik1}, '\n'"
         # f = open("porown1.txt", 'a', encoding="utf-8")
@@ -745,23 +716,12 @@ class AlreadyCollectedView(View):
         try:
             choose = request.POST.get('choose')
             chosen = int(choose)
-            # if PaymentDay.objects.get(payment_skarbonki_id=chosen, date_of=date.today()):
-            # try:
-            #     zlap = PaymentDay.objects.get(payment_skarbonki_id=chosen, date_of=date.today())
-            # except:
             def set_session2(request):
-                # request.session["id_of_payment"] = zlap.id #platnosc z data
                 request.session["chosen_id"] = chosen # id skarbonki
             set_session2(request)
-
-            # zlapany = AlreadyCollected.objects.get(target=zlap.payment_skarbonki_id)
-            # else:
-            #     stworz = PaymentDay.objects.create(payment_skarbonki_id=chosen, date_of=date.today(), payment_collected_id=)
             return render(request, 'saving-collected.html', {"chosen": chosen,
                                                         "collected": collected,
                                                         "skarbonki": skarbonki,
-                                                             # "zlap": zlap,
-                                                             # "zlapany": zlapany
                                                              })
         except:
             moj_x=request.session.get("chosen_id"),
@@ -772,12 +732,12 @@ class AlreadyCollectedView(View):
             moj_obiekt=PaymentDay.objects.filter(payment_piggybanks_id=moj_x_nowy).last()
             # moj_obiekt=PaymentDay.objects.filter(payment_piggybanks_id=moj_x_nowy) #powinnobyc? analiza
             try:
-                PaymentDay.objects.get(payment_piggybanks_id=moj_x_nowy, date_of=date.today())
+                # PaymentDay.objects.get(payment_piggybanks_id=moj_x_nowy, date_of=date.today())
                 dzisiejszy_stary=PaymentDay.objects.get(payment_piggybanks_id=moj_x_nowy, date_of=date.today())
-
                 return redirect('saving-mistake')
 
             except:
+                #popr!
                 dzisiejszy_nowy=PaymentDay.objects.create(payment_piggybanks_id=moj_x_nowy, date_of=date.today(), payment_collected_id=moj_obiekt.payment_collected_id, value_of=moj_obiekt.value_of)
                 dzisiejszy_nowy.payment_piggybanks_id=moj_x_nowy
                 dzisiejszy_nowy.payment_collected_id=moj_obiekt.payment_collected_id
@@ -927,7 +887,6 @@ class ModifyCredit(View):
         return render(request, 'modify-credit.html', {"credits_objects": credits_objects, "form":form})
 
     def post(self, request, id):
-        # form.save() ?
         credits_objects=Credits.objects.get(id=id)
         form = CreditsForm(request.POST)
         if form.is_valid():
@@ -940,7 +899,6 @@ class ModifyCredit(View):
             credits_objects.should_end_on=should_end_on
             credits_objects.description=description
             credits_objects.save()
-            # +++++++++++++++++++++++++++++++++++++
             return redirect('credits')
 
 
@@ -950,23 +908,55 @@ class DeleteCredit(DeleteView):
 
 
 class CreditPayments(View):
-    pass
-#     def get(self, request):
-#
-#         credits_objects = Credits.objects.all()
-#
-#         return render(request, 'credit.html', {"credits_objects":credits_objects})
-#
-#     def post(self, request):
-#         congrats2 = request.POST.get('congrats2')
-#
-#         Credits.objects.create(date)
-#         form = CreditsForm(request.POST)
-#         if form.is_valid():
-#             name = form.cleaned_data['name']
-#             credit_amount = form.cleaned_data['credit_amount']
-#             should_end_on = form.cleaned_data['should_end_on']
-#             description = form.cleaned_data['description']
-#             Credits.objects.create(name=name, credit_amount=credit_amount,
-#                                    should_end_on=should_end_on, description=description)
-#         return render(request, 'credit.html', {"credits_objects": credits_objects, "form": form})
+    def get(self, request, id):
+        credits_objects=Credits.objects.get(id=id)
+        return render(request, 'credit-payments.html', {"credits_objects": credits_objects})
+
+    def post(self, request, id):
+        credits_objects=Credits.objects.get(id=id)
+        amount = request.POST.get('amount')
+        amount2 = float(amount)
+        credit_obj = Credits.objects.get(id=id)
+
+        last_payments = RepaymentDay.objects.filter(repayment_credits_id=credit_obj.id).last()
+        # try:
+        #     paid = RepaymentDay.objects.get(repayment_credits_id=id, repayment_date=date.today())
+        #     return redirect('credit-mistake')
+        #
+        # except:
+        new_paym = RepaymentDay.objects.create(repayment_credits_id=id,
+                                               repayment_date=date.today(),
+                                               repayment_collected_id=last_payments.repayment_collected_id,
+                                               repayment_value=amount2)
+        increasing = Repayment.objects.get(id=new_paym.repayment_collected_id)
+        increasing.collected_money += amount2
+        increasing.save()
+        new_paym.repayment_value = amount2
+        new_paym.save()
+        return render(request, 'credit-payments.html', {"credits_objects": credits_objects})
+
+
+class CreditMistake(View):
+    def get(self, request):
+        msg = "Dziś już wpłacono na owy cel! Czyżby nastąpiła pomyłka przy wpisywaniu kwoty?"
+        credits_objects=Credits.objects.all()
+        return render(request, 'credit-mistake.html', {"credits_objects": credits_objects, "msg": msg})
+
+    def post(self, request):
+        credit_mistake = request.POST.get('credit-mistake')
+        mistake_id = int(credit_mistake)
+        mistake_value = request.POST.get('mistake_value')
+        mistake_value_float = float(mistake_value)
+        correct_value = request.POST.get('correct_value')
+        correct_value_float = float(correct_value)
+
+        credit_mistake = RepaymentDay.objects.all().filter(repayment_credits_id=mistake_id).last()
+        last_to_change = Repayment.objects.get(id=credit_mistake.repayment_collected_id)
+
+        credit_mistake.repayment_value = correct_value_float
+        credit_mistake.save()
+        last_to_change.collected_money -= mistake_value_float
+        last_to_change.collected_money += correct_value_float
+        last_to_change.save()
+
+        return redirect('piggy-banks')

@@ -3,16 +3,18 @@
 {% block content %}
 
     <br>
-
-       <form action="" method="post">
+           <form action="" method="post">
          {% csrf_token %}
-Jaką kwotą chcesz nadpłacić kredyt?
-        <input type="number" step="any" name="congrats2">
+
+
+Jaką kwotą chcesz nadpłacić kredyt {{ credits_objects.name }}?
+        <input type="number" step="any" name="amount">
                 <input type="submit" value="send">
+
        </form>
 
   <br><br>
-w razie pomyłki: ...
+    <a href="{% url 'credit-mistake' %}">w razie pomyłki kliknij tu</a>
 <br><br>
 tu będzie wykres
 

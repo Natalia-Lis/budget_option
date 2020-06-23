@@ -51,7 +51,7 @@ class PaymentDayAdmin(admin.ModelAdmin):
 
 @admin.register(Repayment)
 class RepaymentAdmin(admin.ModelAdmin):
-    list_display = ("collected_money", "payment_target_list")
+    list_display = ("id", "collected_money")
     def payment_target_list(self, obj):
         return ", ".join([str(u) for u in obj.payment_target.all()])
 

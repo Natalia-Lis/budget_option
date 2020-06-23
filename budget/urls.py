@@ -46,6 +46,7 @@ urlpatterns = [
 
     path('credits/', CreditView.as_view(), name='credits'),
     path('credit-payments/<int:id>/', CreditPayments.as_view(), name='credit-payments'),
+    path('credit-mistake/', CreditMistake.as_view(), name='credit-mistake'),
     path('modify-credit/<int:id>/', ModifyCredit.as_view(), name='modify-credit'),
     path('delete-credit/<int:pk>/', DeleteCredit.as_view(), name='delete-credit'),
 

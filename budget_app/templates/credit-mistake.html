@@ -1,0 +1,28 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+{{ msg }}<br><br><br>
+           <form action="" method="post">
+         {% csrf_token %}
+               <fieldset>
+                  <legend>Wybierz którego celu dotyczy pomyłka?</legend>
+
+   <select name="credit-mistake" id="credit-mistake">
+          {% for element in credits_objects %}
+  <option value="{{ element.id }}">{{ element.name }}</option>
+    {% endfor %}
+</select>
+<br><br>
+<strong>Aby poprawnie naprawić pomyłkę podaj kwotę jaką błędnie wpisano:</strong><br>
+           <input type="number"  name="mistake_value"><br>
+<small>Kwota zostanie odjęta od twoich uzbieranych środków oraz zostanie usunięty błędny wpis.</small>
+                   <br><br><br>
+           <p style="color: darkred"><strong>A teraz podaj kwotę poprawną:</strong></p>
+          <input type="number"  name="correct_value">
+
+ <input type="submit" value="send">
+                 </fieldset>
+     </form>
+
+{% endblock %}
