@@ -32,6 +32,9 @@
     Obecna cena za akcję CDR: {% if kurs %}{{ kurs }}{% else %}Odśwież stronę{% endif %}<br>
     Twoje aktualne akcje CDR: {% if value_of_cdr %}{{ value_of_cdr }}{% else %}Odśwież stronę{% endif %}<br>
     <br>
+     Obecna cena za akcję PZU: {% if kurs2 %}{{ kurs2 }}{% else %}Odśwież stronę{% endif %}<br>
+    Twoje aktualne akcje PZU: {% if value_of_cdr %}{{ value_of_cdr }}{% else %}Odśwież stronę{% endif %}<br>
+    <br>
     Szczegóły dotyczące firm -><br>
     {% for elem in ctx %}
         {% if elem.www %}

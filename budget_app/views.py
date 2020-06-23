@@ -490,12 +490,12 @@ class PiggyBanksView(View):
 class SavingGoals(View):
 
     def get(self, request):
-        skarbonki = PiggyBanks.objects.all()
+        all_piggy_banks = PiggyBanks.objects.all()
         form = PiggyBanksForm()
-        return render(request, 'saving-goals.html', {"skarbonki":skarbonki, "form":form})
+        return render(request, 'saving-goals.html', {"all_piggy_banks":all_piggy_banks, "form":form})
 
     def post(self, request):
-        skarbonki = PiggyBanks.objects.all()
+        all_piggy_banks = PiggyBanks.objects.all()
         form = PiggyBanksForm(request.POST)
         if form.is_valid():
             money_for = form.cleaned_data['money_for']
@@ -508,7 +508,7 @@ class SavingGoals(View):
             PaymentDay.objects.create(payment_piggybanks=s1, payment_collected=a1)
 
 
-            return render(request, 'saving-goals.html', {"skarbonki":skarbonki, "form": form})
+            return render(request, 'saving-goals.html', {"all_piggy_banks":all_piggy_banks, "form": form})
 
 
 class SavingCharts(View):
@@ -623,8 +623,8 @@ class ModifySaving(View):
 class SavingMistake(View):
     def get(self, request):
         msg = "Dziś już wpłacono na owy cel! Czyżby nastąpiła pomyłka przy wpisywaniu kwoty?"
-        skarbonki = PiggyBanks.objects.all()
-        return render(request, 'mistake.html', {"skarbonki":skarbonki, "msg":msg})
+        all_piggy_banks = PiggyBanks.objects.all()
+        return render(request, 'mistake.html', {"all_piggy_banks":all_piggy_banks, "msg":msg})
     def post(self, request):
 
         mistake_in = request.POST.get('mistake_in')
@@ -637,23 +637,17 @@ class SavingMistake(View):
         # mistake_object=PiggyBanks.objects.get(id=mistake_in.id)
         last_mistake=PaymentDay.objects.all().filter(payment_piggybanks_id=mistake_id).last()
         last_to_change=AlreadyCollected.objects.get(id=last_mistake.payment_collected_id)
-
         last_mistake.value_of = correct_value_float
         last_mistake.save()
         last_to_change.collected -= mistake_value_float
         last_to_change.collected += correct_value_float
         last_to_change.save()
-
         return redirect('piggy-banks')
-
-
-
 
 
 
 lista_wynikow = []
 lista_wynikow2 = []
-
 
 class SavingTime(View):
 
@@ -667,17 +661,6 @@ class SavingTime(View):
         wynik1 = math.ceil(wynik0)
         # wynik1 = Decimal("%.2f" % wynik0)
         lista_wynikow.append(f"{kwota1} : {kwota_mies2} = {wynik1} miesięcy \n")
-
-        # napis = f"{kwota1}, ' : ',  {kwota_mies2}, ' = ', {wynik1}, '\n'"
-        # f = open("porown1.txt", 'a', encoding="utf-8")
-        # # f.write('napis próbny \n')
-        # f.write(str(kwota1))
-        # f.write(' : ')
-        # f.write(str(kwota_mies2))
-        # f.write( ' = ')
-        # f.write(str(wynik1))
-        # f.write('\n')
-        # f.close()
         lista_wynikow.reverse()
         return render(request, 'saving-time.html', {'wynik1':wynik1, "lista_wynikow":lista_wynikow})
 
@@ -707,30 +690,31 @@ class AlreadyCollectedView(View):
 
     def get(self, request):
         collected = AlreadyCollected.objects.all()
-        skarbonki = PiggyBanks.objects.all()
-        return render(request, 'saving-collected.html', {"collected":collected, "skarbonki":skarbonki})
+        all_piggy_banks = PiggyBanks.objects.all()
+        return render(request, 'saving-collected.html', {"collected":collected, "all_piggy_banks":all_piggy_banks})
 
     def post(self, request):
         collected = AlreadyCollected.objects.all()
-        skarbonki = PiggyBanks.objects.all()
+        all_piggy_banks = PiggyBanks.objects.all()
         try:
             choose = request.POST.get('choose')
             chosen = int(choose)
             def set_session2(request):
-                request.session["chosen_id"] = chosen # id skarbonki
+                request.session["chosen_id"] = chosen # id all_piggy_banks
             set_session2(request)
             return render(request, 'saving-collected.html', {"chosen": chosen,
                                                         "collected": collected,
-                                                        "skarbonki": skarbonki,
+                                                        "all_piggy_banks": all_piggy_banks,
                                                              })
         except:
-            moj_x=request.session.get("chosen_id"),
-            for e in moj_x:
-                moj_x_nowy = e
+            moj_x_nowy=request.session.get("chosen_id"),
+            # for e in moj_x:
+            #     moj_x_nowy = e
             congrats = request.POST.get('congrats')
             congrats2 = float(congrats)
-            moj_obiekt=PaymentDay.objects.filter(payment_piggybanks_id=moj_x_nowy).last()
-            # moj_obiekt=PaymentDay.objects.filter(payment_piggybanks_id=moj_x_nowy) #powinnobyc? analiza
+            # moj_obiekt=PaymentDay.objects.filter(payment_piggybanks_id=moj_x_nowy).last()
+            moj_obiekt=PaymentDay.objects.filter(payment_piggybanks_id=moj_x_nowy).last()#powinnobyc? analiza
+
             try:
                 # PaymentDay.objects.get(payment_piggybanks_id=moj_x_nowy, date_of=date.today())
                 dzisiejszy_stary=PaymentDay.objects.get(payment_piggybanks_id=moj_x_nowy, date_of=date.today())
@@ -748,57 +732,81 @@ class AlreadyCollectedView(View):
                 dzisiejszy_nowy.value_of += congrats2
                 dzisiejszy_nowy.save()
             return render(request, 'saving-collected.html', {"collected": collected,
-                                                        "skarbonki": skarbonki})
+                                                        "all_piggy_banks": all_piggy_banks})
 
 
 class StockView(View):
     def get(self, request):
         form = StockForm()
+        ctx = Stock.objects.all()
         spolka = "cdr"
         p = {"s": spolka}
-        ctx = Stock.objects.all()
-        odpowiedz = requests.get("http://stooq.pl/q/", params=p)
-        soup = BeautifulSoup(odpowiedz.text, 'html.parser')
+        spolka2 = 'pzu'
+        p2 = {"s": spolka2}
+        spolka3 = "bdx"
+        p3 = {"s": spolka3}
 
-        # podejście 1: po id
-        # znacznik_kurs = soup.find("span", id=f"aq_{spolka}_c1")
-        # kurs = float(znacznik_kurs.text)
-        # print(f"Podejście 1, kurs = {kurs}")
+        answer = requests.get("http://stooq.pl/q/", params=p)
+        soup = BeautifulSoup(answer.text, 'html.parser')
+        # answer2 = requests.get("http://stooq.pl/q/", params=p2)
+        # soup2 = BeautifulSoup(answer2.text, 'html.parser')
+        answer3 = requests.get("http://stooq.pl/q/", params=p3)
+        soup3 = BeautifulSoup(answer3.text, 'html.parser')
+        # try:
 
-        #
-        # # podejście 2a: po napisie, a potem find
-        znacznik_kurs = soup.find(text="Kurs").parent.find("span")
+    # podejście 1: po id
+        znacznik_kurs = soup.find("span", id=f"aq_{spolka}_c1")
         kurs = float(znacznik_kurs.text)
+        bdx_kurs = soup3.find("span", id=f"aq_{spolka3}_c1")
+        bdx_kurs2 = float(bdx_kurs.text)
+    # print(f"Podejście 1, kurs = {kurs}")
+
+    #
+    # # podejście 2a: po napisie, a potem find
+    #     znacznik_kurs = soup.find(text="Kurs").parent.find("span")
+    #     kurs = float(znacznik_kurs.text)
         if kurs:
             cdr_interests=Stock.objects.get(name='CDR')
             jednostki_cdr = cdr_interests.interests
             value_of_cdr = jednostki_cdr * kurs
+        # znacznik_kursu = soup2.find(text="Kurs").parent.find(f"{spolka2}")
+        # kurs2 = float(znacznik_kursu.text)
 
-        # print(f"Podejście 2a, kurs = {kurs}")
-        #
-        # # zmiana kursu
-        znacznik_zmiana_bezwzgledna = soup.find("span", id=f"aq_{spolka}_m2")
-        znacznik_zmiana_wzgledna = soup.find("span", id=f"aq_{spolka}_m3")
+        # podejście 1: po id
+        # spolka2_info = soup.find("span", id=f"aq_{spolka2}_c2")
+        # kurs2 = float(spolka2_info.text)
+        # print(f"Podejście 1, kurs = {kurs}")
 
-        zmiana_bezwzgledna = float(znacznik_zmiana_bezwzgledna.text)
-        zmiana_wzgledna = float(znacznik_zmiana_wzgledna.text[1:-2]) / 100
-        #
-        # print(f"Podejście 1, zmiana_bezwzgledna = {zmiana_bezwzgledna}")
-        # print(f"Podejście 1, zmiana_wzgledna = {zmiana_wzgledna}")
-        #
-        # # transakcje
-        # # podejście 2b: po napisie, a potem next_element
-        znacznik_transakcje = soup.find(text="Transakcje").next_element.next_element
-        transakcje = int(znacznik_transakcje.text.replace(" ", ""))
-        # print(f"Podejście 2b, transakcje = {transakcje}")
+    # print(f"Podejście 2a, kurs = {kurs}")
+    #
+    # # zmiana kursu
+    #     znacznik_zmiana_bezwzgledna = soup.find("span", id=f"aq_{spolka}_m2")
+    #     znacznik_zmiana_wzgledna = soup.find("span", id=f"aq_{spolka}_m3")
+    #
+    #     zmiana_bezwzgledna = float(znacznik_zmiana_bezwzgledna.text)
+    #     zmiana_wzgledna = float(znacznik_zmiana_wzgledna.text[1:-2]) / 100
 
-        return render(request, 'stock.html', {"kurs":kurs,
-                                            "value_of_cdr":value_of_cdr,
-                                            "zmiana_bezwzgledna":zmiana_wzgledna,
-                                            "zmiana_wzgledna":zmiana_wzgledna,
-                                            "transakcje":transakcje,
-                                            "ctx":ctx,
-                                            "form":form})
+
+    #
+    # print(f"Podejście 1, zmiana_bezwzgledna = {zmiana_bezwzgledna}")
+    # print(f"Podejście 1, zmiana_wzgledna = {zmiana_wzgledna}")
+    #
+    # # transakcje
+    # # podejście 2b: po napisie, a potem next_element
+    #     znacznik_transakcje = soup.find(text="Transakcje").next_element.next_element
+    #     transakcje = int(znacznik_transakcje.text.replace(" ", ""))
+    # print(f"Podejście 2b, transakcje = {transakcje}")
+
+        return render(request, 'stock.html', {"kurs":kurs, "value_of_cdr":value_of_cdr,
+                                        "ctx":ctx, "form":form,
+                                              # "kurs2":kurs2,
+                                              "bdx_kurs2":bdx_kurs2
+                                              })
+        # except Exception:
+        #     return render(request, 'stock.html', {"kurs":kurs, "value_of_cdr":value_of_cdr,
+        #                                     "ctx":ctx, "form":form, "kurs2":kurs2})
+
+
     def post(self, request):
         form = StockForm(request.POST)
         if form.is_valid():
@@ -952,11 +960,9 @@ class CreditMistake(View):
 
         credit_mistake = RepaymentDay.objects.all().filter(repayment_credits_id=mistake_id).last()
         last_to_change = Repayment.objects.get(id=credit_mistake.repayment_collected_id)
-
         credit_mistake.repayment_value = correct_value_float
         credit_mistake.save()
         last_to_change.collected_money -= mistake_value_float
         last_to_change.collected_money += correct_value_float
         last_to_change.save()
-
-        return redirect('piggy-banks')
+        return redirect('credits')

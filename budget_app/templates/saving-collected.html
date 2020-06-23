@@ -20,13 +20,14 @@
          {% csrf_token %}
                                    <fieldset>
                   <legend>Którego celu chcesz dopilnować?</legend>
-   {% for element in skarbonki %}
+   {% for element in all_piggy_banks %}
     <li><input type="radio" name="choose" value="{{ element.id }}">
       {{ element.money_for }}</li><hr>
     {% endfor %}
          <input type="submit" value="send">
                          </fieldset>
-     </form><br><br>
+     </form>
+        <br><br>
 
     {% endif %}
 <br>

@@ -47,3 +47,35 @@ a, a:link, a:visited {
   color: #0f0f93;
 }
 
+
+/*------------------------------*/
+/*---- Slider section----*/
+/*------------------------------*/
+
+.carousel-control-prev-icon,
+.carousel-control-next-icon {
+  opacity: 1 !important;
+  outline: black;
+  background-image: none;
+}
+
+.carousel-control-next-icon:after
+{
+  content: '>';
+  font-size: 55px;
+  color: var(--dark-text);
+}
+
+.carousel-control-prev-icon:after {
+  content: '<';
+  font-size: 55px;
+  color: var(--dark-text);
+}
+
+.carousel-caption {
+  position: relative !important;
+  left: 0 !important;
+  right: 0 !important;
+  font-weight: 600;
+  color: var(--dark-text) !important;
+}

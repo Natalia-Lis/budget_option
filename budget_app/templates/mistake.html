@@ -9,7 +9,7 @@
                   <legend>Wybierz którego celu dotyczy pomyłka?</legend>
 
    <select name="mistake_in" id="mistake_id">
-          {% for element in skarbonki %}
+          {% for element in all_piggy_banks %}
   <option value="{{ element.id }}">{{ element.money_for }}</option>
     {% endfor %}
 </select>
