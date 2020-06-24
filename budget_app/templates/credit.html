@@ -3,7 +3,7 @@
 {% block content %}
 
     {% for element in credits_objects %}
-        <table border="1" bgcolor="#e6e6fa"><tr><td>
+        <table border="1" bgcolor="#e6e6fa"><tr><td><center>
         <a href="{% url 'credit-payments' element.id %}">{{ element.name }}<br>
         Zarządzaj spłatą -></a><br>
         {{ element.credit_amount }}<br>
@@ -16,7 +16,7 @@
             </td>
         </tr>
         </table>
-            </td>
+            </center></td>
         </tr></table>
   <br>
   {% endfor %}

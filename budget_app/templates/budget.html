@@ -42,9 +42,9 @@ onclick="document.getElementById('dodatkowo{{ element.id }}').style.display = th
         <td>{{ element.description }}</td>
         <td>
             {% if element.monthly == True %}
-            <input type="checkbox" name="zapasowa" value="{{ element.money }}" checked>
+            <input type="checkbox" name="counting" value="{{ element.money }}" checked>
             {% elif element.monthly == False %} &nbsp;
-            <input type="checkbox" name="zapasowa" value="{{ element.money }}">
+            <input type="checkbox" name="counting" value="{{ element.money }}">
             {% endif %}
 
             </td>
@@ -67,16 +67,7 @@ onclick="document.getElementById('dodatkowo{{ element.id }}').style.display = th
          {% csrf_token %}
                <fieldset>
                   <legend>Dodaj nową pozycję do budżetu</legend>
-
-    Nazwa<input type="text" name="name"><br>
-    Kwota min<input type="text" name="money"><br>
-
-    Miesięcznie?<br>
-             TAK<input type="radio" value="True" name="monthly"><br>
-            NIE<input type="radio" value="False" name="monthly"><br>
-
-    Dodatkowy opis<input type="text" name="description"><br>
-
+{{ form.as_p }}
          <input type="submit" value="send"></fieldset>
      </form>
 

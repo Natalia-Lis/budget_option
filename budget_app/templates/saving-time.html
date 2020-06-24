@@ -4,14 +4,14 @@
      <form action="" method="post">
          {% csrf_token %}
          <br><h3>Ile czasu powinno się odkładać aby coś mieć?</h3><br><br>
-    Wpisz kwotę określoną na ten cel  <input type="number" name="kwota"><br>
-    Ile jesteś w stanie miesięcznie? <input type="number" name="kwota_mies"><br>
+    Wpisz kwotę określoną na ten cel  <input type="number" name="amount_of"><br>
+    Ile jesteś w stanie miesięcznie? <input type="number" name="amount_month"><br>
              <input type="submit" value="send">
      </form>
-    <br>{% if wynik1 %}<strong>{{ wynik1 }} miesięcy!</strong>{% endif %}<br>
+    <br>{% if res1 %}<strong>{{ res1 }} miesięcy!</strong>{% endif %}<br>
     <br>
     Twoje porównania:<br>
 
-{% if lista_wynikow %}{% for elem in lista_wynikow %}{{ elem }}<br>{% endfor %}{% endif %}<br>
+{% if results_list %}{% for elem in results_list %}{{ elem }}<br>{% endfor %}{% endif %}<br>
 
 {% endblock %}

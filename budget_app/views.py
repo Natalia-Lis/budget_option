@@ -2,8 +2,8 @@ import math
 from datetime import date
 import requests
 from bs4 import BeautifulSoup
-from django.contrib.auth import logout, login, authenticate
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth import logout, login, authenticate # #
+from django.contrib.auth.mixins import LoginRequiredMixin # #
 from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
@@ -16,8 +16,6 @@ from matplotlib import pyplot as plt
 from matplotlib import style
 import numpy as np
 import matplotlib.dates as mdates
-
-
 
 
 def kalkul():
@@ -37,8 +35,7 @@ def kalkul():
 def wykres_month():
     plt.figure(1)
     plt.title('wykres z ostatnich 12 miesięcy')
-    plt.xlabel('oś X')
-    plt.ylabel('oś Y')
+    plt.ylabel('kwoty')
     queryset = MonthsBudget.objects.all().order_by('-month_date')
     xmonth=[]
     ymonth=[]
@@ -56,7 +53,6 @@ def wykres_month():
     savefig('static/wykres.png')
 
 
-
 def wykres8():
     x = []
     y = []
@@ -70,6 +66,8 @@ def wykres8():
         new_date = str(el.date_of)
         x.append(new_date)
     plt.figure(2)
+    plt.style.use('ggplot')
+    # plt.xkcd()
     plt.title(f'wykres wpłat dla celu "{obj_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y}')
@@ -78,7 +76,6 @@ def wykres8():
     plt.plot(x, y, 'r*', markersize=18) # gwiazdka
     # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-inny8.png')
-
 
 
 def wykres9():
@@ -94,7 +91,7 @@ def wykres9():
         new_date = str(el.date_of)
         x9.append(new_date)
     plt.figure(3)
-    plt.subplot()
+    # plt.subplot()
     plt.title(f'wykres wpłat dla celu "{obj9_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y9}')
@@ -118,13 +115,14 @@ def wykres10():
         x10.append(new_date)
     plt.figure(4)
     # plt.subplot()
+    # plt.style.use('fivethirtyeight')
     plt.title(f'wykres wpłat dla celu "{obj10_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y10}')
     plt.grid(True)
     plt.margins(0.1)
     plt.plot(x10, y10, 'r--',  linewidth=2.5)
-    # plt.tick_params(axis='x', rotation=290)
+    # plt.tick_params(axis='x', rotation=10)
     savefig('static/wykres-inny10.png')
 
 
@@ -256,7 +254,6 @@ def wykres_innego_typu():
         new_date = str(el.date_of)
         x24.append(new_date)
 
-
     plt.figure(8)
     plt.subplot()
     plt.plot(x, y, marker='o',  label="TV", linewidth=3)
@@ -319,7 +316,6 @@ def wykres_innego_typu():
     # plt.scatter(x, y) #kropki
 
 
-
 def wykres_credit1():
     x_cr1 = []
     y_cr1 = []
@@ -337,11 +333,9 @@ def wykres_credit1():
     plt.ylabel('KWOTY')
     plt.grid(True)
     plt.margins(0.1)
-    plt.plot(x_cr1, y_cr1, linewidth=5.0)
+    plt.plot(x_cr1, y_cr1, marker='o', linewidth=4.0)
     # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-kredyt-1.png')
-
-
 
 
 def wykres_credit2():
@@ -366,16 +360,9 @@ def wykres_credit2():
 
 
 
-
-
-
-
 class IndexView(View):
     def get(self, request):
-
         return render(request, 'base.html')
-
-
 
 
 class BudgetView(View):#
@@ -383,7 +370,6 @@ class BudgetView(View):#
     def get(self, request):
         pozycje=Budget.objects.all()
         form = BudgetForm()
-        wykres_month()
         return render(request, 'budget.html', {"pozycje":pozycje, "form":form})
 
     def post(self, request):
@@ -401,35 +387,29 @@ class BudgetView(View):#
             monthly = form.cleaned_data['monthly']
             description = form.cleaned_data['description']
             Budget.objects.create(name=name, money=money, monthly=monthly, description=description)
-            return render(request, 'budget.html', {"pozycje":pozycje,
-                                                   "form":form})
-        doliczyc = []
-        zapasowa = request.POST.getlist('zapasowa')
-        for elements in pozycje:
-            doliczyc.append(request.POST.get(f'{elements.id}'))
-
+            return render(request, 'budget.html', {"pozycje":pozycje, "form":form})
+        additional = []
+        counting = request.POST.getlist('counting')
+        for element in pozycje:
+            additional.append(request.POST.get(f'{element.id}'))
         my_sum = 0
-        while zapasowa != []:
-            elemencik = float(zapasowa.pop())
-            my_sum += elemencik
-        if doliczyc != []:
-            for ell in doliczyc:
-                if ell == '':
+        while counting != []:
+            elem = float(counting.pop())
+            my_sum += elem
+        if additional != []:
+            for el in additional:
+                if el == '':
                     pass
                 else:
-                    do_sumy=float(ell)
-                    my_sum += do_sumy
-
+                    add_to=float(el)
+                    my_sum += add_to
         def set_session(request):
             request.session["suma_przekazana"] = my_sum
         set_session(request)
-
-        return render(request, 'budget.html', {"zapasowa": zapasowa,
+        return render(request, 'budget.html', {"counting": counting,
                                                "my_sum": my_sum,
-                                               "doliczyc":doliczyc,
                                                "pozycje": pozycje,
                                                "form": form})
-
 
 
 class ModifyBudget(View):
@@ -467,9 +447,9 @@ class MonthsBudgetView(View):#
     def get(self, request):
         this_months_budget = MonthsBudget.objects.all()
         form = MonthsBudgetForm()
-        wykresik = wykres_month()
+        wykres_month()
         return render(request, 'budget-months.html', {"this_months_budget":this_months_budget,
-                                                      "form":form, "wykresik":wykresik})
+                                                      "form":form})
 
     def post(self, request):
         form = MonthsBudgetForm(request.POST)
@@ -481,7 +461,6 @@ class MonthsBudgetView(View):#
                                         month_cost=month_cost,
                                         description=description)
             return redirect('months-budget')
-
 
 
 class MonthsBudgetPropositionView(View):#
@@ -552,12 +531,9 @@ class SavingGoals(View):
             m_min = form.cleaned_data['m_min']
             description = form.cleaned_data['description']
             PiggyBanks.objects.create(money_for=money_for, m_min=m_min, description=description)
-
             s1 = PiggyBanks.objects.get(money_for=money_for)
             a1 = AlreadyCollected.objects.create(collected=0)
             PaymentDay.objects.create(payment_piggybanks=s1, payment_collected=a1)
-
-
             return render(request, 'saving-goals.html', {"all_piggy_banks":all_piggy_banks, "form": form})
 
 
@@ -602,14 +578,9 @@ class SavingCharts(View):
         #         prev = obj
         #     return prev
 
-        return render(request, 'charts.html', {"chart_name1":chart_name1,
-                                                  "chart_name2":chart_name2,
-                                                  "chart_name3":chart_name3,
-                                                  "chart_name4":chart_name4,
-                                                  "chart_name5":chart_name5,
-                                                  "chart_name6":chart_name6,
-                                               })
-
+        return render(request, 'charts.html', {"chart_name1":chart_name1, "chart_name2":chart_name2,
+                                               "chart_name3":chart_name3, "chart_name4":chart_name4,
+                                               "chart_name5":chart_name5, "chart_name6":chart_name6})
 
 
 class ChartSaving1(View):
@@ -648,7 +619,6 @@ class ChartSaving7(View):
         return render(request, 'chart7.html')
 
 
-
 class ModifySaving(View):
 
     def get(self, request, id):
@@ -671,19 +641,19 @@ class ModifySaving(View):
 
 
 class SavingMistake(View):
+
     def get(self, request):
         msg = "Dziś już wpłacono na owy cel! Czyżby nastąpiła pomyłka przy wpisywaniu kwoty?"
         all_piggy_banks = PiggyBanks.objects.all()
         return render(request, 'mistake.html', {"all_piggy_banks":all_piggy_banks, "msg":msg})
-    def post(self, request):
 
+    def post(self, request):
         mistake_in = request.POST.get('mistake_in')
         mistake_id = int(mistake_in)
         mistake_value = request.POST.get('mistake_value')
         mistake_value_float = float(mistake_value)
         correct_value = request.POST.get('correct_value')
         correct_value_float = float(correct_value)
-
         # mistake_object=PiggyBanks.objects.get(id=mistake_in.id)
         last_mistake=PaymentDay.objects.all().filter(payment_piggybanks_id=mistake_id).last()
         last_to_change=AlreadyCollected.objects.get(id=last_mistake.payment_collected_id)
@@ -696,23 +666,21 @@ class SavingMistake(View):
 
 
 
-lista_wynikow = []
-lista_wynikow2 = []
-
 class SavingTime(View):
 
     def get(self, request):
         return render(request, 'saving-time.html')
 
     def post(self, request):
-        kwota1 = request.POST.get('kwota')
-        kwota_mies2 = request.POST.get('kwota_mies')
-        wynik0 = float(kwota1) / float(kwota_mies2)
-        wynik1 = math.ceil(wynik0)
+        results_list = []
+        amount_of1 = request.POST.get('amount_of')
+        amount_month2 = request.POST.get('amount_month')
+        res0 = float(amount_of1) / float(amount_month2)
+        res1 = math.ceil(wynik0)
         # wynik1 = Decimal("%.2f" % wynik0)
-        lista_wynikow.append(f"{kwota1} : {kwota_mies2} = {wynik1} miesięcy \n")
-        lista_wynikow.reverse()
-        return render(request, 'saving-time.html', {'wynik1':wynik1, "lista_wynikow":lista_wynikow})
+        results_list.append(f"{amount_of1} : {amount_month2} = {res1} miesięcy \n")
+        results_list.reverse()
+        return render(request, 'saving-time.html', {'res1':res1, "results_list":results_list})
 
 
 class SavingAmount(View):
@@ -721,13 +689,14 @@ class SavingAmount(View):
         return render(request, 'saving-amount.html')
 
     def post(self, request):
-        kwota1 = request.POST.get('kwota')
-        kwota_mies2 = request.POST.get('kwota_mies')
-        wynik0 = float(kwota1) / float(kwota_mies2)
-        wynik1 = Decimal("%.2f" % wynik0)
-        lista_wynikow2.append(f"{kwota1} : {kwota_mies2} = {wynik1} \n")
-        lista_wynikow2.reverse()
-        return render(request, 'saving-amount.html', {'wynik1':wynik1, "lista_wynikow2":lista_wynikow2})
+        results_list2 = []
+        amount_of1 = request.POST.get('amount_of')
+        amount_month2 = request.POST.get('amount_month')
+        res0 = float(amount_of1) / float(amount_month2)
+        res1 = Decimal("%.2f" % res0)
+        results_list2.append(f"{amount_of1} : {amount_month2} = {res1} \n")
+        results_list2.reverse()
+        return render(request, 'saving-amount.html', {'res1':res1, "results_list2":results_list2})
 
 
 class DeleteSaving(DeleteView):#
@@ -735,13 +704,13 @@ class DeleteSaving(DeleteView):#
     success_url = '/saving-goals'
 
 
-
 class AlreadyCollectedView(View):
 
     def get(self, request):
         collected = AlreadyCollected.objects.all()
         all_piggy_banks = PiggyBanks.objects.all()
-        return render(request, 'saving-collected.html', {"collected":collected, "all_piggy_banks":all_piggy_banks})
+        return render(request, 'saving-collected.html', {"collected":collected,
+                                                         "all_piggy_banks":all_piggy_banks})
 
     def post(self, request):
         collected = AlreadyCollected.objects.all()
@@ -753,35 +722,32 @@ class AlreadyCollectedView(View):
                 request.session["chosen_id"] = chosen # id all_piggy_banks
             set_session2(request)
             return render(request, 'saving-collected.html', {"chosen": chosen,
-                                                        "collected": collected,
-                                                        "all_piggy_banks": all_piggy_banks,
-                                                             })
+                                                            "collected": collected,
+                                                            "all_piggy_banks": all_piggy_banks})
         except Exception:
-            moj_x=request.session.get("chosen_id"),
-            for e in moj_x:
-                moj_x_nowy = e
+            mine_x = request.session.get("chosen_id"),
+            for e in mine_x:
+                mine_new_x = e
             congrats = request.POST.get('congrats')
             congrats2 = float(congrats)
-            moj_obiekt=PaymentDay.objects.filter(payment_piggybanks_id=moj_x_nowy).last()
+            mine_object = PaymentDay.objects.filter(payment_piggybanks_id=mine_new_x).last()
 
             try:
-                # PaymentDay.objects.get(payment_piggybanks_id=moj_x_nowy, date_of=date.today())
-                dzisiejszy_stary=PaymentDay.objects.get(payment_piggybanks_id=moj_x_nowy, date_of=date.today())
+                # today_but = PaymentDay.objects.get(payment_piggybanks_id=mine_new_x, date_of=date.today())
+                PaymentDay.objects.get(payment_piggybanks_id=mine_new_x, date_of=date.today())
                 return redirect('saving-mistake')
-
             except Exception:
-                #popr!
-                dzisiejszy_nowy=PaymentDay.objects.create(payment_piggybanks_id=moj_x_nowy, date_of=date.today(), payment_collected_id=moj_obiekt.payment_collected_id, value_of=moj_obiekt.value_of)
-                dzisiejszy_nowy.payment_piggybanks_id=moj_x_nowy
-                dzisiejszy_nowy.payment_collected_id=moj_obiekt.payment_collected_id
-                dzisiejszy_nowy.save()
-                alr_powieksz = AlreadyCollected.objects.get(id=dzisiejszy_nowy.payment_collected_id)
-                alr_powieksz.collected += congrats2
-                alr_powieksz.save()
-                dzisiejszy_nowy.value_of += congrats2
-                dzisiejszy_nowy.save()
-            return render(request, 'saving-collected.html', {"collected": collected,
-                                                        "all_piggy_banks": all_piggy_banks})
+                new_today=PaymentDay.objects.create(payment_piggybanks_id=mine_new_x, date_of=date.today(), payment_collected_id=mine_object.payment_collected_id, value_of=mine_object.value_of)
+                new_today.payment_piggybanks_id=mine_new_x
+                new_today.payment_collected_id=mine_object.payment_collected_id
+                new_today.save()
+                already_c = AlreadyCollected.objects.get(id=new_today.payment_collected_id)
+                already_c.collected += congrats2
+                already_c.save()
+                new_today.value_of += congrats2
+                new_today.save()
+                return render(request, 'saving-collected.html', {"collected": collected,
+                                                                "all_piggy_banks": all_piggy_banks})
 
 
 class StockView(View):
@@ -929,11 +895,9 @@ class CreditView(View):
             Credits.objects.create(name=name, credit_amount=credit_amount, should_end_on=should_end_on, description=description)
             c1 = Credits.objects.get(name=name)
             r1 = Repayment.objects.create(collected_money=0)
-
             RepaymentDay.objects.create(repayment_credits=c1, repayment_collected=r1)
             return render(request, 'credit.html', {"credits_objects": credits_objects, "form": form})
         # return render(request, 'credit.html', {"credits_objects": credits_objects, "form": form})
-
 
 
 class ModifyCredit(View):
@@ -965,6 +929,7 @@ class DeleteCredit(DeleteView):
 
 
 class CreditPayments(View):
+
     def get(self, request, id):
         wykres_credit1()
         wykres_credit2()
@@ -976,10 +941,10 @@ class CreditPayments(View):
         amount = request.POST.get('amount')
         amount2 = float(amount)
         credit_obj = Credits.objects.get(id=id)
-
         last_payments = RepaymentDay.objects.filter(repayment_credits_id=credit_obj.id).last()
         try:
-            paid = RepaymentDay.objects.get(repayment_credits_id=id, repayment_date=date.today())
+            # paid = RepaymentDay.objects.get(repayment_credits_id=id, repayment_date=date.today())
+            RepaymentDay.objects.get(repayment_credits_id=id, repayment_date=date.today())
             return redirect('credit-mistake')
 
         except Exception:
@@ -996,6 +961,7 @@ class CreditPayments(View):
 
 
 class CreditMistake(View):
+
     def get(self, request):
         msg = "Dziś już wpłacono na owy cel! Czyżby nastąpiła pomyłka przy wpisywaniu kwoty?"
         credits_objects=Credits.objects.all()
