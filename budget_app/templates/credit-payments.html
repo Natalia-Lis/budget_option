@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 
     <br>
@@ -14,9 +14,15 @@ Jaką kwotą chcesz nadpłacić kredyt {{ credits_objects.name }}?
        </form>
 
   <br><br>
-    <a href="{% url 'credit-mistake' %}">w razie pomyłki kliknij tu</a>
+    <a href="{% url 'credit-mistake' %}">- - - w razie pomyłki kliknij tu - - -</a>
 <br><br>
-tu będzie wykres
+    {% if credits_objects.id == 7 %}
+    <img src="{% static 'wykres-kredyt-1.png' %}" alt="Not found" ><br>
+{% endif %}
+    {% if credits_objects.id == 10 %}
+    <img src="{% static 'wykres-kredyt-2.png' %}" alt="Not found" ><br>
+{% endif %}
+
 
 {% endblock %}
 

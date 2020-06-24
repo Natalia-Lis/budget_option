@@ -320,6 +320,56 @@ def wykres_innego_typu():
 
 
 
+def wykres_credit1():
+    x_cr1 = []
+    y_cr1 = []
+    credit1 = Credits.objects.get(id=7)
+    payments_for_cr1 = RepaymentDay.objects.all().filter(repayment_credits_id=credit1.id).order_by('repayment_date')
+    obj_cr1_name = credit1.name
+    for el in payments_for_cr1:
+        new_value = el.repayment_value
+        y_cr1.append(new_value)
+        new_date = str(el.repayment_date)
+        x_cr1.append(new_date)
+    plt.figure(9)
+    plt.title(f'wykres wpłat dla celu "{obj_cr1_name}"')
+    plt.xlabel('DATY')
+    plt.ylabel('KWOTY')
+    plt.grid(True)
+    plt.margins(0.1)
+    plt.plot(x_cr1, y_cr1, linewidth=5.0)
+    # plt.tick_params(axis='x', rotation=290)
+    savefig('static/wykres-kredyt-1.png')
+
+
+
+
+def wykres_credit2():
+    x_cr2 = []
+    y_cr2 = []
+    credit2 = Credits.objects.get(id=10)
+    payments_for_cr2 = RepaymentDay.objects.all().filter(repayment_credits_id=credit2.id).order_by('repayment_date')
+    obj_cr2_name = credit2.name
+    for el in payments_for_cr2:
+        new_value = el.repayment_value
+        y_cr2.append(new_value)
+        new_date = str(el.repayment_date)
+        x_cr2.append(new_date)
+    plt.figure(10)
+    plt.title(f'wykres wpłat dla celu "{obj_cr2_name}"')
+    plt.xlabel('DATY')
+    plt.ylabel('KWOTY')
+    plt.margins(0.1)
+    plt.bar(x_cr2, y_cr2)
+    # plt.tick_params(axis='x', rotation=290)
+    savefig('static/wykres-kredyt-2.png')
+
+
+
+
+
+
+
 class IndexView(View):
     def get(self, request):
 
@@ -706,21 +756,20 @@ class AlreadyCollectedView(View):
                                                         "collected": collected,
                                                         "all_piggy_banks": all_piggy_banks,
                                                              })
-        except:
-            moj_x_nowy=request.session.get("chosen_id"),
-            # for e in moj_x:
-            #     moj_x_nowy = e
+        except Exception:
+            moj_x=request.session.get("chosen_id"),
+            for e in moj_x:
+                moj_x_nowy = e
             congrats = request.POST.get('congrats')
             congrats2 = float(congrats)
-            # moj_obiekt=PaymentDay.objects.filter(payment_piggybanks_id=moj_x_nowy).last()
-            moj_obiekt=PaymentDay.objects.filter(payment_piggybanks_id=moj_x_nowy).last()#powinnobyc? analiza
+            moj_obiekt=PaymentDay.objects.filter(payment_piggybanks_id=moj_x_nowy).last()
 
             try:
                 # PaymentDay.objects.get(payment_piggybanks_id=moj_x_nowy, date_of=date.today())
                 dzisiejszy_stary=PaymentDay.objects.get(payment_piggybanks_id=moj_x_nowy, date_of=date.today())
                 return redirect('saving-mistake')
 
-            except:
+            except Exception:
                 #popr!
                 dzisiejszy_nowy=PaymentDay.objects.create(payment_piggybanks_id=moj_x_nowy, date_of=date.today(), payment_collected_id=moj_obiekt.payment_collected_id, value_of=moj_obiekt.value_of)
                 dzisiejszy_nowy.payment_piggybanks_id=moj_x_nowy
@@ -917,6 +966,8 @@ class DeleteCredit(DeleteView):
 
 class CreditPayments(View):
     def get(self, request, id):
+        wykres_credit1()
+        wykres_credit2()
         credits_objects=Credits.objects.get(id=id)
         return render(request, 'credit-payments.html', {"credits_objects": credits_objects})
 
@@ -927,21 +978,21 @@ class CreditPayments(View):
         credit_obj = Credits.objects.get(id=id)
 
         last_payments = RepaymentDay.objects.filter(repayment_credits_id=credit_obj.id).last()
-        # try:
-        #     paid = RepaymentDay.objects.get(repayment_credits_id=id, repayment_date=date.today())
-        #     return redirect('credit-mistake')
-        #
-        # except:
-        new_paym = RepaymentDay.objects.create(repayment_credits_id=id,
-                                               repayment_date=date.today(),
-                                               repayment_collected_id=last_payments.repayment_collected_id,
-                                               repayment_value=amount2)
-        increasing = Repayment.objects.get(id=new_paym.repayment_collected_id)
-        increasing.collected_money += amount2
-        increasing.save()
-        new_paym.repayment_value = amount2
-        new_paym.save()
-        return render(request, 'credit-payments.html', {"credits_objects": credits_objects})
+        try:
+            paid = RepaymentDay.objects.get(repayment_credits_id=id, repayment_date=date.today())
+            return redirect('credit-mistake')
+
+        except Exception:
+            new_paym = RepaymentDay.objects.create(repayment_credits_id=id,
+                                                   repayment_date=date.today(),
+                                                   repayment_collected_id=last_payments.repayment_collected_id,
+                                                   repayment_value=amount2)
+            increasing = Repayment.objects.get(id=new_paym.repayment_collected_id)
+            increasing.collected_money += amount2
+            increasing.save()
+            new_paym.repayment_value = amount2
+            new_paym.save()
+            return render(request, 'credit-payments.html', {"credits_objects": credits_objects})
 
 
 class CreditMistake(View):
@@ -966,3 +1017,6 @@ class CreditMistake(View):
         last_to_change.collected_money += correct_value_float
         last_to_change.save()
         return redirect('credits')
+
+
+
