@@ -15,29 +15,27 @@
         <div class="sidenav">
             <center>
             {{now}}
-            <br><br><br><br><br>
-         <br>
+            <br><br><br><br><br><br>
                 <a href="{% url 'budget' %}">Budżet</a><br><br>
                 <a href="{% url 'months-budget' %}">Miesięczne budżety</a><br><br>
-             <a href="{% url 'piggy-banks' %}">Skarbonki</a><br><br>
-                    <a href="{% url 'credits' %}">Kredyty</a><br>
-                      <a href="{% url 'stock' %}">Akcje</a><br>
-                      <a href="{% url 'stock-without' %}">Akcje bez<br>
-                                                web scraper'a</a><br><br>
-     </center>
+                <a href="{% url 'piggy-banks' %}">Skarbonki</a><br><br>
+                <a href="{% url 'credits' %}">Kredyty</a><br><br>
+                <a href="{% url 'stock' %}">Akcje</a><br><br>
+                <a href="{% url 'stock-without' %}">Akcje bez<br>
+                                            web scraper'a</a><br><br>
+            </center>
         </div>
         {% endblock %}
 
     <div class="main">
-        {% block content %}
+    {% block content %}
 
     <br>
+    <img src="{% static 'index.jpg'%}" width="99%" height="99%" alt="tu będzie karuzela">
 
+    {% endblock %}
+    </div>
 
-<img src="{% static 'index.jpg'%}" width="99%" height="99%" alt="tu będzie karuzela">
-
-        {% endblock %}
-</div>
 {#           <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>#}
 {#<script src="{% static 'js2.js' %}"></script>#}
     </body>

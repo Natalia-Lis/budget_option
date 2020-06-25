@@ -12,7 +12,7 @@
         <th>Dywidenda?</th>
         <th>Rodzaj rynku</th>
         <th>Modyfikuj!</th>
-            <th>Usuń</th>
+        <th>Usuń</th>
         </tr>
          {% for element in ctx %}
         <tr>
@@ -28,51 +28,32 @@
         </tr>
          {% endfor %}
         </table>
-
     <br>
-    Obecna cena za akcję CDR: {% if cdr_kurs2 %}{{ cdr_kurs2 }}
-                                {% else %}Odśwież stronę{% endif %}<br>
-    Twoje aktualne akcje CDR: {% if value_of_cdr %}{{ value_of_cdr }}
-                                {% else %}Odśwież stronę{% endif %}<br>
-    <br>
-     Obecna cena za akcję PZU: {% if pzu_kurs2 %}{{ pzu_kurs2 }}
-                                {% else %}Odśwież stronę{% endif %}<br>
-    Twoje aktualne akcje PZU: {% if value_of_pzu %}{{ value_of_pzu }}
-                                {% else %}Odśwież stronę{% endif %}<br>
-    <br>
-    Obecna cena za akcję BDX: {% if bdx_kurs2 %}{{ bdx_kurs2 }}
-                                {% else %}Odśwież stronę{% endif %}<br>
-    Twoje aktualne akcje BDX: {% if value_of_bdx %}{{ value_of_bdx }}
-                                {% else %}Odśwież stronę{% endif %}<br>
-    <br>
-
     Szczegóły dotyczące firm -><br>
     {% for elem in ctx %}
         {% if elem.www %}
         <a href="{{ elem.www }}"> strona iwestora {{ elem.name }}</a><br>
         {% endif %}
-        {% endfor %}
-    Jeśli nie wyświetla się link do strony, dodaj link do modelu!<br>
+    {% endfor %}
+    <small>Jeśli nie wyświetla się link do strony, dodaj link do modelu!</small><br>
 
-<br>
-             <form action="" method="post">
-         {% csrf_token %}
-                                                    <fieldset>
-                  <legend>Dodaj nową pozycję:</legend>
-
-    Nazwa<input type="text" name="name" /><br>
-    Kwota wejścia<input type="number" step="any" name="enter_price" /><br>
-    Udziały<input type="number" name="interests" /><br>
-    Wartość<input type="number" step="any" name="value_of" /><br>
-    Cena<input type="number" step="any" name="price" /><br>
-    Dywidenda<br>
-         <input type="radio" value="True" name="dividend" />Tak<br>
-        <input type="radio" value="False" name="dividend" />Nie<br>
-        <input type="radio" value="Null" name="dividend" />Byćmoże<br>
-    Rodzaj rynku<input type="text" name="type_of_market" /><br>
-    Strona www<input type="text" name="www" /><br>
-
-         <input type="submit" value="send">
+    <br>
+    <form action="" method="post">
+    {% csrf_token %}
+        <fieldset>
+        <legend>Dodaj nową pozycję:</legend>
+            Nazwa<input type="text" name="name" /><br>
+            Kwota wejścia<input type="number" step="any" name="enter_price" /><br>
+            Udziały<input type="number" name="interests" /><br>
+            Wartość<input type="number" step="any" name="value_of" /><br>
+            Cena<input type="number" step="any" name="price" /><br>
+            Dywidenda<br>
+            <input type="radio" value="True" name="dividend" />Tak<br>
+            <input type="radio" value="False" name="dividend" />Nie<br>
+            <input type="radio" value="Null" name="dividend" />Byćmoże<br>
+            Rodzaj rynku<input type="text" name="type_of_market" /><br>
+            Strona www<input type="text" name="www" /><br>
+            <input type="submit" value="send">
         </fieldset>
-     </form>
+    </form>
 {% endblock %}

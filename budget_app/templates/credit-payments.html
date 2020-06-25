@@ -3,26 +3,25 @@
 {% block content %}
 
     <br>
-           <form action="" method="post">
-         {% csrf_token %}
-
-
-Jaką kwotą chcesz nadpłacić kredyt {{ credits_objects.name }}?
+    <form action="" method="post">
+    {% csrf_token %}
+        Jaką kwotą chcesz nadpłacić kredyt {{ credits_objects.name }}?
         <input type="number" step="any" name="amount">
-                <input type="submit" value="send">
+        <input type="submit" value="send">
+   </form>
 
-       </form>
+    <br><br>
+    <a href="{% url 'credit-mistake' %}">- - - w razie pomyłki w nadpłacie kredytu kliknij tu - - -</a>
 
-  <br><br>
-    <a href="{% url 'credit-mistake' %}">- - - w razie pomyłki kliknij tu - - -</a>
-<br><br>
+    <br><br>
     {% if credits_objects.id == 7 %}
     <img src="{% static 'wykres-kredyt-1.png' %}" alt="Not found" ><br>
-{% endif %}
+    {% endif %}
     {% if credits_objects.id == 10 %}
     <img src="{% static 'wykres-kredyt-2.png' %}" alt="Not found" ><br>
-{% endif %}
-
+    {% endif %}
+    <br>
+    Dotychczas nadpłacono: {{ repayments_this_id.collected_money }} złotych.
 
 {% endblock %}
 

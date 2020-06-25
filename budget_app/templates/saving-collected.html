@@ -2,34 +2,28 @@
 
 {% block content %}
 
-{#    <br>czy dodać własny order punktowy, ale nie unique, a potem przy wyświetlaniu order_by po nim?<br>#}
-
     {% if chosen %}
         <form action="" method="post">
          {% csrf_token %}
-
-        <input type="number" step="any" name="congrats">
-        <input type="number"  name="zlap_z_templ" value="{{ zlapany.id }}" hidden>
-                <input type="submit" value="send">
+            <input type="number" step="any" name="congrats">
+            <input type="number"  name="zlap_z_templ" value="{{ zlapany.id }}" hidden>
+            <input type="submit" value="send">
         </form>
 
-
-
-{% else %}
-           <form action="" method="post">
-         {% csrf_token %}
-                                   <fieldset>
-                  <legend>Którego celu chcesz dopilnować?</legend>
-   {% for element in all_piggy_banks %}
-    <li><input type="radio" name="choose" value="{{ element.id }}">
-      {{ element.money_for }}</li><hr>
-    {% endfor %}
-         <input type="submit" value="send">
-                         </fieldset>
-     </form>
+    {% else %}
+        <form action="" method="post">
+        {% csrf_token %}
+            <fieldset>
+            <legend>Którego celu chcesz dopilnować?</legend>
+                {% for element in all_piggy_banks %}
+                <li><input type="radio" name="choose" value="{{ element.id }}">
+                {{ element.money_for }}</li><hr>
+                {% endfor %}
+            <input type="submit" value="send">
+            </fieldset>
+        </form>
         <br><br>
-
     {% endif %}
-<br>
+    <br>
 
 {% endblock %}

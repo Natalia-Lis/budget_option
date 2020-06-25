@@ -6,7 +6,7 @@
     <br><br>
     Aktualne pozycje w Twoim budżecie:<br>
     <small>Jeśli coś już jest nieaktualne - wyrzuć pozycję!</small>
-<br>
+    <br>
     <table border="1">
         <tr>
         <th>Nazwa</th>
@@ -17,20 +17,20 @@
         <th>Obliczyć?</th>
         <th>Modyfikuj!</th>
             <th>Usuń</th>
-</tr>
+        </tr>
     {% for element in pozycje %}
         <tr>
         <td>{{ element.name }}</td>
         <td>{{ element.money }}</td>
         <td>
-     <form action="" method="post">
-         {% csrf_token %}
-<input type="checkbox" name="dolicz{{ element.id }}"
-onclick="document.getElementById('dodatkowo{{ element.id }}').style.display = this.checked ?
-        'block' : 'none'; this.form.elements['{{ element.id }}'].disabled = !this.checked">
-<div id="dodatkowo{{ element.id }}" style="display: none">
-<input type="number" step="any" name="{{ element.id }}">
-</div>
+            <form action="" method="post">
+             {% csrf_token %}
+            <input type="checkbox" name="dolicz{{ element.id }}"
+            onclick="document.getElementById('dodatkowo{{ element.id }}').style.display = this.checked ?
+                    'block' : 'none'; this.form.elements['{{ element.id }}'].disabled = !this.checked">
+            <div id="dodatkowo{{ element.id }}" style="display: none">
+            <input type="number" step="any" name="{{ element.id }}">
+            </div>
         </td>
 
         <td>{% if element.monthly == True %}
@@ -52,23 +52,25 @@ onclick="document.getElementById('dodatkowo{{ element.id }}').style.display = th
         <td><a href="{% url 'delete-budget' element.id %}"> Usuń</a></td>
         </tr>
     {% endfor %}
-</table><input type="submit" value="oblicz wydatki">
+    </table>
+        <input type="submit" value="oblicz wydatki">
      </form>
-    <br>
 
+    <br>
         {% if my_sum %}    <br>
-                Twoje obliczenia: {{ my_sum }}<br>
+            Twoje obliczenia: {{ my_sum }}<br>
             <a href="{% url 'months-proposition' %}"><button>
             Zapisz Twoje wyliczenia jako wydatki na ten miesiąc
             </button></a><br>
-    {% endif %}
-<br><br>
+        {% endif %}
+    <br><br>
          <form action="" method="post">
          {% csrf_token %}
-               <fieldset>
-                  <legend>Dodaj nową pozycję do budżetu</legend>
-{{ form.as_p }}
-         <input type="submit" value="send"></fieldset>
-     </form>
+           <fieldset>
+           <legend>Dodaj nową pozycję do budżetu</legend>
+            {{ form.as_p }}
+            <input type="submit" value="send">
+           </fieldset>
+        </form>
 
 {% endblock %}

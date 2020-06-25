@@ -333,7 +333,8 @@ def wykres_credit1():
     plt.ylabel('KWOTY')
     plt.grid(True)
     plt.margins(0.1)
-    plt.plot(x_cr1, y_cr1, marker='o', linewidth=4.0)
+    # plt.plot(x_cr1, y_cr1, marker='o', linewidth=4.0)
+    plt.plot(x_cr1, y_cr1, 'c*', markersize=18)  # gwiazdka
     # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-kredyt-1.png')
 
@@ -908,7 +909,13 @@ class CreditPayments(View):
         wykres_credit1()
         wykres_credit2()
         credits_objects=Credits.objects.get(id=id)
-        return render(request, 'credit-payments.html', {"credits_objects": credits_objects})
+        # p = RepaymentDay.objects.get(repayment_collected_id=2)
+        rep = RepaymentDay.objects.filter(repayment_credits_id=id).first()
+        znajdz = rep.repayment_collected_id
+        repayments_this_id = Repayment.objects.get(id=znajdz)
+
+        return render(request, 'credit-payments.html', {"credits_objects": credits_objects,
+                                                        "repayments_this_id":repayments_this_id})
 
     def post(self, request, id):
         credits_objects=Credits.objects.get(id=id)
@@ -965,7 +972,7 @@ class StockViewWithoutScraper(View):
     def get(self, request):
         form = StockForm()
         ctx = Stock.objects.all()
-        return render(request, 'stock.html', {"ctx":ctx, "form":form})
+        return render(request, 'stock2.html', {"ctx":ctx, "form":form})
 
     def post(self, request):
         form = StockForm(request.POST)
@@ -980,6 +987,6 @@ class StockViewWithoutScraper(View):
             www = form.cleaned_data['www']
             Stock.objects.create(name=name, enter_price=enter_price, interests=interests, value_of=value_of,
                                  price=price,dividend=dividend,type_of_market=type_of_market,www=www)
-            return redirect('stock')
+            return redirect('stock-without')
 
 
