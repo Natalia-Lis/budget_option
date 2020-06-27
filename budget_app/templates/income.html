@@ -25,15 +25,26 @@
     <br>
     Razem przychód: {{ calc }}
     <br><br>
+<form action="" method="post">
+{% csrf_token %}
+Jeśli chcesz uwzględnić dodatkową kwotę:
+    <input type="number" step="any" min="1" name="additional_income"
+                       placeholder="Dolicz tymczasowy dochód...">
+<input type="submit" value="oblicz">
+</form>
+    <br>{% if sum_of %}Suma przychodu, z uwzględnieniem dodatkowej kwoty: {{ sum_of }}{% endif %}
+    <br><br><br><br>
     <form action="" method="post">
     {% csrf_token %}
-        <br>Dodaj nową pozycję:<br>
+                   <fieldset>
+           <legend>Dodaj nowy przychód</legend>
 
     Nazwa dla dochodu <input type="text" name="name_of_income" /><br>
     Kwota dochodu <input type="number" step="any" min="1" name="value_of_income" /><br>
     Opis dochodu <input type="text" name="income_description" /><br>
 
         <input type="submit" value="wyślij">
+                       </fieldset>
     </form>
 
 {% endblock %}

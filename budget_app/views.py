@@ -382,6 +382,14 @@ class IncomeView(View):
 
     def post(self, request):
         all_income = Income.objects.all()
+        additional_income = float(request.POST.get('additional_income'))
+        for_calculation = []
+        calc = 0
+        for element in all_income:
+            for_calculation.append(element.value_of_income)
+        for elem in for_calculation:
+            calc += elem
+        sum_of = calc + additional_income
         form = IncomeForm(request.POST)
         if form.is_valid():
             name_of_income = form.cleaned_data['name_of_income']
@@ -390,7 +398,8 @@ class IncomeView(View):
             Income.objects.create(name_of_income=name_of_income,
                                   value_of_income=value_of_income,
                                   income_description=income_description)
-            return redirect('income')
+            return render(request, 'income.html', {"sum_of":sum_of,"all_income": all_income, "form": form, "calc": calc})
+        return render(request, 'income.html', {"sum_of":sum_of,"all_income": all_income, "form": form, "calc": calc})
 
 
 class ModifyIncome(View):
@@ -429,12 +438,6 @@ class BudgetView(View):#
 
     def post(self, request):
         pozycje=Budget.objects.all()
-        # for_calculation = []
-        # kalkulacje = 0
-        # for element in pozycje:
-        #     for_calculation.append(element.money_min)
-        # for elem in for_calculation:
-        #     kalkulacje += elem
         form = BudgetForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
