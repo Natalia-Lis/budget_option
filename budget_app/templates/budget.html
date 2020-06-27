@@ -5,18 +5,18 @@
     <a href="{% url 'months-budget' %}"><strong>&nbsp;Dotychczasowe budżety -></strong></a><br>
     <br><br>
     Aktualne pozycje w Twoim budżecie:<br>
-    <small>Jeśli coś już jest nieaktualne - wyrzuć pozycję!</small>
+    <small>* Jeśli coś już jest nieaktualne - wyrzuć pozycję!</small>
     <br>
     <table border="1">
         <tr>
         <th>Nazwa</th>
-        <th>Kwota</th>
-        <th>Dopłata?</th>
-        <th>Miesięcznie?</th>
+        <th>Kwota miesięczna</th>
+        <th>Potrzebna dopłata?</th>
+        <th>Co miesiąc?</th>
         <th>Opis</th>
-        <th>Obliczyć?</th>
-        <th>Modyfikuj!</th>
-            <th>Usuń</th>
+        <th>Wliczyć w koszt miesiąca?</th>
+        <th>Modyfikacja</th>
+            <th>Usuwanie</th>
         </tr>
     {% for element in pozycje %}
         <tr>
@@ -29,7 +29,7 @@
             onclick="document.getElementById('dodatkowo{{ element.id }}').style.display = this.checked ?
                     'block' : 'none'; this.form.elements['{{ element.id }}'].disabled = !this.checked">
             <div id="dodatkowo{{ element.id }}" style="display: none">
-            <input type="number" step="any" name="{{ element.id }}">
+            <input type="number" step="any" min="1" name="{{ element.id }}" placeholder="wpisz kwotę dopłaty">
             </div>
         </td>
 
@@ -68,8 +68,15 @@
          {% csrf_token %}
            <fieldset>
            <legend>Dodaj nową pozycję do budżetu</legend>
-            {{ form.as_p }}
-            <input type="submit" value="send">
+
+            Nazwa <input type="text" name="name" /><br>
+            Kwota <input type="number" step="any" min="1" name="money" /><br>
+            Czy to koszt comiesięczny?
+            <input type="radio" value="True" name="monthly" />Tak
+            <input type="radio" value="False" name="monthly" />Nie<br>
+            Dodatkowy opis <input type="text" name="description" /><br>
+
+            <input type="submit" value="wyślij">
            </fieldset>
         </form>
 

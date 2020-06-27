@@ -61,3 +61,12 @@ class CreditsForm(forms.ModelForm):
 #
 #     collected = models.FloatField(default=0)
 #     target = models.ManyToManyField(Skarbonki, through='PaymentDay')
+
+
+class IncomeForm(forms.ModelForm):
+    class Meta:
+        model = Income
+        fields = '__all__'
+    def __init__(self, *args, **kwargs):
+        super(IncomeForm, self).__init__(*args, **kwargs)
+        self.fields['income_description'].required = False

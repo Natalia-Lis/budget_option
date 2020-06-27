@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+    <table border="1">
+        <tr>
+        <th>Nazwa dochodu</th>
+        <th>Kwota dochodu</th>
+        <th>Opis</th>
+        <td> Modyfikacja</td>
+        <td> Usuwanie</td>
+        </tr>
+    {% for element in all_income %}
+        <tr>
+        <td>{{ element.name_of_income }}</td>
+        <td>{{ element.value_of_income }}</td>
+        <td>{{ element.income_description }}</td>
+        <td><a href="{% url 'modify-income' element.id %}"> Modyfikuj!</a></td>
+        <td><a href="{% url 'delete-income' element.id %}"> Usuń</a></td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    <br>
+    Razem przychód: {{ calc }}
+    <br><br>
+    <form action="" method="post">
+    {% csrf_token %}
+        <br>Dodaj nową pozycję:<br>
+
+    Nazwa dla dochodu <input type="text" name="name_of_income" /><br>
+    Kwota dochodu <input type="number" step="any" min="1" name="value_of_income" /><br>
+    Opis dochodu <input type="text" name="income_description" /><br>
+
+        <input type="submit" value="wyślij">
+    </form>
+
+{% endblock %}

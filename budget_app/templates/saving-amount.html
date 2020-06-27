@@ -6,15 +6,15 @@
      <form action="" method="post">
          {% csrf_token %}
          <br><h4>Jaką kwotę powinno się odkładać, żeby mieć coś w określonym czasie?</h4><br>
-        Wpisz kwotę określoną na Twój cel? <input type="number" name="kwota"><br>
-        Ile miesięcy policzyć? <input type="number" name="kwota_mies"><br>
-         <input type="submit" value="send">
-         <br><small>Pełne lata: 12M, 24M, 36M, 48M, 60M, 72M, 84M, 96M...</small>
+        Wpisz kwotę określoną na Twój cel? <input type="number" step="any" min="1" name="amount_of"><br>
+        Na ile miesięcy chcesz rozłożyć kwotę? <input type="number" step="1" min="1" name="amount_month"><br>
+         <input type="submit" value="oblicz">
+         <br><small>* Pełne lata: 12M, 24M, 36M, 48M, 60M, 72M, 84M, 96M...</small>
      </form>
-    <br>{% if wynik1 %}{{ wynik1 }} złotych na każdy miesiąc powinno się odkładać, aby po takim czasie uzyskać określoną kwotę{% endif %}<br>
+    <br><strong>{% if res1 %}{{ res1 }} złotych na każdy miesiąc powinno się odkładać, aby po takim czasie uzyskać określoną kwotę{% endif %}</strong><br>
 
     <br>
     Twoje porównania:<br>
-    {% if lista_wynikow2 %}{% for elem in lista_wynikow2 %}{{ elem }}<br>{% endfor %}{% endif %}<br>
+    {% if results_list2 %}{% for elem in results_list2 %}{{ elem }}<br>{% endfor %}{% endif %}<br>
 
 {% endblock %}

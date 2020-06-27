@@ -6,10 +6,10 @@ from django.urls import reverse
 
 
 class Budget(models.Model):
-    name = models.CharField(max_length=64)
-    money = models.FloatField()
-    monthly = models.BooleanField(default=True)
-    description = models.TextField(null=True)
+    name = models.CharField(max_length=64, verbose_name='Nazwa')
+    money = models.FloatField(verbose_name='Kwota')
+    monthly = models.BooleanField(default=True, verbose_name='Czy to koszt comiesięczny?')
+    description = models.TextField(null=True, verbose_name='Opis zobowiązania')
 
     def __str__(self):
         return self.name
@@ -19,9 +19,9 @@ class Budget(models.Model):
 
 
 class PiggyBanks(models.Model):
-    money_for = models.CharField(max_length=64)
-    m_min = models.FloatField()
-    description = models.TextField(null=True)
+    money_for = models.CharField(max_length=64, verbose_name='Nazwa dla określonego celu')
+    m_min = models.FloatField(verbose_name='Kwota potrzebna na ten cel')
+    description = models.TextField(null=True, verbose_name='Opcjonalny opis dla celu')
 
     def __str__(self):
         return self.money_for
@@ -44,14 +44,14 @@ class MonthsBudget(models.Model):
 
 
 class Stock(models.Model):
-    name = models.CharField(max_length=64)
-    enter_price = models.FloatField()
-    interests = models.IntegerField()
-    value_of = models.FloatField(null=True)
-    price = models.FloatField(null=True)
-    dividend = models.NullBooleanField(default=False)
-    type_of_market = models.CharField(max_length=64, null=True)
-    www = models.CharField(max_length=256, null=True)
+    name = models.CharField(max_length=64, verbose_name='Nazwa dla określonej akcji')
+    enter_price = models.FloatField(verbose_name='Cena w momencie zakupu')
+    interests = models.IntegerField(verbose_name='Liczba zakupionych udziałów')
+    value_of = models.FloatField(null=True, verbose_name='Wartość, którą chcesz wpisać')
+    price = models.FloatField(null=True, verbose_name='Cena, jaką chcesz zapisać')
+    dividend = models.NullBooleanField(default=False, verbose_name='Czy jest wypłacana dywidenda?')
+    type_of_market = models.CharField(max_length=64, null=True, verbose_name='Nazwa dla rodzaju rynku akcji')
+    www = models.CharField(max_length=256, null=True, verbose_name='Link do strony internetowej inwestora dla akcji')
 
     def __str__(self):
         return self.name
@@ -89,3 +89,15 @@ class RepaymentDay(models.Model):
     repayment_value = models.FloatField(default=0)
     repayment_credits = models.ForeignKey(Credits, on_delete=models.CASCADE)
     repayment_collected = models.ForeignKey(Repayment, on_delete=models.CASCADE)
+
+
+class Income(models.Model):
+    name_of_income = models.CharField(max_length=128, verbose_name='Nazwa dla dochodu')
+    value_of_income = models.FloatField(verbose_name='Kwota dochodu')
+    income_description = models.TextField(null=True, verbose_name='Opis dochodu')
+
+    def __str__(self):
+        return self.name_of_income
+
+    def get_absolute_url(self):
+        return reverse('delete-income', kwargs={'pk': self.pk})

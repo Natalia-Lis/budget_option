@@ -5,14 +5,14 @@
  <table border="1">
         <tr>
         <th>Nazwa</th>
-        <th>Kwota wejścia</th>
+        <th>Cena wejścia</th>
         <th>Udziały</th>
         <th>Wartość</th>
         <th>Cena</th>
         <th>Dywidenda?</th>
         <th>Rodzaj rynku</th>
-        <th>Modyfikuj!</th>
-        <th>Usuń</th>
+        <th>Modyfikacja</th>
+        <th>Usuwanie</th>
         </tr>
          {% for element in ctx %}
         <tr>
@@ -21,7 +21,11 @@
         <td>{{ element.interests }}</td>
         <td>{{ element.value_of }}</td>
         <td>{{ element.price }}</td>
-        <td>{{ element.dividend }}</td>
+        <td>{% if element.dividend == True %}Tak
+            {% elif element.dividend == False %}Nie
+            {% else %}Być może
+            {% endif %}</td>
+
         <td>{{ element.type_of_market }}</td>
         <td><a href="{% url 'modify-stock' element.id %}"> Modyfikuj!</a></td>
         <td><a href="{% url 'delete-stock' element.id %}"> Usuń</a></td>
@@ -35,25 +39,26 @@
         <a href="{{ elem.www }}"> strona iwestora {{ elem.name }}</a><br>
         {% endif %}
     {% endfor %}
-    <small>Jeśli nie wyświetla się link do strony, dodaj link do modelu!</small><br>
+    <small>* Jeśli nie wyświetla się link do strony, dodaj link do modelu!</small><br>
 
     <br>
     <form action="" method="post">
     {% csrf_token %}
         <fieldset>
-        <legend>Dodaj nową pozycję:</legend>
-            Nazwa<input type="text" name="name" /><br>
-            Kwota wejścia<input type="number" step="any" name="enter_price" /><br>
-            Udziały<input type="number" name="interests" /><br>
-            Wartość<input type="number" step="any" name="value_of" /><br>
-            Cena<input type="number" step="any" name="price" /><br>
-            Dywidenda<br>
+       <legend>Dodaj nową pozycję:</legend>
+
+            Nazwa dla określonej akcji <input type="text" name="name" /><br>
+            Cena w momencie zakupu <input type="number" step="any" min="1" name="enter_price" /><br>
+            Liczba zakupionych udziałów <input type="number" min="1" name="interests" /><br>
+            Wartość, którą chcesz wpisać <input type="number" step="any" name="value_of" /><br>
+            Cena, jaką chcesz zapisać <input type="number" step="any" name="price" /><br>
+            Czy jest wypłacana dywidenda?<br>
             <input type="radio" value="True" name="dividend" />Tak<br>
             <input type="radio" value="False" name="dividend" />Nie<br>
             <input type="radio" value="Null" name="dividend" />Byćmoże<br>
-            Rodzaj rynku<input type="text" name="type_of_market" /><br>
-            Strona www<input type="text" name="www" /><br>
-            <input type="submit" value="send">
+            Nazwa dla rodzaju rynku akcji <input type="text" name="type_of_market" /><br>
+            Link do strony inwestora dla danej akcji <input type="text" name="www" /><br>
+            <input type="submit" value="wyślij">
         </fieldset>
     </form>
 {% endblock %}

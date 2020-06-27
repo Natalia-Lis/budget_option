@@ -6,8 +6,8 @@
         <form action="" method="post">
          {% csrf_token %}
             <input type="number" step="any" name="congrats">
-            <input type="number"  name="zlap_z_templ" value="{{ zlapany.id }}" hidden>
-            <input type="submit" value="send">
+            <input type="number" step="any" name="zlap_z_templ" value="{{ zlapany.id }}" hidden>
+            <input type="submit" value="wyślij">
         </form>
 
     {% else %}
@@ -19,7 +19,7 @@
                 <li><input type="radio" name="choose" value="{{ element.id }}">
                 {{ element.money_for }}</li><hr>
                 {% endfor %}
-            <input type="submit" value="send">
+            <input type="submit" value="wyślij">
             </fieldset>
         </form>
         <br><br>

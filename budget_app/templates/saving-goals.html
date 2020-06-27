@@ -5,17 +5,17 @@
     Twoje obecne cele: <br>
     <table border="1">
         <tr>
-        <th>Nazwa</th>
-        <th>Kwota</th>
+        <th>Nazwa celu</th>
+        <th>Potrzebna kwota</th>
         <th>Opis</th>
-        <td> Modyfikuj!</td>
-        <td> Usuń</td>
+        <td> Modyfikacja</td>
+        <td> Usuwanie</td>
         </tr>
     {% for element in all_piggy_banks %}
         <tr>
         <td>{{ element.money_for }}</td>
         <td>{{ element.m_min }}</td>
-        <td>{{ element.opis }}</td>
+        <td>{{ element.description }}</td>
         <td><a href="{% url 'modify-saving' element.id %}"> Modyfikuj!</a></td>
         <td><a href="{% url 'delete-saving' element.id %}"> Usuń</a></td>
         </tr>
@@ -26,10 +26,8 @@
     <form action="" method="post">
     {% csrf_token %}
         <br>Dodaj nową pozycję:<br>
-        Nazwa celu<input type="text" name="money_for"><br>
-        Kwota min<input type="text" name="m_min"><br>
-        Dodatkowy opis<input type="text" name="opis"><br>
-        <input type="submit" value="send">
+        {{ form.as_p }}
+        <input type="submit" value="wyślij">
     </form>
 
 {% endblock %}

@@ -20,6 +20,11 @@ from budget_app.views import *
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='index'),
+
+    path('income/', IncomeView.as_view(), name='income'),
+    path('modify-income/<int:id>/', ModifyIncome.as_view(), name='modify-income'),
+    path('delete-income/<int:pk>/', DeleteIncome.as_view(), name='delete-income'),
+
     path('budget/', BudgetView.as_view(), name='budget'),
     path('modify-budget/<int:id>/', ModifyBudget.as_view(), name='modify-budget'),
     path('delete-budget/<int:pk>/', DeleteBudget.as_view(), name='delete-budget'),
@@ -30,6 +35,7 @@ urlpatterns = [
 
     path('piggy-banks/', PiggyBanksView.as_view(), name='piggy-banks'),
     path('saving-goals/', SavingGoals.as_view(), name='saving-goals'),
+    path('saving-add/', SavingAdd.as_view(), name='saving-add'),
 
     path('charts/', SavingCharts.as_view(), name='charts'),
 

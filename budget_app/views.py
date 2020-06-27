@@ -342,7 +342,7 @@ def wykres_credit1():
 def wykres_credit2():
     x_cr2 = []
     y_cr2 = []
-    credit2 = Credits.objects.get(id=10)
+    credit2 = Credits.objects.get(id=12)
     payments_for_cr2 = RepaymentDay.objects.all().filter(repayment_credits_id=credit2.id).order_by('repayment_date')
     obj_cr2_name = credit2.name
     for el in payments_for_cr2:
@@ -364,6 +364,60 @@ def wykres_credit2():
 class IndexView(View):
     def get(self, request):
         return render(request, 'base.html')
+
+
+
+class IncomeView(View):
+
+    def get(self, request):
+        all_income = Income.objects.all()
+        form = IncomeForm()
+        for_calculation = []
+        calc = 0
+        for element in all_income:
+            for_calculation.append(element.value_of_income)
+        for elem in for_calculation:
+            calc += elem
+        return render(request, 'income.html', {"all_income":all_income, "form":form, "calc":calc})
+
+    def post(self, request):
+        all_income = Income.objects.all()
+        form = IncomeForm(request.POST)
+        if form.is_valid():
+            name_of_income = form.cleaned_data['name_of_income']
+            value_of_income = form.cleaned_data['value_of_income']
+            income_description = form.cleaned_data['income_description']
+            Income.objects.create(name_of_income=name_of_income,
+                                  value_of_income=value_of_income,
+                                  income_description=income_description)
+            return redirect('income')
+
+
+class ModifyIncome(View):
+
+    def get(self, request, id):
+        one_income=Income.objects.get(id=id)
+        form = IncomeForm(instance=one_income)
+
+        return render(request, 'income-modify.html', {"one_income":one_income, "form":form})
+
+    def post(self, request, id):
+        form = IncomeForm(request.POST)
+        one_income = Income.objects.get(id=id)
+        if form.is_valid():
+            name_of_income = form.cleaned_data['name_of_income']
+            value_of_income = form.cleaned_data['value_of_income']
+            income_description = form.cleaned_data['income_description']
+            one_income.name_of_income = name_of_income
+            one_income.value_of_income = value_of_income
+            one_income.income_description = income_description
+            one_income.save()
+            return redirect('income')
+
+
+class DeleteIncome(DeleteView):
+    model = Income
+    success_url = '/income'
 
 
 class BudgetView(View):#
@@ -517,6 +571,29 @@ class PiggyBanksView(View):
         return render(request, 'piggy-banks.html')
 
 
+class SavingAdd(View):
+
+    def get(self, request):
+        all_piggy_banks = PiggyBanks.objects.all()
+        form = PiggyBanksForm()
+        return render(request, 'add-new-piggy.html', {"all_piggy_banks":all_piggy_banks, "form":form})
+
+    def post(self, request):
+        all_piggy_banks = PiggyBanks.objects.all()
+        form = PiggyBanksForm(request.POST)
+        if form.is_valid():
+            money_for = form.cleaned_data['money_for']
+            m_min = form.cleaned_data['m_min']
+            description = form.cleaned_data['description']
+            PiggyBanks.objects.create(money_for=money_for, m_min=m_min, description=description)
+            s1 = PiggyBanks.objects.get(money_for=money_for)
+            a1 = AlreadyCollected.objects.create(collected=0)
+            PaymentDay.objects.create(payment_piggybanks=s1, payment_collected=a1)
+            return redirect('saving-goals')
+
+
+
+
 class SavingGoals(View):
 
     def get(self, request):
@@ -665,7 +742,7 @@ class SavingMistake(View):
         last_to_change.save()
         return redirect('piggy-banks')
 
-
+results_list = []
 
 class SavingTime(View):
 
@@ -673,16 +750,17 @@ class SavingTime(View):
         return render(request, 'saving-time.html')
 
     def post(self, request):
-        results_list = []
         amount_of1 = request.POST.get('amount_of')
         amount_month2 = request.POST.get('amount_month')
         res0 = float(amount_of1) / float(amount_month2)
-        res1 = math.ceil(wynik0)
+        res1 = math.ceil(res0)
         # wynik1 = Decimal("%.2f" % wynik0)
         results_list.append(f"{amount_of1} : {amount_month2} = {res1} miesięcy \n")
         results_list.reverse()
         return render(request, 'saving-time.html', {'res1':res1, "results_list":results_list})
 
+
+results_list2 = []
 
 class SavingAmount(View):
 
@@ -690,12 +768,11 @@ class SavingAmount(View):
         return render(request, 'saving-amount.html')
 
     def post(self, request):
-        results_list2 = []
         amount_of1 = request.POST.get('amount_of')
         amount_month2 = request.POST.get('amount_month')
         res0 = float(amount_of1) / float(amount_month2)
         res1 = Decimal("%.2f" % res0)
-        results_list2.append(f"{amount_of1} : {amount_month2} = {res1} \n")
+        results_list2.append(f"{amount_of1} : {amount_month2} = {res1} złotych \n")
         results_list2.reverse()
         return render(request, 'saving-amount.html', {'res1':res1, "results_list2":results_list2})
 

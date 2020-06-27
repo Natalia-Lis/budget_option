@@ -9,7 +9,7 @@ body {
 
 a, a:link, a:visited {
     color: #0f0f93;
-    text-decoration: none;
+    /*text-decoration: none;*/
 }
 
 .sidenav {
@@ -27,7 +27,7 @@ a, a:link, a:visited {
 
 .sidenav a {
   padding: 6px 8px 6px 16px;
-  text-decoration: none;
+  /*text-decoration: none;*/
   font-size: 22px;
   color: cornflowerblue;
   display: block;
