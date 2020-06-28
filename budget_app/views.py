@@ -19,18 +19,36 @@ import matplotlib.dates as mdates
 
 
 def kalkul():
-    pozycje = Budget.objects.all()
-    this_months_budget = MonthsBudget.objects.all()
-    for_calculation = []
+    pozycje = PiggyBanks.objects.all()
+    # this_months_budget = MonthsBudget.objects.all()
+    names_of = []
+    goal_of = []
+    already_c = []
+
     kalkulacje = 0
     for element in pozycje:
         # for_calculation = np.array(element.money_min, dtype=np.float32)
-        for_calculation.append(element.money_min)
+        names_of.append(element.money_for)
+        goal_of.append(element.m_min)
+        take = AlreadyCollected.objects.filter(paymentday__payment_piggybanks_id=element.id).order_by('paymentday__date_of').last()
+        already_c.append(take.collected)
         # for_calculation = [float(element.money_min) for element.money_min in pozycje]
-    for elem in for_calculation:
-        kalkulacje += elem
-        return kalkulacje
+    # for elem in names_of:
+    #     kalkulacje += elem
+    #     return kalkulacje
 
+# def kalkul():
+#     pozycje = Budget.objects.all()
+#     this_months_budget = MonthsBudget.objects.all()
+#     for_calculation = []
+#     kalkulacje = 0
+#     for element in pozycje:
+#         # for_calculation = np.array(element.money_min, dtype=np.float32)
+#         for_calculation.append(element.money_min)
+#         # for_calculation = [float(element.money_min) for element.money_min in pozycje]
+#     for elem in for_calculation:
+#         kalkulacje += elem
+#         return kalkulacje
 
 def wykres_month():
     plt.figure(1)
@@ -361,8 +379,36 @@ def wykres_credit2():
 
 
 
+def wykres_piggybanks_all():
+    pozycje = PiggyBanks.objects.all()
+    names_of = []
+    goal_of = []
+    already_c = []
+    for element in pozycje:
+        names_of.append(element.money_for)
+        goal_of.append(element.m_min)
+        take = AlreadyCollected.objects.filter(paymentday__payment_piggybanks_id=element.id).order_by('paymentday__date_of').last()
+        already_c.append(take.collected)
+
+    plt.figure(11)
+    plt.style.use('ggplot')
+    plt.title('wykres wpłat - wszystkie cele')
+    plt.xlabel('DATY')
+    plt.ylabel('KWOTY')
+    plt.grid(True)
+    plt.margins(0.1)
+    plt.figure(figsize=(12, 9))
+    plt.bar(names_of, already_c, label='uzbierane')
+    plt.bar(names_of, goal_of, label='potrzebne kwoty', bottom=already_c)
+    plt.legend()
+    # plt.tick_params(axis='x', rotation=290)
+    savefig('static/wykres-inny-pball.png')
+
+
+
 class IndexView(View):
     def get(self, request):
+        wykres_piggybanks_all()
         return render(request, 'base.html')
 
 
@@ -868,12 +914,12 @@ class StockView(View):
             value_of_bdx = jednostki_bdx * bdx_kurs2
 
         return render(request, 'stock.html', {
-            "cdr_kurs2":cdr_kurs2,
-                                            "pzu_kurs2":pzu_kurs2,
+                                              "cdr_kurs2":cdr_kurs2,
+                                              "pzu_kurs2":pzu_kurs2,
                                               "value_of_cdr":value_of_cdr,
                                               "value_of_pzu":value_of_pzu,
                                               "value_of_bdx":value_of_bdx,
-                                           "ctx":ctx, "form":form,
+                                              "ctx":ctx, "form":form,
                                               "bdx_kurs2":bdx_kurs2
                                               })
 
