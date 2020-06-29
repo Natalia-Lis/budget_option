@@ -1,5 +1,5 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 
     <a href="{% url 'months-budget' %}"><strong>&nbsp;Dotychczasowe budżety -></strong></a><br>
@@ -65,7 +65,11 @@
             Zapisz Twoje wyliczenia jako wydatki na ten miesiąc
             </button></a><br>
         {% endif %}
-    <br><br>
+    <br>
+    <br>
+    <img src="{% static 'wykres-spending-pie.png' %}" alt="Not found" ><br>
+
+    <br>
          <form action="" method="post">
          {% csrf_token %}
            <fieldset>
