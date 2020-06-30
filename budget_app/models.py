@@ -72,7 +72,7 @@ class PaymentDay(models.Model):
 class Credits(models.Model):
     name = models.CharField(max_length=64, verbose_name='Nazwa dla kredytu')
     credit_amount = models.FloatField(verbose_name='Kwota kredytu')
-    should_end_on = models.DateField(null=True, verbose_name='Data planowanej końcowej spłaty')
+    should_end_on = models.DateField(null=True, verbose_name='Planowana końcowa spłata (YYYY-MM-DD)')
     description = models.TextField(null=True, verbose_name='Opcjonalny opis')
 
     def __str__(self):

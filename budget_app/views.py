@@ -18,6 +18,12 @@ import numpy as np
 import matplotlib.dates as mdates
 
 
+# matplotlib
+# okno = []
+# okno.append(plt.plot(x,y)
+#             plt.plot(x1,y1)
+
+
 def kalkul():
     pozycje = PiggyBanks.objects.all()
     # this_months_budget = MonthsBudget.objects.all()
@@ -52,6 +58,7 @@ def kalkul():
 
 def wykres_month():
     plt.figure(1)
+    plt.figure(figsize=(10, 7))
     plt.title('wykres z ostatnich 12 miesięcy')
     plt.ylabel('kwoty')
     queryset = MonthsBudget.objects.all().order_by('-month_date')
@@ -67,9 +74,8 @@ def wykres_month():
     ymonth1.reverse()
     plt.style.use('ggplot')
     plt.bar(xmonth1,ymonth1)
-
     # plt.grid(True)
-    plt.tick_params(axis='x', rotation=290)
+    plt.tick_params(axis='x', rotation=320)
     # plt.show()
     savefig('static/wykres.png')
 
@@ -356,6 +362,7 @@ def wykres_credit1():
         new_date = str(el.repayment_date)
         x_cr1.append(new_date)
     plt.figure(9)
+    plt.figure(figsize=(10, 7))
     plt.title(f'wykres wpłat dla celu "{obj_cr1_name}"')
     plt.xlabel('DATY')
     plt.ylabel('KWOTY')
@@ -379,6 +386,7 @@ def wykres_credit2():
         new_date = str(el.repayment_date)
         x_cr2.append(new_date)
     plt.figure(10)
+    plt.figure(figsize=(10, 7))
     plt.title(f'wykres wpłat dla celu "{obj_cr2_name}"')
     plt.xlabel('DATY')
     plt.ylabel('KWOTY')
@@ -434,9 +442,48 @@ def wykres_spending():
 
 
 
+def wykres_income_for_spending():
+    income_all = Income.objects.all()
+    for_calculation = []
+    calc = 0
+    for element in income_all:
+        for_calculation.append(element.value_of_income)
+    for elem in for_calculation:
+        calc += elem
+
+    queryset = MonthsBudget.objects.all().order_by('-month_date')
+    xmonth = []
+    ymonth = []
+    for el in queryset:
+        xmonth.append(el.chosen_name_of_month)
+        # x.append(el.month_date)
+        ymonth.append(el.month_cost)
+    xmonth1 = xmonth[0:12]
+    ymonth1 = ymonth[0:12]
+    xmonth1.reverse()
+    ymonth1.reverse()
+    ymonth2income_vs_spending = []
+    for e in ymonth1:
+        ymonth2income_vs_spending.append(calc - e)
+
+    #calc = kwota stala jako linia
+    plt.figure(13)
+    # plt.margins(0.2)
+    plt.figure(figsize=(12, 7.5))
+    # plt.title('wykres wpływów i stałych wydatków', fontdict={'fontname': 'monospace', 'fontsize': 14})
+    plt.bar(xmonth1, ymonth2income_vs_spending, color='#00FF00', label='kwoty po odjęciu miesięcznych wydatków')
+    plt.bar(xmonth1, ymonth1, label='zapisane miesięczne koszty', color='#008080', bottom=ymonth2income_vs_spending)
+    # plt.legend()
+    plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
+               ncol=2, mode="expand", borderaxespad=0.)
+    # plt.legend(bbox_to_anchor=(0.95, 1), loc='upper left', borderaxespad=0.)
+    plt.tick_params(axis='x', rotation=340)
+    savefig('static/wykres-income-for-spending.png')
+
+
 class IndexView(View):
     def get(self, request):
-        wykres_spending()
+        wykres_income_for_spending()
         # wykres_piggybanks_all()
         return render(request, 'base.html')
 
@@ -509,6 +556,7 @@ class BudgetView(View):#
     def get(self, request):
         pozycje=Budget.objects.all()
         form = BudgetForm()
+        wykres_spending()
         return render(request, 'budget.html', {"pozycje":pozycje, "form":form})
 
     def post(self, request):
@@ -801,7 +849,8 @@ class SavingMistake(View):
 
     def get(self, request):
         all_piggy_banks = PiggyBanks.objects.all()
-        return render(request, 'mistake.html', {"all_piggy_banks":all_piggy_banks})
+        piggy_mist_info = request.session.get("payment_info")
+        return render(request, 'mistake.html', {"piggy_mist_info":piggy_mist_info, "all_piggy_banks":all_piggy_banks})
 
     def post(self, request):
         mistake_in = request.POST.get('mistake_in')
@@ -891,10 +940,16 @@ class AlreadyCollectedView(View):
             try:
                 # today_but = PaymentDay.objects.get(payment_piggybanks_id=mine_new_x, date_of=date.today())
                 PaymentDay.objects.get(payment_piggybanks_id=mine_new_x, date_of=date.today())
+                piggy_mist_info = request.session.get("payment_info")
                 msg = "Dziś już wpłacono na owy cel! Czyżby nastąpiła pomyłka przy wpisywaniu kwoty?"
-                return render(request, 'mistake.html', {"all_piggy_banks": all_piggy_banks, "msg":msg})
+                return render(request, 'mistake.html', {"piggy_mist_info":piggy_mist_info, "all_piggy_banks": all_piggy_banks, "msg":msg})
             except Exception:
+
                 new_today=PaymentDay.objects.create(payment_piggybanks_id=mine_new_x, date_of=date.today(), payment_collected_id=mine_object.payment_collected_id, value_of=mine_object.value_of)
+                def set_session4(request):
+                    # request.session["payment_info"] = new_today.value_of #
+                    request.session["payment_info"] = congrats #
+                set_session4(request)
                 new_today.payment_piggybanks_id=mine_new_x
                 new_today.payment_collected_id=mine_object.payment_collected_id
                 new_today.save()
@@ -1080,15 +1135,20 @@ class CreditPayments(View):
         credit_obj = Credits.objects.get(id=id)
         credits_objects = Credits.objects.all()
         last_payments = RepaymentDay.objects.filter(repayment_credits_id=credit_obj.id).last()
-        if RepaymentDay.objects.get(repayment_credits_id=id, repayment_date=date.today()):
-            msg = "Dziś już wpłacono na owy cel! Czyżby nastąpiła pomyłka przy wpisywaniu kwoty?"
-            return render(request, 'credit-mistake.html', {"credits_objects": credits_objects, "msg":msg})
+        try:
+            if RepaymentDay.objects.get(repayment_credits_id=id, repayment_date=date.today()):
+                cred_mist_info = request.session.get("repayment_info")
+                msg = "Dziś już wpłacono na owy cel! Czyżby nastąpiła pomyłka przy wpisywaniu kwoty?"
+                return render(request, 'credit-mistake.html', {"cred_mist_info":cred_mist_info,"credits_objects": credits_objects, "msg":msg})
 
-        else:
+        except Exception:
             new_paym = RepaymentDay.objects.create(repayment_credits_id=id,
                                                    repayment_date=date.today(),
                                                    repayment_collected_id=last_payments.repayment_collected_id,
                                                    repayment_value=amount2)
+            def set_session3(request):
+                request.session["repayment_info"] = new_paym.repayment_value #
+            set_session3(request)
             increasing = Repayment.objects.get(id=new_paym.repayment_collected_id)
             increasing.collected_money += amount2
             increasing.save()
@@ -1101,7 +1161,10 @@ class CreditMistake(View):
 
     def get(self, request):
         credits_objects=Credits.objects.all()
-        return render(request, 'credit-mistake.html', {"credits_objects": credits_objects})
+        cred_mist_info = request.session.get("repayment_info")
+        # cred_mist_info = request.session.get("repayment_info")
+        # return render(request, 'credit-mistake.html', {"credits_objects": credits_objects, "cred_mist_info":cred_mist_info})
+        return render(request, 'credit-mistake.html', {"cred_mist_info":cred_mist_info, "credits_objects": credits_objects})
 
     def post(self, request):
         credit_mistake = request.POST.get('credit-mistake')

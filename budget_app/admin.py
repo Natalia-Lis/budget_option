@@ -1,6 +1,6 @@
 from django.contrib import admin
 from budget_app.models import (Budget, MonthsBudget, PiggyBanks, Stock, AlreadyCollected,
-                               PaymentDay, Credits, Repayment, RepaymentDay)
+                               PaymentDay, Credits, Repayment, RepaymentDay, Income)
 
 #
 # @admin.register(Vote)
@@ -61,3 +61,7 @@ class RepaymentDayAdmin(admin.ModelAdmin):
     list_display = ("repayment_date", "repayment_value",
                     "repayment_credits", "repayment_collected")
 
+
+@admin.register(Income)
+class IncomeAdmin(admin.ModelAdmin):
+    list_display = ("name_of_income", "value_of_income", "income_description")

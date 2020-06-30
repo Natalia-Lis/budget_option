@@ -1,15 +1,15 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
 
 
     <table border="1">
         <tr>
-        <th>Nazwa dochodu</th>
-        <th>Kwota dochodu</th>
+        <th>Nazwa wpływu</th>
+        <th>Kwota przychodu</th>
         <th>Opis</th>
-        <td> Modyfikacja</td>
-        <td> Usuwanie</td>
+        <th> Modyfikacja</th>
+        <th> Usuwanie</th>
         </tr>
     {% for element in all_income %}
         <tr>
@@ -33,7 +33,8 @@ Jeśli chcesz uwzględnić dodatkową kwotę:
 <input type="submit" value="oblicz">
 </form>
     <br>{% if sum_of %}Suma przychodu, z uwzględnieniem dodatkowej kwoty: {{ sum_of }}{% endif %}
-    <br><br><br><br>
+    <br><br>
+    <img src="{% static "wykres-income-for-spending.png" %}" alt="Not found" ><br><br>
     <form action="" method="post">
     {% csrf_token %}
                    <fieldset>
