@@ -2,7 +2,7 @@
 {% load static %}
 {% block content %}
 
-    <a href="{% url 'months-budget' %}"><strong>&nbsp;Dotychczasowe budżety -></strong></a><br>
+    <a href="{% url 'months-budget' %}"><strong>&nbsp;Dotychczasowe zestawienia wydatków miesięcznych -></strong></a><br>
     <br><br>
     Aktualne pozycje w Twoim budżecie:<br>
     <small>* Jeśli coś już jest nieaktualne - wyrzuć pozycję!</small>
@@ -17,8 +17,8 @@
         <th>Co miesiąc?</th>
         <th>Opis</th>
         <th>Wliczyć w koszt miesiąca?</th>
-        <th>Modyfikacja</th>
-            <th>Usuwanie</th>
+        <th>&nbsp;Modyfikacja&nbsp;</th>
+        <th>&nbsp;Usuwanie&nbsp;</th>
         </tr>
     {% for element in pozycje %}
         <tr>

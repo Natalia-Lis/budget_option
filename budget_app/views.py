@@ -59,8 +59,8 @@ def kalkul():
 def wykres_month():
     plt.figure(1)
     plt.figure(figsize=(10, 7))
-    plt.title('wykres z ostatnich 12 miesięcy')
-    plt.ylabel('kwoty')
+    plt.title('wydatki z ostatnich 12 miesięcy')
+    plt.ylabel('zapisane miesięczne kwoty')
     queryset = MonthsBudget.objects.all().order_by('-month_date')
     xmonth=[]
     ymonth=[]
@@ -75,7 +75,7 @@ def wykres_month():
     plt.style.use('ggplot')
     plt.bar(xmonth1,ymonth1)
     # plt.grid(True)
-    plt.tick_params(axis='x', rotation=320)
+    plt.tick_params(axis='x', rotation=330)
     # plt.show()
     savefig('static/wykres.png')
 
@@ -305,7 +305,7 @@ def wykres_innego_typu():
     plt.legend(bbox_to_anchor=(0.95, 1), loc='upper left', borderaxespad=0.)#boczna legenda
     plt.title('wykres wpłat dla celu')
     plt.xlabel('DATY')
-    plt.ylabel('kwoty')
+    plt.ylabel('KWOTY')
     plt.grid(True)
     plt.margins(0.1)
     # plt.subplot(x, y)
@@ -400,24 +400,22 @@ def wykres_credit2():
 def wykres_piggybanks_all():
     pozycje = PiggyBanks.objects.all()
     names_of = []
-    goal_of = []
     already_c = []
+    piggybanks_minus = []
     for element in pozycje:
         names_of.append(element.money_for)
-        goal_of.append(element.m_min)
         take = AlreadyCollected.objects.filter(paymentday__payment_piggybanks_id=element.id).order_by('paymentday__date_of').last()
+        piggybanks_minus.append(element.m_min - take.collected)
         already_c.append(take.collected)
 
     plt.figure(11)
     plt.figure(figsize=(11, 8))
     plt.style.use('ggplot')
     plt.title('wykres wpłat - wszystkie cele')
-    plt.xlabel('DATY')
-    plt.ylabel('KWOTY')
     plt.grid(True)
     plt.margins(0.1)
-    plt.bar(names_of, already_c, label='uzbierane')
-    plt.bar(names_of, goal_of, label='potrzebne kwoty', bottom=already_c)
+    plt.bar(names_of, already_c, label='Dotychczas uzbierane')
+    plt.bar(names_of, piggybanks_minus, label='Brakujące kwoty do całości', bottom=already_c)
     plt.legend()
     # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-inny-pball.png')
@@ -456,7 +454,6 @@ def wykres_income_for_spending():
     ymonth = []
     for el in queryset:
         xmonth.append(el.chosen_name_of_month)
-        # x.append(el.month_date)
         ymonth.append(el.month_cost)
     xmonth1 = xmonth[0:12]
     ymonth1 = ymonth[0:12]
@@ -466,17 +463,12 @@ def wykres_income_for_spending():
     for e in ymonth1:
         ymonth2income_vs_spending.append(calc - e)
 
-    #calc = kwota stala jako linia
     plt.figure(13)
-    # plt.margins(0.2)
     plt.figure(figsize=(12, 7.5))
-    # plt.title('wykres wpływów i stałych wydatków', fontdict={'fontname': 'monospace', 'fontsize': 14})
     plt.bar(xmonth1, ymonth2income_vs_spending, color='#00FF00', label='kwoty po odjęciu miesięcznych wydatków')
     plt.bar(xmonth1, ymonth1, label='zapisane miesięczne koszty', color='#008080', bottom=ymonth2income_vs_spending)
-    # plt.legend()
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
                ncol=2, mode="expand", borderaxespad=0.)
-    # plt.legend(bbox_to_anchor=(0.95, 1), loc='upper left', borderaxespad=0.)
     plt.tick_params(axis='x', rotation=340)
     savefig('static/wykres-income-for-spending.png')
 
@@ -486,7 +478,6 @@ class IndexView(View):
         wykres_income_for_spending()
         # wykres_piggybanks_all()
         return render(request, 'base.html')
-
 
 
 class IncomeView(View):

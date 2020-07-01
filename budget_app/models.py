@@ -92,9 +92,9 @@ class RepaymentDay(models.Model):
 
 
 class Income(models.Model):
-    name_of_income = models.CharField(max_length=128, verbose_name='Nazwa dla dochodu')
-    value_of_income = models.FloatField(verbose_name='Kwota dochodu')
-    income_description = models.TextField(null=True, verbose_name='Opis dochodu')
+    name_of_income = models.CharField(max_length=128, verbose_name='Nazwa dla przychodu')
+    value_of_income = models.FloatField(verbose_name='Kwota wpływu')
+    income_description = models.TextField(null=True, verbose_name='Opcjonalny opis')
 
     def __str__(self):
         return self.name_of_income
