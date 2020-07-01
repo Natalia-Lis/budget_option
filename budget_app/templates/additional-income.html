@@ -1,0 +1,44 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+
+    <table border="1">
+        <tr>
+        <th> &nbsp; Nazwa wpływu&nbsp; </th>
+        <th> &nbsp;Kwota dodatkowa&nbsp; </th>
+        <th> &nbsp;Kwota dodatkowa razem<br>
+            z miesięcznym przychodem&nbsp; </th>
+        <th> Opis </th>
+        <th> Wpisano dnia: </th>
+        <th> &nbsp;Modyfikacja&nbsp; </th>
+        <th> &nbsp;Usuwanie&nbsp; </th>
+        </tr>
+    {% for element in additional_income %}
+        <tr>
+        <td>{{ element.chosen_name }}</td>
+        <td>{% if element.amount_only == None %}-{% else %}{{ element.amount_only }}{% endif %}</td>
+        <td>{% if element.amount_with_monthly == None %}-{% else %}{{ element.amount_with_monthly }}{% endif %}</td>
+        <td>{{ element.income_description }}</td>
+        <td>{{ element.income_date }}</td>
+        <td><a href="{% url 'modify-addit-income' element.id %}"> Modyfikuj! </a></td>
+        <td><a href="{% url 'delete-addit-income' element.id %}"> Usuń </a></td>
+        </tr>
+    {% endfor %}
+    </table>
+
+    <br><br>
+
+<br>
+
+    <form action="" method="post">
+    {% csrf_token %}
+                   <fieldset>
+           <legend>Dodaj nową pozycję</legend>
+               {{form.as_p}}
+
+        <input type="submit" value="wyślij">
+                       </fieldset>
+    </form>
+
+{% endblock %}

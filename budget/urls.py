@@ -21,6 +21,9 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', IndexView.as_view(), name='index'),
 
+    path('additional-income/', AdditionalIncomeView.as_view(), name='additional-income'),
+    path('modify-addit-income/<int:id>/', ModifyAdditionalIncome.as_view(), name='modify-addit-income'),
+    path('delete-addit-income/<int:pk>/', DeleteAdditionalIncome.as_view(), name='delete-addit-income'),
     path('income/', IncomeView.as_view(), name='income'),
     path('modify-income/<int:id>/', ModifyIncome.as_view(), name='modify-income'),
     path('delete-income/<int:pk>/', DeleteIncome.as_view(), name='delete-income'),

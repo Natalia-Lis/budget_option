@@ -5,7 +5,7 @@
     {% for element in credits_objects %}
         <table border="1" bgcolor="#e6e6fa" style="float: left" ><tr><td><center>
         <a href="{% url 'credit-payments' element.id %}">{{ element.name }}<br>
-        Zarządzaj spłatą -></a><br>
+        Zarządzaj nadpłatami -></a><br>
         {{ element.credit_amount }} zł<br>
         do: {{ element.should_end_on }}<br>
         {{ element.description }}

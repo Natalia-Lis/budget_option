@@ -50,53 +50,6 @@ a, a:link, a:visited {
     text-decoration: underline;
 }
 
-a.tooltips {
-    position: relative;
-    display: inline;
-}
-a.tooltips span {
-    position: absolute;
-    width:140px;
-    color: #FFFFFF;
-    background: #4A7AC2;
-    border: 2px solid #00416D;
-    height: 35px;
-    line-height: 35px;
-    text-align: center;
-    visibility: hidden;
-    border-radius: 10px;
-}
-a.tooltips span:before {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -12px;
-    width: 0; height: 0;
-    border-top: 12px solid #00416D;
-    border-right: 12px solid transparent;
-    border-left: 12px solid transparent;
-}
-a.tooltips span:after {
-    content: '';
-    position: absolute;
-    top: 100%;
-    left: 50%;
-    margin-left: -8px;
-    width: 0; height: 0;
-    border-top: 8px solid #4A7AC2;
-    border-right: 8px solid transparent;
-    border-left: 8px solid transparent;
-}
-a:hover.tooltips span {
-    visibility: visible;
-    opacity: 0.9;
-    bottom: 30px;
-    left: 50%;
-    margin-left: -76px;
-    z-index: 999;
-}
-
 td {
     text-align: center;
 }

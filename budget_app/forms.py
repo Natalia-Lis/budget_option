@@ -70,3 +70,16 @@ class IncomeForm(forms.ModelForm):
     def __init__(self, *args, **kwargs):
         super(IncomeForm, self).__init__(*args, **kwargs)
         self.fields['income_description'].required = False
+
+
+class AdditionalIncomeForm(forms.ModelForm):
+    class Meta:
+        model = AdditionalIncome
+        exclude = ['income_date']
+    def __init__(self, *args, **kwargs):
+        super(AdditionalIncomeForm, self).__init__(*args, **kwargs)
+        self.fields['amount_only'].required = False
+        self.fields['amount_with_monthly'].required = False
+        self.fields['income_description'].required = False
+        # self.fields['income_date'].required = False
+

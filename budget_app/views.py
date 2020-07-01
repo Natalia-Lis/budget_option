@@ -396,7 +396,7 @@ def wykres_credit2():
     savefig('static/wykres-kredyt-2.png')
 
 
-
+#### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 def wykres_piggybanks_all():
     pozycje = PiggyBanks.objects.all()
     names_of = []
@@ -439,7 +439,6 @@ def wykres_spending():
     savefig('static/wykres-spending-pie.png')
 
 
-
 def wykres_income_for_spending():
     income_all = Income.objects.all()
     for_calculation = []
@@ -475,14 +474,13 @@ def wykres_income_for_spending():
 
 class IndexView(View):
     def get(self, request):
-        wykres_income_for_spending()
-        # wykres_piggybanks_all()
         return render(request, 'base.html')
 
 
 class IncomeView(View):
 
     def get(self, request):
+        wykres_income_for_spending()
         all_income = Income.objects.all()
         form = IncomeForm()
         for_calculation = []
@@ -518,7 +516,7 @@ class IncomeView(View):
 class ModifyIncome(View):
 
     def get(self, request, id):
-        one_income=Income.objects.get(id=id)
+        one_income = Income.objects.get(id=id)
         form = IncomeForm(instance=one_income)
 
         return render(request, 'income-modify.html', {"one_income":one_income, "form":form})
@@ -542,16 +540,70 @@ class DeleteIncome(DeleteView):
     success_url = '/income'
 
 
+class AdditionalIncomeView(View):
+
+    def get(self, request):
+        additional_income = AdditionalIncome.objects.all()
+        form = AdditionalIncomeForm()
+        return render(request, 'additional-income.html', {"additional_income":additional_income, "form":form})
+
+    def post(self, request):
+        additional_income = AdditionalIncome.objects.all()
+        form = AdditionalIncomeForm(request.POST)
+        if form.is_valid():
+
+            chosen_name = form.cleaned_data['chosen_name']
+            amount_only = form.cleaned_data['amount_only']
+            amount_with_monthly = form.cleaned_data['amount_with_monthly']
+            income_description = form.cleaned_data['income_description']
+            # income_date = form.cleaned_data['income_date']
+            AdditionalIncome.objects.create(chosen_name=chosen_name,
+                                            amount_only=amount_only,
+                                            amount_with_monthly=amount_with_monthly,
+                                            income_description=income_description)
+
+            return render(request, 'additional-income.html', {"additional_income":additional_income, "form": form})
+
+
+
+class ModifyAdditionalIncome(View):
+
+    def get(self, request, id):
+        pozycja = AdditionalIncome.objects.get(id=id)
+        form = AdditionalIncomeForm(instance=pozycja)
+        return render(request, 'additional-modify.html', {"pozycja":pozycja, "form":form})
+
+    def post(self, request, id):
+        form = AdditionalIncomeForm(request.POST)
+        pozycja = AdditionalIncome.objects.get(id=id)
+        if form.is_valid():
+            chosen_name = form.cleaned_data['chosen_name']
+            amount_only = form.cleaned_data['amount_only']
+            amount_with_monthly = form.cleaned_data['amount_with_monthly']
+            income_description = form.cleaned_data['income_description']
+            pozycja.chosen_name = chosen_name
+            pozycja.amount_only = amount_only
+            pozycja.amount_with_monthly = amount_with_monthly
+            pozycja.income_description = income_description
+            pozycja.save()
+            return redirect('additional-income')
+
+
+class DeleteAdditionalIncome(DeleteView):
+    model = AdditionalIncome
+    success_url = '/additional-income'
+
+
 class BudgetView(View):#
 
     def get(self, request):
-        pozycje=Budget.objects.all()
+        pozycje = Budget.objects.all()
         form = BudgetForm()
         wykres_spending()
         return render(request, 'budget.html', {"pozycje":pozycje, "form":form})
 
     def post(self, request):
-        pozycje=Budget.objects.all()
+        pozycje = Budget.objects.all()
         form = BudgetForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
@@ -573,7 +625,7 @@ class BudgetView(View):#
                 if el == '':
                     pass
                 else:
-                    add_to=float(el)
+                    add_to = float(el)
                     my_sum += add_to
         def set_session(request):
             request.session["suma_przekazana"] = my_sum
@@ -587,7 +639,7 @@ class BudgetView(View):#
 class ModifyBudget(View):
 
     def get(self, request, id):
-        pozycja=Budget.objects.get(id=id)
+        pozycja = Budget.objects.get(id=id)
         form = BudgetForm(instance=pozycja)
         return render(request, 'modify-budget-pos.html', {"pozycja":pozycja, "form":form})
 
@@ -612,9 +664,7 @@ class DeleteBudget(DeleteView):
     success_url = '/budget'
 
 
-
-
-class MonthsBudgetView(View):#
+class MonthsBudgetView(View):
 
     def get(self, request):
         this_months_budget = MonthsBudget.objects.all()
@@ -657,7 +707,7 @@ class MonthsBudgetPropositionView(View):#
 class ModifyMonths(View):
 
     def get(self, request, id):
-        pozycja=MonthsBudget.objects.get(id=id)
+        pozycja = MonthsBudget.objects.get(id=id)
         form = MonthsBudgetForm(instance=pozycja)
         return render(request, 'modify-months.html', {"pozycja":pozycja, "form":form})
 
@@ -678,9 +728,6 @@ class ModifyMonths(View):
 class DeleteMonths(DeleteView):
     model = MonthsBudget
     success_url = '/months-budget'
-
-
-
 
 
 class PiggyBanksView(View):
@@ -707,8 +754,6 @@ class SavingAdd(View):
             a1 = AlreadyCollected.objects.create(collected=0)
             PaymentDay.objects.create(payment_piggybanks=s1, payment_collected=a1)
             return redirect('saving-goals')
-
-
 
 
 class SavingGoals(View):
@@ -748,13 +793,13 @@ class SavingCharts(View):
         #     if o == object:
         #         next = True
         #
-        s2=PiggyBanks.objects.values_list('money_for', flat=True).order_by('pk')
-        chart_name1=s2[0]
-        chart_name2=s2[1]
-        chart_name3=s2[2]
-        chart_name4=s2[3]
-        chart_name5=s2[4]
-        chart_name6=s2[5]
+        s2 = PiggyBanks.objects.values_list('money_for', flat=True).order_by('pk')
+        chart_name1 = s2[0]
+        chart_name2 = s2[1]
+        chart_name3 = s2[2]
+        chart_name4 = s2[3]
+        chart_name5 = s2[4]
+        chart_name6 = s2[5]
         # PiggyBanks.objects.values_list('money_for', flat=True).distinct()
 
         # def get_next(queryset, obj):
@@ -818,7 +863,7 @@ class ChartSaving7(View):
 class ModifySaving(View):
 
     def get(self, request, id):
-        pozycja=PiggyBanks.objects.get(id=id)
+        pozycja = PiggyBanks.objects.get(id=id)
         form = PiggyBanksForm(instance=pozycja)
         return render(request, 'modify-saving.html', {"pozycja":pozycja, "form":form})
 
@@ -829,9 +874,9 @@ class ModifySaving(View):
             money_for = form.cleaned_data['money_for']
             m_min = form.cleaned_data['m_min']
             description = form.cleaned_data['description']
-            pozycja.money_for=money_for
-            pozycja.m_min=m_min
-            pozycja.description=description
+            pozycja.money_for = money_for
+            pozycja.m_min = m_min
+            pozycja.description = description
             pozycja.save()
             return redirect('saving-goals')
 
@@ -851,8 +896,8 @@ class SavingMistake(View):
         correct_value = request.POST.get('correct_value')
         correct_value_float = float(correct_value)
         # mistake_object=PiggyBanks.objects.get(id=mistake_in.id)
-        last_mistake=PaymentDay.objects.all().filter(payment_piggybanks_id=mistake_id).last()
-        last_to_change=AlreadyCollected.objects.get(id=last_mistake.payment_collected_id)
+        last_mistake = PaymentDay.objects.all().filter(payment_piggybanks_id=mistake_id).last()
+        last_to_change = AlreadyCollected.objects.get(id=last_mistake.payment_collected_id)
         last_mistake.value_of = correct_value_float
         last_mistake.save()
         last_to_change.collected -= mistake_value_float
@@ -941,8 +986,8 @@ class AlreadyCollectedView(View):
                     # request.session["payment_info"] = new_today.value_of #
                     request.session["payment_info"] = congrats #
                 set_session4(request)
-                new_today.payment_piggybanks_id=mine_new_x
-                new_today.payment_collected_id=mine_object.payment_collected_id
+                new_today.payment_piggybanks_id = mine_new_x
+                new_today.payment_collected_id = mine_object.payment_collected_id
                 new_today.save()
                 already_c = AlreadyCollected.objects.get(id=new_today.payment_collected_id)
                 already_c.collected += congrats2
@@ -973,11 +1018,12 @@ class StockView(View):
         cdr_kurs2 = float(cdr_kurs.text)
         pzu_kurs = soup2.find("span", id=f"aq_{spolka2}_c2")
         pzu_kurs2 = float(pzu_kurs.text)
-        bdx_kurs = soup3.find("span", id=f"aq_{spolka3}_c1")
+        bdx_kurs = soup3.find("span", id=f"aq_{spolka3}_c2")
         bdx_kurs2 = float(bdx_kurs.text)
+        # niekiedy zmienia się id - uwaga!
 
         if cdr_kurs2:
-            cdr_interests=Stock.objects.get(name='CDR')
+            cdr_interests = Stock.objects.get(name='CDR')
             jednostki_cdr = cdr_interests.interests
             value_of_cdr = jednostki_cdr * cdr_kurs2
         if pzu_kurs2:
@@ -989,8 +1035,7 @@ class StockView(View):
             jednostki_bdx = bdx_interests.interests
             value_of_bdx = jednostki_bdx * bdx_kurs2
 
-        return render(request, 'stock.html', {
-                                              "cdr_kurs2":cdr_kurs2,
+        return render(request, 'stock.html', {"cdr_kurs2":cdr_kurs2,
                                               "pzu_kurs2":pzu_kurs2,
                                               "value_of_cdr":value_of_cdr,
                                               "value_of_pzu":value_of_pzu,
@@ -1019,7 +1064,7 @@ class StockView(View):
 class ModifyStock(View):
 
     def get(self, request, id):
-        pozycja=Stock.objects.get(id=id)
+        pozycja = Stock.objects.get(id=id)
         form = StockForm(instance=pozycja)
         return render(request, 'modify-stock.html', {"pozycja":pozycja, "form":form})
 
@@ -1036,14 +1081,14 @@ class ModifyStock(View):
             dividend = form.cleaned_data['dividend']
             type_of_market = form.cleaned_data['type_of_market']
             www = form.cleaned_data['www']
-            pozycja.name=name
-            pozycja.enter_price=enter_price
-            pozycja.interests=interests
-            pozycja.value_of=value_of
-            pozycja.price=price
-            pozycja.dividend=dividend
-            pozycja.type_of_market=type_of_market
-            pozycja.www=www
+            pozycja.name = name
+            pozycja.enter_price = enter_price
+            pozycja.interests = interests
+            pozycja.value_of = value_of
+            pozycja.price = price
+            pozycja.dividend = dividend
+            pozycja.type_of_market = type_of_market
+            pozycja.www = www
             pozycja.save()
             return redirect('stock')
 
@@ -1080,22 +1125,22 @@ class CreditView(View):
 class ModifyCredit(View):
 
     def get(self, request, id):
-        credits_objects=Credits.objects.get(id=id)
+        credits_objects = Credits.objects.get(id=id)
         form = CreditsForm(instance=credits_objects)
         return render(request, 'modify-credit.html', {"credits_objects":credits_objects, "form":form})
 
     def post(self, request, id):
-        credits_objects=Credits.objects.get(id=id)
+        credits_objects = Credits.objects.get(id=id)
         form = CreditsForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
             credit_amount = form.cleaned_data['credit_amount']
             should_end_on = form.cleaned_data['should_end_on']
             description = form.cleaned_data['description']
-            credits_objects.name=name
-            credits_objects.credit_amount=credit_amount
-            credits_objects.should_end_on=should_end_on
-            credits_objects.description=description
+            credits_objects.name = name
+            credits_objects.credit_amount = credit_amount
+            credits_objects.should_end_on = should_end_on
+            credits_objects.description = description
             credits_objects.save()
             return redirect('credits')
 
@@ -1110,7 +1155,7 @@ class CreditPayments(View):
     def get(self, request, id):
         wykres_credit1()
         wykres_credit2()
-        credits_objects=Credits.objects.get(id=id)
+        credits_objects = Credits.objects.get(id=id)
         # p = RepaymentDay.objects.get(repayment_collected_id=2)
         rep = RepaymentDay.objects.filter(repayment_credits_id=id).first()
         znajdz = rep.repayment_collected_id
@@ -1120,7 +1165,7 @@ class CreditPayments(View):
                                                         "repayments_this_id":repayments_this_id})
 
     def post(self, request, id):
-        credits_objects=Credits.objects.get(id=id)
+        credits_objects = Credits.objects.get(id=id)
         amount = request.POST.get('amount')
         amount2 = float(amount)
         credit_obj = Credits.objects.get(id=id)
@@ -1151,7 +1196,7 @@ class CreditPayments(View):
 class CreditMistake(View):
 
     def get(self, request):
-        credits_objects=Credits.objects.all()
+        credits_objects = Credits.objects.all()
         cred_mist_info = request.session.get("repayment_info")
         # cred_mist_info = request.session.get("repayment_info")
         # return render(request, 'credit-mistake.html', {"credits_objects": credits_objects, "cred_mist_info":cred_mist_info})

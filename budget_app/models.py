@@ -101,3 +101,14 @@ class Income(models.Model):
 
     def get_absolute_url(self):
         return reverse('delete-income', kwargs={'pk': self.pk})
+
+
+class AdditionalIncome(models.Model):
+    chosen_name = models.CharField(max_length=64, verbose_name='Nazwa dla dodatkowego przychodu')
+    amount_only = models.FloatField(null=True, verbose_name='Zapisywana kwota dodatkowa (*można pozostawić wolne)')
+    amount_with_monthly = models.FloatField(null=True, verbose_name='Kwota dodatkowa wraz z miesięcznymi wpływami (*można pozostawić wolne)')
+    income_description = models.CharField(null=True, max_length=128, verbose_name='Opis dla wpisywanego dodatkowego przychodu')
+    income_date = models.DateField(auto_now_add=True)
+
+    def __str__(self):
+        return self.chosen_name

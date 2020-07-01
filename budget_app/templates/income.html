@@ -23,7 +23,11 @@
     </table>
 
     <br>
-    Razem przychód: {{ calc }}
+    Razem przychód: {{ calc }}<br>
+    Kwota {{ calc }} jest uwzględniana jako stały comiesięczny dochód.
+    Jeśli chcesz by dodatkowe, okazjonalne wpływy były zapisane trwale:<br>
+    <a href="{% url 'additional-income' %}"> przejdź do niestandardowych wpływów.</a>
+
     <br><br>
 <form action="" method="post">
 {% csrf_token %}
@@ -33,6 +37,7 @@ Jeśli chcesz uwzględnić dodatkową kwotę:
 <input type="submit" value="oblicz">
 </form>
     <br>{% if sum_of %}Suma przychodu, z uwzględnieniem dodatkowej kwoty: {{ sum_of }}{% endif %}
+    <br>
     <br>
     <img src="{% static "wykres-income-for-spending.png" %}" alt="Not found" ><br><br>
 
