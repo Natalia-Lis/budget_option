@@ -2,9 +2,9 @@ import math
 from datetime import date
 import requests
 from bs4 import BeautifulSoup
-from django.contrib.auth import logout, login, authenticate # #
-from django.contrib.auth.mixins import LoginRequiredMixin # #
-from django.http import HttpResponse
+# from django.contrib.auth import logout, login, authenticate # #
+# from django.contrib.auth.mixins import LoginRequiredMixin # #
+# from django.http import HttpResponse # #
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView
