@@ -17,44 +17,19 @@ from matplotlib import style
 import numpy as np
 import matplotlib.dates as mdates
 
-
-# matplotlib
-# okno = []
-# okno.append(plt.plot(x,y)
-#             plt.plot(x1,y1)
-
-
-def kalkul():
-    pozycje = PiggyBanks.objects.all()
-    # this_months_budget = MonthsBudget.objects.all()
-    names_of = []
-    goal_of = []
-    already_c = []
-
-    kalkulacje = 0
-    for element in pozycje:
-        # for_calculation = np.array(element.money_min, dtype=np.float32)
-        names_of.append(element.money_for)
-        goal_of.append(element.m_min)
-        take = AlreadyCollected.objects.filter(paymentday__payment_piggybanks_id=element.id).order_by('paymentday__date_of').last()
-        already_c.append(take.collected)
-        # for_calculation = [float(element.money_min) for element.money_min in pozycje]
-    # for elem in names_of:
-    #     kalkulacje += elem
-    #     return kalkulacje
-
+#
 # def kalkul():
-#     pozycje = Budget.objects.all()
-#     this_months_budget = MonthsBudget.objects.all()
-#     for_calculation = []
+#     pozycje = PiggyBanks.objects.all()
+#     names_of = []
+#     goal_of = []
+#     already_c = []
 #     kalkulacje = 0
 #     for element in pozycje:
-#         # for_calculation = np.array(element.money_min, dtype=np.float32)
-#         for_calculation.append(element.money_min)
-#         # for_calculation = [float(element.money_min) for element.money_min in pozycje]
-#     for elem in for_calculation:
-#         kalkulacje += elem
-#         return kalkulacje
+#         names_of.append(element.money_for)
+#         goal_of.append(element.m_min)
+#         take = AlreadyCollected.objects.filter(paymentday__payment_piggybanks_id=element.id).order_by('paymentday__date_of').last()
+#         already_c.append(take.collected)
+
 
 def wykres_month():
     plt.figure(1)
@@ -66,7 +41,6 @@ def wykres_month():
     ymonth=[]
     for el in queryset:
         xmonth.append(el.chosen_name_of_month)
-        # x.append(el.month_date)
         ymonth.append(el.month_cost)
     xmonth1=xmonth[0:12]
     ymonth1=ymonth[0:12]
@@ -74,9 +48,7 @@ def wykres_month():
     ymonth1.reverse()
     plt.style.use('ggplot')
     plt.bar(xmonth1,ymonth1)
-    # plt.grid(True)
     plt.tick_params(axis='x', rotation=330)
-    # plt.show()
     savefig('static/wykres.png')
 
 
@@ -95,14 +67,12 @@ def wykres8():
     plt.figure(2)
     plt.figure(figsize=(13, 8))
     plt.style.use('ggplot')
-    # plt.xkcd()
     plt.title(f'wykres wpłat dla celu "{obj_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y}')
     plt.grid(True)
     plt.margins(0.1)
     plt.plot(x, y, 'r*', markersize=18) # gwiazdka
-    # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-inny8.png')
 
 
@@ -120,13 +90,11 @@ def wykres9():
         x9.append(new_date)
     plt.figure(3)
     plt.figure(figsize=(13, 8))
-    # plt.subplot()
     plt.title(f'wykres wpłat dla celu "{obj9_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y9}')
     plt.margins(0.1)
     plt.bar(x9, y9)
-    # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-inny9.png')
 
 
@@ -144,15 +112,12 @@ def wykres10():
         x10.append(new_date)
     plt.figure(4)
     plt.figure(figsize=(13, 8))
-    # plt.subplot()
-    # plt.style.use('fivethirtyeight')
     plt.title(f'wykres wpłat dla celu "{obj10_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y10}')
     plt.grid(True)
     plt.margins(0.1)
     plt.plot(x10, y10, 'r--',  linewidth=2.5)
-    # plt.tick_params(axis='x', rotation=10)
     savefig('static/wykres-inny10.png')
 
 
@@ -170,14 +135,12 @@ def wykres15():
         x15.append(new_date)
     plt.figure(5)
     plt.figure(figsize=(13, 8))
-    # plt.subplot()
     plt.title(f'wykres wpłat dla celu "{obj15_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y15}')
     plt.grid(True)
     plt.margins(0.1)
     plt.barh(x15, y15)
-    # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-inny15.png')
 
 
@@ -195,14 +158,12 @@ def wykres16():
         x16.append(new_date)
     plt.figure(6)
     plt.figure(figsize=(13, 8))
-    # plt.subplot()
     plt.title(f'wykres wpłat dla celu "{obj16_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y16}')
     plt.grid(True)
     plt.margins(0.1)
     plt.plot(x16, y16, 'go', markersize=18)
-    # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-inny16.png')
 
 
@@ -220,14 +181,12 @@ def wykres24():
         x24.append(new_date)
     plt.figure(7)
     plt.figure(figsize=(13, 8))
-    # plt.subplot()
     plt.title(f'wykres wpłat dla celu "{obj24_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y24}')
     plt.grid(True)
     plt.margins(0.1)
     plt.plot(x24, y24, linewidth=5.0)
-    # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-inny24.png')
 
 
@@ -297,57 +256,13 @@ def wykres_innego_typu():
     plt.plot(x16, y16, marker='o', label="zmyw.", linewidth=3)
     plt.plot(x24, y24, marker='o', label="cel", linewidth=3, linestyle='--')
 
-
-    # Place a legend above this subplot, expanding itself to
-    # fully use the given bounding box.
-    # plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
-    #            ncol=2, mode="expand", borderaxespad=0.)
     plt.legend(bbox_to_anchor=(0.95, 1), loc='upper left', borderaxespad=0.)#boczna legenda
     plt.title('wykres wpłat dla celu')
     plt.xlabel('DATY')
     plt.ylabel('KWOTY')
     plt.grid(True)
     plt.margins(0.1)
-    # plt.subplot(x, y)
-    # plt.subplot(x9, y9)
-    # plt.subplot(x10, y10)
-    # plt.subplot(x15, y15)
-    # plt.subplot(x16, y16)
-    # plt.subplot(x24, y24)
-    # plt.plot(x, y, x9, y9, x10, y10, x15, y15, x16, y16, x24, y24)
-    # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-innego-typu.png')
-
-
-
-    # plt('xlabel', 'ylabel', data=elll) # jeśli obiekt byłby kompatybilny...
-    # plt.plot(x, y, 'H',markersize=22, label="test1") # heksagon
-    # plt.plot([3, 20], label="test2")
-    # plt.plot([13, 29], label="test3")
-    # plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
-    #            ncol=2, mode="expand", borderaxespad=0.)
-    # plt.plot(x, y, 'D') # diament
-    # plt.plot(x, y, 'x') # x
-    # plt.plot(x, y, 'o') # kółko
-    # plt.plot(x, y,'r+',markersize=22) # czerwone plusy, razem ze zmianą rozmiaru
-    # plt.plot(x, y,'r--') # kreska przerywana czerwona?
-    # plt.plot(x, y,'bs') # niebieskie kwadraty
-    # plt.plot(x, y,'g^') # zielone trójkąty
-    # plt.plot(x, y, linewidth=5.0) # kreska -grubość
-    # plt.plot(x, y, 'ro') #->czerwone kropki
-    #line, = plt.plot(x, y, '-') -> line.set_antialiased(False)  # turn off antialiasing ?
-    # plt.bar(x,y) # słupki
-    # plt.barh(x,y) # słupki boczne
-    # plt.hist(x,y) # ? histogram
-    # plt.pie(x,y) # ? pie...
-
-#subplots 	Create a figure and a set of subplots.
-    # subplot    # Add a subplot to the current figure.
-# imread # Read an image from a file into an array.
-# imsave # Save an array as an image file.
-# text # Add text to the axes.
-    # plt.axis([0,10,0,1000]) # ramka z określonymi wartościami
-    # plt.scatter(x, y) #kropki
 
 
 def wykres_credit1():
@@ -368,9 +283,7 @@ def wykres_credit1():
     plt.ylabel('KWOTY')
     plt.grid(True)
     plt.margins(0.1)
-    # plt.plot(x_cr1, y_cr1, marker='o', linewidth=4.0)
     plt.plot(x_cr1, y_cr1, 'c*', markersize=18)  # gwiazdka
-    # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-kredyt-1.png')
 
 
@@ -392,11 +305,10 @@ def wykres_credit2():
     plt.ylabel('KWOTY')
     plt.margins(0.1)
     plt.bar(x_cr2, y_cr2)
-    # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-kredyt-2.png')
 
 
-#### !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+####
 def wykres_piggybanks_all():
     pozycje = PiggyBanks.objects.all()
     names_of = []
@@ -417,7 +329,6 @@ def wykres_piggybanks_all():
     plt.bar(names_of, already_c, label='Dotychczas uzbierane')
     plt.bar(names_of, piggybanks_minus, label='Brakujące kwoty do całości', bottom=already_c)
     plt.legend()
-    # plt.tick_params(axis='x', rotation=290)
     savefig('static/wykres-inny-pball.png')
 
 
@@ -432,7 +343,6 @@ def wykres_spending():
         explode.append(0.1)
 
     plt.figure(12)
-    # plt.margins(0.2)
     plt.figure(figsize=(7, 7.5))
     plt.title('wykres wydatków', fontdict={'fontname': 'monospace', 'fontsize': 21})
     plt.pie(spending_values, explode=explode, labels=spending_names, autopct='%.2f')
@@ -556,7 +466,6 @@ class AdditionalIncomeView(View):
             amount_only = form.cleaned_data['amount_only']
             amount_with_monthly = form.cleaned_data['amount_with_monthly']
             income_description = form.cleaned_data['income_description']
-            # income_date = form.cleaned_data['income_date']
             AdditionalIncome.objects.create(chosen_name=chosen_name,
                                             amount_only=amount_only,
                                             amount_with_monthly=amount_with_monthly,
@@ -594,7 +503,7 @@ class DeleteAdditionalIncome(DeleteView):
     success_url = '/additional-income'
 
 
-class BudgetView(View):#
+class BudgetView(View):
 
     def get(self, request):
         pozycje = Budget.objects.all()
@@ -685,7 +594,7 @@ class MonthsBudgetView(View):
             return redirect('months-budget')
 
 
-class MonthsBudgetPropositionView(View):#
+class MonthsBudgetPropositionView(View):
 
     def get(self, request):
         form = MonthsBudgetForm(initial={'month_cost': request.session.get("suma_przekazana"),
@@ -781,18 +690,6 @@ class SavingGoals(View):
 class SavingCharts(View):
 
     def get(self, request):
-        # sss=PiggyBanks.objects.all()
-
-        # s1=sss.first()
-        # s2=sss.filter(pk__gt=s1.pk).order_by('pk').first()
-        #
-        # next = False
-        # for o in sss:
-        #     if next:
-        #         return o
-        #     if o == object:
-        #         next = True
-        #
         s2 = PiggyBanks.objects.values_list('money_for', flat=True).order_by('pk')
         chart_name1 = s2[0]
         chart_name2 = s2[1]
@@ -800,25 +697,6 @@ class SavingCharts(View):
         chart_name4 = s2[3]
         chart_name5 = s2[4]
         chart_name6 = s2[5]
-        # PiggyBanks.objects.values_list('money_for', flat=True).distinct()
-
-        # def get_next(queryset, obj):
-        #     it = iter(queryset)
-        #     while obj is not next(it):
-        #         pass
-        #     try:
-        #         return next(it)
-        #     except StopIteraction:
-        #         return None
-        #
-        # def get_prev(queryset, obj):
-        #     prev = None
-        #     for o in queryset:
-        #         if o is obj:
-        #             break
-        #         prev = obj
-        #     return prev
-
         return render(request, 'charts.html', {"chart_name1":chart_name1, "chart_name2":chart_name2,
                                                "chart_name3":chart_name3, "chart_name4":chart_name4,
                                                "chart_name5":chart_name5, "chart_name6":chart_name6})
@@ -895,7 +773,6 @@ class SavingMistake(View):
         mistake_value_float = float(mistake_value)
         correct_value = request.POST.get('correct_value')
         correct_value_float = float(correct_value)
-        # mistake_object=PiggyBanks.objects.get(id=mistake_in.id)
         last_mistake = PaymentDay.objects.all().filter(payment_piggybanks_id=mistake_id).last()
         last_to_change = AlreadyCollected.objects.get(id=last_mistake.payment_collected_id)
         last_mistake.value_of = correct_value_float
@@ -917,7 +794,6 @@ class SavingTime(View):
         amount_month2 = request.POST.get('amount_month')
         res0 = float(amount_of1) / float(amount_month2)
         res1 = math.ceil(res0)
-        # wynik1 = Decimal("%.2f" % wynik0)
         results_list.append(f"{amount_of1} : {amount_month2} = {res1} miesięcy \n")
         results_list.reverse()
         return render(request, 'saving-time.html', {'res1':res1, "results_list":results_list})
@@ -940,7 +816,7 @@ class SavingAmount(View):
         return render(request, 'saving-amount.html', {'res1':res1, "results_list2":results_list2})
 
 
-class DeleteSaving(DeleteView):#
+class DeleteSaving(DeleteView):
     model = PiggyBanks
     success_url = '/saving-goals'
 
@@ -974,7 +850,6 @@ class AlreadyCollectedView(View):
             mine_object = PaymentDay.objects.filter(payment_piggybanks_id=mine_new_x).last()
 
             try:
-                # today_but = PaymentDay.objects.get(payment_piggybanks_id=mine_new_x, date_of=date.today())
                 PaymentDay.objects.get(payment_piggybanks_id=mine_new_x, date_of=date.today())
                 piggy_mist_info = request.session.get("payment_info")
                 msg = "Dziś już wpłacono na owy cel! Czyżby nastąpiła pomyłka przy wpisywaniu kwoty?"
@@ -983,7 +858,6 @@ class AlreadyCollectedView(View):
 
                 new_today=PaymentDay.objects.create(payment_piggybanks_id=mine_new_x, date_of=date.today(), payment_collected_id=mine_object.payment_collected_id, value_of=mine_object.value_of)
                 def set_session4(request):
-                    # request.session["payment_info"] = new_today.value_of #
                     request.session["payment_info"] = congrats #
                 set_session4(request)
                 new_today.payment_piggybanks_id = mine_new_x
@@ -1095,7 +969,6 @@ class DeleteStock(DeleteView):
 class CreditView(View):
 
     def get(self, request):
-        # wykres_innego_typu()
         credits_objects = Credits.objects.all()
         form = CreditsForm()
         return render(request, 'credit.html', {"credits_objects":credits_objects, "form":form})
@@ -1113,7 +986,6 @@ class CreditView(View):
             r1 = Repayment.objects.create(collected_money=0)
             RepaymentDay.objects.create(repayment_credits=c1, repayment_collected=r1)
             return render(request, 'credit.html', {"credits_objects":credits_objects, "form":form})
-        # return render(request, 'credit.html', {"credits_objects":credits_objects, "form":form})
 
 
 class ModifyCredit(View):
@@ -1150,7 +1022,6 @@ class CreditPayments(View):
         wykres_credit1()
         wykres_credit2()
         credits_objects = Credits.objects.get(id=id)
-        # p = RepaymentDay.objects.get(repayment_collected_id=2)
         rep = RepaymentDay.objects.filter(repayment_credits_id=id).first()
         znajdz = rep.repayment_collected_id
         repayments_this_id = Repayment.objects.get(id=znajdz)
@@ -1177,7 +1048,7 @@ class CreditPayments(View):
                                                    repayment_collected_id=last_payments.repayment_collected_id,
                                                    repayment_value=amount2)
             def set_session3(request):
-                request.session["repayment_info"] = new_paym.repayment_value #
+                request.session["repayment_info"] = new_paym.repayment_value
             set_session3(request)
             increasing = Repayment.objects.get(id=new_paym.repayment_collected_id)
             increasing.collected_money += amount2
@@ -1192,8 +1063,6 @@ class CreditMistake(View):
     def get(self, request):
         credits_objects = Credits.objects.all()
         cred_mist_info = request.session.get("repayment_info")
-        # cred_mist_info = request.session.get("repayment_info")
-        # return render(request, 'credit-mistake.html', {"credits_objects": credits_objects, "cred_mist_info":cred_mist_info})
         return render(request, 'credit-mistake.html', {"cred_mist_info":cred_mist_info, "credits_objects": credits_objects})
 
     def post(self, request):
