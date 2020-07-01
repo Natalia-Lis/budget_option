@@ -4,7 +4,6 @@ from django.contrib.auth.models import AbstractUser
 from django.urls import reverse
 
 
-
 class Budget(models.Model):
     name = models.CharField(max_length=64, verbose_name='Nazwa')
     money = models.FloatField(verbose_name='Kwota')
@@ -47,8 +46,6 @@ class Stock(models.Model):
     name = models.CharField(max_length=64, verbose_name='Nazwa dla określonej akcji')
     enter_price = models.FloatField(verbose_name='Cena w momencie zakupu')
     interests = models.IntegerField(verbose_name='Liczba zakupionych udziałów')
-    value_of = models.FloatField(null=True, verbose_name='Wartość, którą chcesz wpisać')
-    price = models.FloatField(null=True, verbose_name='Cena, jaką chcesz zapisać')
     dividend = models.NullBooleanField(default=False, verbose_name='Czy jest wypłacana dywidenda?')
     type_of_market = models.CharField(max_length=64, null=True, verbose_name='Nazwa dla rodzaju rynku akcji')
     www = models.CharField(max_length=256, null=True, verbose_name='Link do strony internetowej inwestora dla akcji')

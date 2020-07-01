@@ -7,18 +7,20 @@
         <tr>
         <th> &nbsp; Nazwa wpływu&nbsp; </th>
         <th> &nbsp;Kwota dodatkowa&nbsp; </th>
-        <th> &nbsp;Kwota dodatkowa razem<br>
-            z miesięcznym przychodem&nbsp; </th>
-        <th> Opis </th>
-        <th> Wpisano dnia: </th>
+        <th> Kwota dodatkowa razem<br>
+            z miesięcznym przychodem </th>
+        <th> &nbsp;Opis&nbsp; </th>
+        <th> &nbsp;Wpisano dnia:&nbsp; </th>
         <th> &nbsp;Modyfikacja&nbsp; </th>
         <th> &nbsp;Usuwanie&nbsp; </th>
         </tr>
     {% for element in additional_income %}
         <tr>
         <td>{{ element.chosen_name }}</td>
-        <td>{% if element.amount_only == None %}-{% else %}{{ element.amount_only }}{% endif %}</td>
-        <td>{% if element.amount_with_monthly == None %}-{% else %}{{ element.amount_with_monthly }}{% endif %}</td>
+        <td>{% if element.amount_only == None %}-{% else %}
+                {{ element.amount_only }}{% endif %}</td>
+        <td>{% if element.amount_with_monthly == None %}-{% else %}
+                {{ element.amount_with_monthly }}{% endif %}</td>
         <td>{{ element.income_description }}</td>
         <td>{{ element.income_date }}</td>
         <td><a href="{% url 'modify-addit-income' element.id %}"> Modyfikuj! </a></td>
@@ -28,8 +30,7 @@
     </table>
 
     <br><br>
-
-<br>
+    <br>
 
     <form action="" method="post">
     {% csrf_token %}

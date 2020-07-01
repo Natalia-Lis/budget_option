@@ -1050,13 +1050,11 @@ class StockView(View):
             name = form.cleaned_data['name']
             enter_price = form.cleaned_data['enter_price']
             interests = form.cleaned_data['interests']
-            value_of = form.cleaned_data['value_of']
-            price = form.cleaned_data['price']
             dividend = form.cleaned_data['dividend']
             type_of_market = form.cleaned_data['type_of_market']
             www = form.cleaned_data['www']
-            Stock.objects.create(name=name, enter_price=enter_price, interests=interests, value_of=value_of,
-                                 price=price,dividend=dividend,type_of_market=type_of_market,www=www)
+            Stock.objects.create(name=name, enter_price=enter_price, interests=interests,
+                                 dividend=dividend, type_of_market=type_of_market, www=www)
             return redirect('stock')
 
 
@@ -1076,16 +1074,12 @@ class ModifyStock(View):
             name = form.cleaned_data['name']
             enter_price = form.cleaned_data['enter_price']
             interests = form.cleaned_data['interests']
-            value_of = form.cleaned_data['value_of']
-            price = form.cleaned_data['price']
             dividend = form.cleaned_data['dividend']
             type_of_market = form.cleaned_data['type_of_market']
             www = form.cleaned_data['www']
             pozycja.name = name
             pozycja.enter_price = enter_price
             pozycja.interests = interests
-            pozycja.value_of = value_of
-            pozycja.price = price
             pozycja.dividend = dividend
             pozycja.type_of_market = type_of_market
             pozycja.www = www
@@ -1220,8 +1214,6 @@ class CreditMistake(View):
         return redirect('credits')
 
 
-
-
 class StockViewWithoutScraper(View):
     def get(self, request):
         form = StockForm()
@@ -1234,13 +1226,37 @@ class StockViewWithoutScraper(View):
             name = form.cleaned_data['name']
             enter_price = form.cleaned_data['enter_price']
             interests = form.cleaned_data['interests']
-            value_of = form.cleaned_data['value_of']
-            price = form.cleaned_data['price']
             dividend = form.cleaned_data['dividend']
             type_of_market = form.cleaned_data['type_of_market']
             www = form.cleaned_data['www']
-            Stock.objects.create(name=name, enter_price=enter_price, interests=interests, value_of=value_of,
-                                 price=price,dividend=dividend,type_of_market=type_of_market,www=www)
+            Stock.objects.create(name=name, enter_price=enter_price, interests=interests,
+                                 dividend=dividend, type_of_market=type_of_market, www=www)
             return redirect('stock-without')
 
 
+class ModifyStockWithout(View):
+
+    def get(self, request, id):
+        pozycja = Stock.objects.get(id=id)
+        form = StockForm(instance=pozycja)
+        return render(request, 'modify-stock.html', {"pozycja":pozycja, "form":form})
+
+    def post(self, request, id):
+        form = StockForm(request.POST)
+        pozycja = Stock.objects.get(id=id)
+        form = StockForm(request.POST)
+        if form.is_valid():
+            name = form.cleaned_data['name']
+            enter_price = form.cleaned_data['enter_price']
+            interests = form.cleaned_data['interests']
+            dividend = form.cleaned_data['dividend']
+            type_of_market = form.cleaned_data['type_of_market']
+            www = form.cleaned_data['www']
+            pozycja.name = name
+            pozycja.enter_price = enter_price
+            pozycja.interests = interests
+            pozycja.dividend = dividend
+            pozycja.type_of_market = type_of_market
+            pozycja.www = www
+            pozycja.save()
+            return redirect('stock-without')

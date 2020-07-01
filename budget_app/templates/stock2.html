@@ -7,8 +7,6 @@
         <th>Nazwa</th>
         <th>Cena wejścia</th>
         <th>Zakupione udziały</th>
-{#        <th>Wartość</th>#}
-{#        <th>Cena</th>#}
         <th>Dywidenda?</th>
         <th>Rodzaj rynku</th>
         <th>&nbsp;Modyfikacja&nbsp;</th>
@@ -19,15 +17,13 @@
         <td>{{ element.name }}</td>
         <td>{{ element.enter_price }}</td>
         <td>{{ element.interests }}</td>
-{#        <td>{{ element.value_of }}</td>#}
-{#        <td>{{ element.price }}</td>#}
         <td>{% if element.dividend == True %}Tak
             {% elif element.dividend == False %}Nie
             {% else %}Być może
             {% endif %}</td>
 
         <td>{{ element.type_of_market }}</td>
-        <td><a href="{% url 'modify-stock' element.id %}"> Modyfikuj!</a></td>
+        <td><a href="{% url 'modify-stock2' element.id %}"> Modyfikuj!</a></td>
         <td><a href="{% url 'delete-stock' element.id %}"> Usuń</a></td>
         </tr>
          {% endfor %}
@@ -50,8 +46,6 @@
             Nazwa dla określonej akcji <input type="text" name="name" /><br>
             Cena w momencie zakupu <input type="number" step="any" min="1" name="enter_price" /><br>
             Liczba zakupionych udziałów <input type="number" min="1" name="interests" /><br>
-            Wartość, którą chcesz wpisać <input type="number" step="any" name="value_of" /><br>
-            Cena, jaką chcesz zapisać <input type="number" step="any" name="price" /><br>
             Czy jest wypłacana dywidenda?<br>
             <input type="radio" value="True" name="dividend" />Tak<br>
             <input type="radio" value="False" name="dividend" />Nie<br>

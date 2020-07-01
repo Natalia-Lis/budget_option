@@ -52,6 +52,7 @@ urlpatterns = [
     path('stock/', StockView.as_view(), name='stock'),
     path('stock-without/', StockViewWithoutScraper.as_view(), name='stock-without'),
     path('modify-stock/<int:id>/', ModifyStock.as_view(), name='modify-stock'),
+    path('modify-stock2/<int:id>/', ModifyStockWithout.as_view(), name='modify-stock2'),
     path('delete-stock/<int:pk>/', DeleteStock.as_view(), name='delete-stock'),
 
     path('credits/', CreditView.as_view(), name='credits'),

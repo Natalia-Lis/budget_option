@@ -21,7 +21,6 @@ class PiggyBanksForm(forms.ModelForm):
         self.fields['description'].required = False
 
 
-
 class MonthsBudgetForm(forms.ModelForm):
     class Meta:
         model = MonthsBudget
@@ -37,8 +36,6 @@ class StockForm(forms.ModelForm):
         fields = '__all__'
     def __init__(self, *args, **kwargs):
         super(StockForm, self).__init__(*args, **kwargs)
-        self.fields['value_of'].required = False
-        self.fields['price'].required = False
         self.fields['dividend'].required = False
         self.fields['type_of_market'].required = False
         self.fields['www'].required = False
@@ -52,15 +49,6 @@ class CreditsForm(forms.ModelForm):
         super(CreditsForm, self).__init__(*args, **kwargs)
         self.fields['description'].required = False
         self.fields['should_end_on'].required = False
-#
-# class AlreadyCollectedForm(forms.Form): #?
-#     date_of = models.DateField(auto_now_add=True)
-#     payment_skarbonki = models.ForeignKey(Skarbonki, on_delete=models.CASCADE)
-#     payment_collected = models.ForeignKey(AlreadyCollected, on_delete=models.CASCADE)
-#     value_of = models.FloatField(default=0)
-#
-#     collected = models.FloatField(default=0)
-#     target = models.ManyToManyField(Skarbonki, through='PaymentDay')
 
 
 class IncomeForm(forms.ModelForm):
@@ -81,5 +69,3 @@ class AdditionalIncomeForm(forms.ModelForm):
         self.fields['amount_only'].required = False
         self.fields['amount_with_monthly'].required = False
         self.fields['income_description'].required = False
-        # self.fields['income_date'].required = False
-

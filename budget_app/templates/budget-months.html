@@ -25,11 +25,11 @@
 
          <form action="" method="post">
          {% csrf_token %}
-                                <fieldset>
+            <fieldset>
            <legend>Dodaj nową pozycję:</legend>
              {{form.as_p}}
             <input type="submit" value="wyślij">
-                                </fieldset>
+            </fieldset>
          </form><br>
 
 {% endblock %}

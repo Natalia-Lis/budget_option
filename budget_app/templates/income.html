@@ -43,7 +43,7 @@ Jeśli chcesz uwzględnić dodatkową kwotę:
 
     <form action="" method="post">
     {% csrf_token %}
-                   <fieldset>
+       <fieldset>
            <legend>Dodaj nowy przychód</legend>
 
     Nazwa dla przychodu <input type="text" name="name_of_income" /><br>
@@ -51,7 +51,7 @@ Jeśli chcesz uwzględnić dodatkową kwotę:
     Opcjonalny opis <input type="text" name="income_description" /><br>
 
         <input type="submit" value="wyślij">
-                       </fieldset>
+       </fieldset>
     </form>
 
 {% endblock %}

@@ -2,15 +2,6 @@ from django.contrib import admin
 from budget_app.models import (Budget, MonthsBudget, PiggyBanks, Stock, AlreadyCollected,
                                PaymentDay, Credits, Repayment, RepaymentDay, Income, AdditionalIncome)
 
-#
-# @admin.register(Vote)
-# class VoteAdmin(admin.ModelAdmin):
-#     list_display = ("like", "voting_photo", "voting_user_list")
-#     def voting_user_list(self, obj):
-#         return ", ".join([str(u) for u in obj.voting_user.all()])
-#
-
-
 
 @admin.register(Budget)
 class BudgetAdmin(admin.ModelAdmin):
@@ -29,8 +20,8 @@ class MonthsBudgetAdmin(admin.ModelAdmin):
 
 @admin.register(Stock)
 class StockAdmin(admin.ModelAdmin):
-    list_display = ("name", "enter_price", "interests", "value_of",
-                    "price", "dividend", "type_of_market", "www")
+    list_display = ("name", "enter_price", "interests",
+                    "dividend", "type_of_market", "www")
 
 
 @admin.register(Credits)
@@ -41,7 +32,6 @@ class CreditsAdmin(admin.ModelAdmin):
 @admin.register(AlreadyCollected)
 class AlreadyCollectedAdmin(admin.ModelAdmin):
     list_display = ("id", "collected")
-
 
 
 @admin.register(PaymentDay)
