@@ -36,6 +36,7 @@ class StockForm(forms.ModelForm):
         fields = '__all__'
     def __init__(self, *args, **kwargs):
         super(StockForm, self).__init__(*args, **kwargs)
+        self.fields['value_of'].required = False
         self.fields['dividend'].required = False
         self.fields['type_of_market'].required = False
         self.fields['www'].required = False

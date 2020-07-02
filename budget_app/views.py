@@ -136,8 +136,8 @@ def wykres15():
     plt.figure(5)
     plt.figure(figsize=(13, 8))
     plt.title(f'wykres wpłat dla celu "{obj15_name}"')
-    plt.xlabel('DATY')
-    plt.ylabel(f'Twój cel: {max_y15}')
+    plt.xlabel(f'Twój cel: {max_y15}')
+    plt.ylabel('DATY')
     plt.grid(True)
     plt.margins(0.1)
     plt.barh(x15, y15)
@@ -924,10 +924,11 @@ class StockView(View):
             name = form.cleaned_data['name']
             enter_price = form.cleaned_data['enter_price']
             interests = form.cleaned_data['interests']
+            value_of = form.cleaned_data['value_of']
             dividend = form.cleaned_data['dividend']
             type_of_market = form.cleaned_data['type_of_market']
             www = form.cleaned_data['www']
-            Stock.objects.create(name=name, enter_price=enter_price, interests=interests,
+            Stock.objects.create(name=name, enter_price=enter_price, interests=interests, value_of=value_of,
                                  dividend=dividend, type_of_market=type_of_market, www=www)
             return redirect('stock')
 
@@ -948,12 +949,14 @@ class ModifyStock(View):
             name = form.cleaned_data['name']
             enter_price = form.cleaned_data['enter_price']
             interests = form.cleaned_data['interests']
+            value_of = form.cleaned_data['value_of']
             dividend = form.cleaned_data['dividend']
             type_of_market = form.cleaned_data['type_of_market']
             www = form.cleaned_data['www']
             pozycja.name = name
             pozycja.enter_price = enter_price
             pozycja.interests = interests
+            pozycja.value_of = value_of
             pozycja.dividend = dividend
             pozycja.type_of_market = type_of_market
             pozycja.www = www
@@ -1095,10 +1098,11 @@ class StockViewWithoutScraper(View):
             name = form.cleaned_data['name']
             enter_price = form.cleaned_data['enter_price']
             interests = form.cleaned_data['interests']
+            value_of = form.cleaned_data['value_of']
             dividend = form.cleaned_data['dividend']
             type_of_market = form.cleaned_data['type_of_market']
             www = form.cleaned_data['www']
-            Stock.objects.create(name=name, enter_price=enter_price, interests=interests,
+            Stock.objects.create(name=name, enter_price=enter_price, interests=interests, value_of=value_of,
                                  dividend=dividend, type_of_market=type_of_market, www=www)
             return redirect('stock-without')
 
@@ -1118,12 +1122,14 @@ class ModifyStockWithout(View):
             name = form.cleaned_data['name']
             enter_price = form.cleaned_data['enter_price']
             interests = form.cleaned_data['interests']
+            value_of = form.cleaned_data['value_of']
             dividend = form.cleaned_data['dividend']
             type_of_market = form.cleaned_data['type_of_market']
             www = form.cleaned_data['www']
             pozycja.name = name
             pozycja.enter_price = enter_price
             pozycja.interests = interests
+            pozycja.value_of = value_of
             pozycja.dividend = dividend
             pozycja.type_of_market = type_of_market
             pozycja.www = www
