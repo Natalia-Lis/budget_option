@@ -2,9 +2,6 @@ import math
 from datetime import date
 import requests
 from bs4 import BeautifulSoup
-# from django.contrib.auth import logout, login, authenticate # #
-# from django.contrib.auth.mixins import LoginRequiredMixin # #
-# from django.http import HttpResponse # #
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView
@@ -16,19 +13,6 @@ from matplotlib import pyplot as plt
 from matplotlib import style
 import numpy as np
 import matplotlib.dates as mdates
-
-#
-# def kalkul():
-#     pozycje = PiggyBanks.objects.all()
-#     names_of = []
-#     goal_of = []
-#     already_c = []
-#     kalkulacje = 0
-#     for element in pozycje:
-#         names_of.append(element.money_for)
-#         goal_of.append(element.m_min)
-#         take = AlreadyCollected.objects.filter(paymentday__payment_piggybanks_id=element.id).order_by('paymentday__date_of').last()
-#         already_c.append(take.collected)
 
 
 def wykres_month():
@@ -308,7 +292,7 @@ def wykres_credit2():
     savefig('static/wykres-kredyt-2.png')
 
 
-####
+#
 def wykres_piggybanks_all():
     pozycje = PiggyBanks.objects.all()
     names_of = []
@@ -461,7 +445,6 @@ class AdditionalIncomeView(View):
         additional_income = AdditionalIncome.objects.all()
         form = AdditionalIncomeForm(request.POST)
         if form.is_valid():
-
             chosen_name = form.cleaned_data['chosen_name']
             amount_only = form.cleaned_data['amount_only']
             amount_with_monthly = form.cleaned_data['amount_with_monthly']
