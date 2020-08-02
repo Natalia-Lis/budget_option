@@ -17,7 +17,7 @@ import matplotlib.dates as mdates
 
 def wykres_month():
     plt.figure(1)
-    plt.figure(figsize=(10, 7))
+    plt.figure(figsize=(9, 7))
     plt.title('wydatki z ostatnich 12 miesięcy')
     plt.ylabel('zapisane miesięczne kwoty')
     queryset = MonthsBudget.objects.all().order_by('-month_date')
@@ -40,7 +40,7 @@ def wykres8():
     x = []
     y = []
     s8 = PiggyBanks.objects.get(id=8)
-    payments_for_obj = PaymentDay.objects.all().filter(payment_piggybanks=s8.id).order_by('date_of')
+    payments_for_obj = PaymentDay.objects.filter(payment_piggybanks=s8.id).order_by('date_of')
     max_y = s8.m_min
     obj_name = s8.money_for
     for el in payments_for_obj:
@@ -49,7 +49,7 @@ def wykres8():
         new_date = str(el.date_of)
         x.append(new_date)
     plt.figure(2)
-    plt.figure(figsize=(13, 8))
+    plt.figure(figsize=(12, 7))
     plt.style.use('ggplot')
     plt.title(f'wykres wpłat dla celu "{obj_name}"')
     plt.xlabel('DATY')
@@ -64,7 +64,7 @@ def wykres9():
     x9 = []
     y9 = []
     s9 = PiggyBanks.objects.get(id=9)
-    payments_for_obj9 = PaymentDay.objects.all().filter(payment_piggybanks=s9.id).order_by('date_of')
+    payments_for_obj9 = PaymentDay.objects.filter(payment_piggybanks=s9.id).order_by('date_of')
     max_y9 = s9.m_min
     obj9_name = s9.money_for
     for el in payments_for_obj9:
@@ -73,7 +73,7 @@ def wykres9():
         new_date = str(el.date_of)
         x9.append(new_date)
     plt.figure(3)
-    plt.figure(figsize=(13, 8))
+    plt.figure(figsize=(12, 7))
     plt.title(f'wykres wpłat dla celu "{obj9_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y9}')
@@ -86,7 +86,7 @@ def wykres10():
     x10 = []
     y10 = []
     s10 = PiggyBanks.objects.get(id=10)
-    payments_for_obj10 = PaymentDay.objects.all().filter(payment_piggybanks=s10.id).order_by('date_of')
+    payments_for_obj10 = PaymentDay.objects.filter(payment_piggybanks=s10.id).order_by('date_of')
     max_y10 = s10.m_min
     obj10_name = s10.money_for
     for el in payments_for_obj10:
@@ -95,7 +95,7 @@ def wykres10():
         new_date = str(el.date_of)
         x10.append(new_date)
     plt.figure(4)
-    plt.figure(figsize=(13, 8))
+    plt.figure(figsize=(12, 7))
     plt.title(f'wykres wpłat dla celu "{obj10_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y10}')
@@ -109,7 +109,7 @@ def wykres15():
     x15 = []
     y15 = []
     s15 = PiggyBanks.objects.get(id=15)
-    payments_for_obj15 = PaymentDay.objects.all().filter(payment_piggybanks=s15.id).order_by('date_of')
+    payments_for_obj15 = PaymentDay.objects.filter(payment_piggybanks=s15.id).order_by('date_of')
     max_y15 = s15.m_min
     obj15_name = s15.money_for
     for el in payments_for_obj15:
@@ -118,7 +118,7 @@ def wykres15():
         new_date = str(el.date_of)
         x15.append(new_date)
     plt.figure(5)
-    plt.figure(figsize=(13, 8))
+    plt.figure(figsize=(12, 7))
     plt.title(f'wykres wpłat dla celu "{obj15_name}"')
     plt.xlabel(f'Twój cel: {max_y15}')
     plt.ylabel('DATY')
@@ -132,7 +132,7 @@ def wykres16():
     x16 = []
     y16 = []
     s16 = PiggyBanks.objects.get(id=16)
-    payments_for_obj16 = PaymentDay.objects.all().filter(payment_piggybanks=s16.id).order_by('date_of')
+    payments_for_obj16 = PaymentDay.objects.filter(payment_piggybanks=s16.id).order_by('date_of')
     max_y16 = s16.m_min
     obj16_name = s16.money_for
     for el in payments_for_obj16:
@@ -141,7 +141,7 @@ def wykres16():
         new_date = str(el.date_of)
         x16.append(new_date)
     plt.figure(6)
-    plt.figure(figsize=(13, 8))
+    plt.figure(figsize=(12, 7))
     plt.title(f'wykres wpłat dla celu "{obj16_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y16}')
@@ -155,7 +155,7 @@ def wykres24():
     x24 = []
     y24 = []
     s24 = PiggyBanks.objects.get(id=24)
-    payments_for_obj24 = PaymentDay.objects.all().filter(payment_piggybanks=s24.id).order_by('date_of')
+    payments_for_obj24 = PaymentDay.objects.filter(payment_piggybanks=s24.id).order_by('date_of')
     max_y24 = s24.m_min
     obj24_name = s24.money_for
     for el in payments_for_obj24:
@@ -164,7 +164,7 @@ def wykres24():
         new_date = str(el.date_of)
         x24.append(new_date)
     plt.figure(7)
-    plt.figure(figsize=(13, 8))
+    plt.figure(figsize=(12, 7))
     plt.title(f'wykres wpłat dla celu "{obj24_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y24}')
@@ -178,7 +178,7 @@ def wykres_innego_typu():
     x = []
     y = []
     s8 = PiggyBanks.objects.get(id=8)
-    payments_for_obj = PaymentDay.objects.all().filter(payment_piggybanks=s8.id).order_by('date_of')
+    payments_for_obj = PaymentDay.objects.filter(payment_piggybanks=s8.id).order_by('date_of')
     for el in payments_for_obj:
         new_value = el.value_of
         y.append(new_value)
@@ -187,7 +187,7 @@ def wykres_innego_typu():
     x9 = []
     y9 = []
     s9 = PiggyBanks.objects.get(id=9)
-    payments_for_obj9 = PaymentDay.objects.all().filter(payment_piggybanks=s9.id).order_by('date_of')
+    payments_for_obj9 = PaymentDay.objects.filter(payment_piggybanks=s9.id).order_by('date_of')
     for el in payments_for_obj9:
         new_value = el.value_of
         y9.append(new_value)
@@ -196,7 +196,7 @@ def wykres_innego_typu():
     x10 = []
     y10 = []
     s10 = PiggyBanks.objects.get(id=10)
-    payments_for_obj10 = PaymentDay.objects.all().filter(payment_piggybanks=s10.id).order_by('date_of')
+    payments_for_obj10 = PaymentDay.objects.filter(payment_piggybanks=s10.id).order_by('date_of')
     for el in payments_for_obj10:
         new_value = el.value_of
         y10.append(new_value)
@@ -205,7 +205,7 @@ def wykres_innego_typu():
     x15 = []
     y15 = []
     s15 = PiggyBanks.objects.get(id=15)
-    payments_for_obj15 = PaymentDay.objects.all().filter(payment_piggybanks=s15.id).order_by('date_of')
+    payments_for_obj15 = PaymentDay.objects.filter(payment_piggybanks=s15.id).order_by('date_of')
     for el in payments_for_obj15:
         new_value = el.value_of
         y15.append(new_value)
@@ -214,7 +214,7 @@ def wykres_innego_typu():
     x16 = []
     y16 = []
     s16 = PiggyBanks.objects.get(id=16)
-    payments_for_obj16 = PaymentDay.objects.all().filter(payment_piggybanks=s16.id).order_by('date_of')
+    payments_for_obj16 = PaymentDay.objects.filter(payment_piggybanks=s16.id).order_by('date_of')
     for el in payments_for_obj16:
         new_value = el.value_of
         y16.append(new_value)
@@ -223,7 +223,7 @@ def wykres_innego_typu():
     x24 = []
     y24 = []
     s24 = PiggyBanks.objects.get(id=24)
-    payments_for_obj24 = PaymentDay.objects.all().filter(payment_piggybanks=s24.id).order_by('date_of')
+    payments_for_obj24 = PaymentDay.objects.filter(payment_piggybanks=s24.id).order_by('date_of')
     for el in payments_for_obj24:
         new_value = el.value_of
         y24.append(new_value)
@@ -231,7 +231,7 @@ def wykres_innego_typu():
         x24.append(new_date)
 
     plt.figure(8)
-    plt.figure(figsize=(15, 8))
+    plt.figure(figsize=(14, 7))
     plt.subplot()
     plt.plot(x, y, marker='o',  label="TV", linewidth=3, linestyle='-.')
     plt.plot(x9, y9, marker='o', label="strój", linewidth=3, linestyle='--')
@@ -253,7 +253,7 @@ def wykres_credit1():
     x_cr1 = []
     y_cr1 = []
     credit1 = Credits.objects.get(id=7)
-    payments_for_cr1 = RepaymentDay.objects.all().filter(repayment_credits_id=credit1.id).order_by('repayment_date')
+    payments_for_cr1 = RepaymentDay.objects.filter(repayment_credits_id=credit1.id).order_by('repayment_date')
     obj_cr1_name = credit1.name
     for el in payments_for_cr1:
         new_value = el.repayment_value
@@ -261,7 +261,7 @@ def wykres_credit1():
         new_date = str(el.repayment_date)
         x_cr1.append(new_date)
     plt.figure(9)
-    plt.figure(figsize=(10, 7))
+    plt.figure(figsize=(9, 6))
     plt.title(f'wykres wpłat dla celu "{obj_cr1_name}"')
     plt.xlabel('DATY')
     plt.ylabel('KWOTY')
@@ -275,7 +275,7 @@ def wykres_credit2():
     x_cr2 = []
     y_cr2 = []
     credit2 = Credits.objects.get(id=12)
-    payments_for_cr2 = RepaymentDay.objects.all().filter(repayment_credits_id=credit2.id).order_by('repayment_date')
+    payments_for_cr2 = RepaymentDay.objects.filter(repayment_credits_id=credit2.id).order_by('repayment_date')
     obj_cr2_name = credit2.name
     for el in payments_for_cr2:
         new_value = el.repayment_value
@@ -283,7 +283,7 @@ def wykres_credit2():
         new_date = str(el.repayment_date)
         x_cr2.append(new_date)
     plt.figure(10)
-    plt.figure(figsize=(10, 7))
+    plt.figure(figsize=(9, 6))
     plt.title(f'wykres wpłat dla celu "{obj_cr2_name}"')
     plt.xlabel('DATY')
     plt.ylabel('KWOTY')
@@ -292,7 +292,6 @@ def wykres_credit2():
     savefig('static/wykres-kredyt-2.png')
 
 
-#
 def wykres_piggybanks_all():
     pozycje = PiggyBanks.objects.all()
     names_of = []
@@ -305,7 +304,7 @@ def wykres_piggybanks_all():
         already_c.append(take.collected)
 
     plt.figure(11)
-    plt.figure(figsize=(11, 8))
+    plt.figure(figsize=(10, 7))
     plt.style.use('ggplot')
     plt.title('wykres wpłat - wszystkie cele')
     plt.grid(True)
@@ -327,7 +326,7 @@ def wykres_spending():
         explode.append(0.1)
 
     plt.figure(12)
-    plt.figure(figsize=(7, 7.5))
+    plt.figure(figsize=(6, 5.5))
     plt.title('wykres wydatków', fontdict={'fontname': 'monospace', 'fontsize': 21})
     plt.pie(spending_values, explode=explode, labels=spending_names, autopct='%.2f')
     savefig('static/wykres-spending-pie.png')
@@ -357,7 +356,7 @@ def wykres_income_for_spending():
         ymonth2income_vs_spending.append(calc - e)
 
     plt.figure(13)
-    plt.figure(figsize=(12, 7.5))
+    plt.figure(figsize=(11, 6.5))
     plt.bar(xmonth1, ymonth2income_vs_spending, color='#00FF00', label='kwoty po odjęciu miesięcznych wydatków')
     plt.bar(xmonth1, ymonth1, label='zapisane miesięczne koszty', color='#008080', bottom=ymonth2income_vs_spending)
     plt.legend(bbox_to_anchor=(0., 1.02, 1., .102), loc='lower left',
@@ -756,7 +755,7 @@ class SavingMistake(View):
         mistake_value_float = float(mistake_value)
         correct_value = request.POST.get('correct_value')
         correct_value_float = float(correct_value)
-        last_mistake = PaymentDay.objects.all().filter(payment_piggybanks_id=mistake_id).last()
+        last_mistake = PaymentDay.objects.filter(payment_piggybanks_id=mistake_id).last()
         last_to_change = AlreadyCollected.objects.get(id=last_mistake.payment_collected_id)
         last_mistake.value_of = correct_value_float
         last_mistake.save()
@@ -1059,7 +1058,7 @@ class CreditMistake(View):
         correct_value = request.POST.get('correct_value')
         correct_value_float = float(correct_value)
 
-        credit_mistake = RepaymentDay.objects.all().filter(repayment_credits_id=mistake_id).last()
+        credit_mistake = RepaymentDay.objects.filter(repayment_credits_id=mistake_id).last()
         last_to_change = Repayment.objects.get(id=credit_mistake.repayment_collected_id)
         credit_mistake.repayment_value = correct_value_float
         credit_mistake.save()
