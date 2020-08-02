@@ -61,12 +61,4 @@ urlpatterns = [
     path('modify-credit/<int:id>/', ModifyCredit.as_view(), name='modify-credit'),
     path('delete-credit/<int:pk>/', DeleteCredit.as_view(), name='delete-credit'),
 
-    path('chart1/', ChartSaving1.as_view(), name='chart1'),
-    path('chart2/', ChartSaving2.as_view(), name='chart2'),
-    path('chart3/', ChartSaving3.as_view(), name='chart3'),
-    path('chart4/', ChartSaving4.as_view(), name='chart4'),
-    path('chart5/', ChartSaving5.as_view(), name='chart5'),
-    path('chart6/', ChartSaving6.as_view(), name='chart6'),
-    path('chart7/', ChartSaving7.as_view(), name='chart7'),
-
 ]

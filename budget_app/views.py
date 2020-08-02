@@ -49,14 +49,15 @@ def wykres8():
         new_date = str(el.date_of)
         x.append(new_date)
     plt.figure(2)
-    plt.figure(figsize=(12, 7))
+    plt.figure(figsize=(11, 6))
     plt.style.use('ggplot')
     plt.title(f'wykres wpłat dla celu "{obj_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y}')
     plt.grid(True)
     plt.margins(0.1)
-    plt.plot(x, y, 'r*', markersize=18) # gwiazdka
+    plt.tick_params(axis='x', rotation=330)
+    plt.plot(x, y, 'b*', markersize=18) # gwiazdka
     savefig('static/wykres-inny8.png')
 
 
@@ -73,7 +74,7 @@ def wykres9():
         new_date = str(el.date_of)
         x9.append(new_date)
     plt.figure(3)
-    plt.figure(figsize=(12, 7))
+    plt.figure(figsize=(11, 6))
     plt.title(f'wykres wpłat dla celu "{obj9_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y9}')
@@ -95,13 +96,13 @@ def wykres10():
         new_date = str(el.date_of)
         x10.append(new_date)
     plt.figure(4)
-    plt.figure(figsize=(12, 7))
+    plt.figure(figsize=(11, 6))
     plt.title(f'wykres wpłat dla celu "{obj10_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y10}')
     plt.grid(True)
     plt.margins(0.1)
-    plt.plot(x10, y10, 'r--',  linewidth=2.5)
+    plt.plot(x10, y10, 'g--',  linewidth=2.5)
     savefig('static/wykres-inny10.png')
 
 
@@ -118,7 +119,7 @@ def wykres15():
         new_date = str(el.date_of)
         x15.append(new_date)
     plt.figure(5)
-    plt.figure(figsize=(12, 7))
+    plt.figure(figsize=(11, 6))
     plt.title(f'wykres wpłat dla celu "{obj15_name}"')
     plt.xlabel(f'Twój cel: {max_y15}')
     plt.ylabel('DATY')
@@ -141,13 +142,13 @@ def wykres16():
         new_date = str(el.date_of)
         x16.append(new_date)
     plt.figure(6)
-    plt.figure(figsize=(12, 7))
+    plt.figure(figsize=(11, 6))
     plt.title(f'wykres wpłat dla celu "{obj16_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y16}')
     plt.grid(True)
     plt.margins(0.1)
-    plt.plot(x16, y16, 'go', markersize=18)
+    plt.plot(x16, y16, 'y>', markersize=18)
     savefig('static/wykres-inny16.png')
 
 
@@ -164,7 +165,7 @@ def wykres24():
         new_date = str(el.date_of)
         x24.append(new_date)
     plt.figure(7)
-    plt.figure(figsize=(12, 7))
+    plt.figure(figsize=(11, 6))
     plt.title(f'wykres wpłat dla celu "{obj24_name}"')
     plt.xlabel('DATY')
     plt.ylabel(f'Twój cel: {max_y24}')
@@ -673,51 +674,17 @@ class SavingCharts(View):
 
     def get(self, request):
         s2 = PiggyBanks.objects.values_list('money_for', flat=True).order_by('pk')
-        chart_name1 = s2[0]
-        chart_name2 = s2[1]
-        chart_name3 = s2[2]
-        chart_name4 = s2[3]
-        chart_name5 = s2[4]
-        chart_name6 = s2[5]
-        return render(request, 'charts.html', {"chart_name1":chart_name1, "chart_name2":chart_name2,
-                                               "chart_name3":chart_name3, "chart_name4":chart_name4,
-                                               "chart_name5":chart_name5, "chart_name6":chart_name6})
-
-
-class ChartSaving1(View):
-    def get(self, request):
-        wykres8()
-        return render(request, 'chart1.html')
-
-class ChartSaving2(View):
-    def get(self, request):
-        wykres9()
-        return render(request, 'chart2.html')
-
-class ChartSaving3(View):
-    def get(self, request):
-        wykres10()
-        return render(request, 'chart3.html')
-
-class ChartSaving4(View):
-    def get(self, request):
-        wykres15()
-        return render(request, 'chart4.html')
-
-class ChartSaving5(View):
-    def get(self, request):
-        wykres16()
-        return render(request, 'chart5.html')
-
-class ChartSaving6(View):
-    def get(self, request):
-        wykres24()
-        return render(request, 'chart6.html')
-
-class ChartSaving7(View):
-    def get(self, request):
-        wykres_innego_typu()
-        return render(request, 'chart7.html')
+        try:
+            wykres8()
+            wykres9()
+            wykres10()
+            wykres15()
+            wykres16()
+            wykres24()
+            wykres_innego_typu()
+            return render(request, 'charts.html')
+        except Exception:
+            return render(request, 'charts.html')
 
 
 class ModifySaving(View):
@@ -862,20 +829,14 @@ class StockView(View):
         p = {"s": spolka}
         spolka2 = "pzu"
         p2 = {"s": spolka2}
-        spolka3 = "bdx"
-        p3 = {"s": spolka3}
         answer = requests.get("http://stooq.pl/q/", params=p)
         soup = BeautifulSoup(answer.text, 'html.parser')
         answer2 = requests.get("http://stooq.pl/q/", params=p2)
         soup2 = BeautifulSoup(answer2.text, 'html.parser')
-        answer3 = requests.get("http://stooq.pl/q/", params=p3)
-        soup3 = BeautifulSoup(answer3.text, 'html.parser')
         cdr_kurs = soup.find("span", id=f"aq_{spolka}_c1")
         cdr_kurs2 = float(cdr_kurs.text)
         pzu_kurs = soup2.find("span", id=f"aq_{spolka2}_c2")
         pzu_kurs2 = float(pzu_kurs.text)
-        bdx_kurs = soup3.find("span", id=f"aq_{spolka3}_c2")
-        bdx_kurs2 = float(bdx_kurs.text)
         # niekiedy zmienia się id - uwaga!
 
         if cdr_kurs2:
@@ -886,18 +847,12 @@ class StockView(View):
             pzu_interests = Stock.objects.get(name='PZU')
             jednostki_pzu = pzu_interests.interests
             value_of_pzu = jednostki_pzu * pzu_kurs2
-        if bdx_kurs2:
-            bdx_interests = Stock.objects.get(name='Budimex')
-            jednostki_bdx = bdx_interests.interests
-            value_of_bdx = jednostki_bdx * bdx_kurs2
 
         return render(request, 'stock.html', {"cdr_kurs2":cdr_kurs2,
                                               "pzu_kurs2":pzu_kurs2,
                                               "value_of_cdr":value_of_cdr,
                                               "value_of_pzu":value_of_pzu,
-                                              "value_of_bdx":value_of_bdx,
                                               "ctx":ctx, "form":form,
-                                              "bdx_kurs2":bdx_kurs2
                                               })
 
     def post(self, request):
@@ -1069,6 +1024,7 @@ class CreditMistake(View):
 
 
 class StockViewWithoutScraper(View):
+
     def get(self, request):
         form = StockForm()
         ctx = Stock.objects.all()

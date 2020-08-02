@@ -1,15 +1,24 @@
 {% extends "base.html" %}
-
+{% load static %}
 {% block content %}
+    <br>
+    Wykresy dla dotychczasowych celów:
     <br><br>
-    Wykresy dla dotychczasowych celów: <br><br>
-    <ol>
-        <li><a href="{% url 'chart1' %}">{{ chart_name1 }}</a></li><br>
-        <li><a href="{% url 'chart2' %}">{{ chart_name2 }}</a></li><br>
-        <li><a href="{% url 'chart3' %}">{{ chart_name3 }}</a></li><br>
-        <li><a href="{% url 'chart4' %}">{{ chart_name4 }}</a></li><br>
-        <li><a href="{% url 'chart5' %}">{{ chart_name5 }}</a></li><br>
-        <li><a href="{% url 'chart6' %}">{{ chart_name6 }}</a></li><br>
-        <li><a href="{% url 'chart7' %}">Dotychczasowe cele - wykres wspólny</a></li><br>
-    </ol>
+        <img src="{% static 'wykres-innego-typu.png' %}" alt="Not found" ><br>
+        <br>
+    <img src="{% static 'wykres-inny8.png' %}" alt="Not found" ><br>
+    <br>
+        <img src="{% static 'wykres-inny9.png' %}" alt="Not found" ><br>
+    <br>
+    <img src="{% static 'wykres-inny10.png' %}" alt="Not found" ><br>
+    <br>
+        <img src="{% static 'wykres-inny15.png' %}" alt="Not found" ><br>
+    <br>
+    <img src="{% static 'wykres-inny16.png' %}" alt="Not found" ><br>
+    <br>
+        <img src="{% static 'wykres-inny24.png' %}" alt="Not found" ><br>
+    <br>
+
+
+
 {% endblock %}
