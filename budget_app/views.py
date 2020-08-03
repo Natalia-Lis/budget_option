@@ -374,7 +374,6 @@ class IndexView(View):
 class IncomeView(View):
 
     def get(self, request):
-        wykres_income_for_spending()
         all_income = Income.objects.all()
         form = IncomeForm()
         for_calculation = []
@@ -383,7 +382,11 @@ class IncomeView(View):
             for_calculation.append(element.value_of_income)
         for elem in for_calculation:
             calc += elem
-        return render(request, 'income.html', {"all_income":all_income, "form":form, "calc":calc})
+        try:
+            wykres_income_for_spending()
+            return render(request, 'income.html', {"all_income": all_income, "form": form, "calc": calc})
+        except Exception:
+            return render(request, 'income.html', {"all_income":all_income, "form":form, "calc":calc})
 
     def post(self, request):
         all_income = Income.objects.all()
@@ -412,7 +415,6 @@ class ModifyIncome(View):
     def get(self, request, id):
         one_income = Income.objects.get(id=id)
         form = IncomeForm(instance=one_income)
-
         return render(request, 'income-modify.html', {"one_income":one_income, "form":form})
 
     def post(self, request, id):
@@ -453,9 +455,7 @@ class AdditionalIncomeView(View):
                                             amount_only=amount_only,
                                             amount_with_monthly=amount_with_monthly,
                                             income_description=income_description)
-
             return render(request, 'additional-income.html', {"additional_income":additional_income, "form": form})
-
 
 
 class ModifyAdditionalIncome(View):
@@ -491,8 +491,11 @@ class BudgetView(View):
     def get(self, request):
         pozycje = Budget.objects.all()
         form = BudgetForm()
-        wykres_spending()
-        return render(request, 'budget.html', {"pozycje":pozycje, "form":form})
+        try:
+            wykres_spending()
+            return render(request, 'budget.html', {"pozycje":pozycje, "form":form})
+        except Exception:
+            return render(request, 'budget.html', {"pozycje":pozycje, "form":form})
 
     def post(self, request):
         pozycje = Budget.objects.all()
@@ -561,9 +564,11 @@ class MonthsBudgetView(View):
     def get(self, request):
         this_months_budget = MonthsBudget.objects.all()
         form = MonthsBudgetForm()
-        wykres_month()
-        return render(request, 'budget-months.html', {"this_months_budget":this_months_budget,
-                                                      "form":form})
+        try:
+            wykres_month()
+            return render(request, 'budget-months.html', {"this_months_budget":this_months_budget, "form":form})
+        except Exception:
+            return render(request, 'budget-months.html', {"this_months_budget":this_months_budget, "form":form})
 
     def post(self, request):
         form = MonthsBudgetForm(request.POST)
@@ -652,9 +657,12 @@ class SavingGoals(View):
 
     def get(self, request):
         all_piggy_banks = PiggyBanks.objects.all()
-        wykres_piggybanks_all()
         form = PiggyBanksForm()
-        return render(request, 'saving-goals.html', {"all_piggy_banks":all_piggy_banks, "form":form})
+        try:
+            wykres_piggybanks_all()
+            return render(request, 'saving-goals.html', {"all_piggy_banks":all_piggy_banks, "form":form})
+        except Exception:
+            return render(request, 'saving-goals.html', {"all_piggy_banks":all_piggy_banks, "form":form})
 
     def post(self, request):
         all_piggy_banks = PiggyBanks.objects.all()
