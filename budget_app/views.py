@@ -959,15 +959,14 @@ class DeleteCredit(DeleteView):
 class CreditPayments(View):
 
     def get(self, request, id):
-        wykres_credit1()
-        wykres_credit2()
         credits_objects = Credits.objects.get(id=id)
         rep = RepaymentDay.objects.filter(repayment_credits_id=id).first()
+        repaymentday_objects = RepaymentDay.objects.filter(repayment_credits_id=id)
         znajdz = rep.repayment_collected_id
         repayments_this_id = Repayment.objects.get(id=znajdz)
-
         return render(request, 'credit-payments.html', {"credits_objects": credits_objects,
-                                                        "repayments_this_id":repayments_this_id})
+                                                        "repayments_this_id":repayments_this_id,
+                                                        "repaymentday_objects":repaymentday_objects})
 
     def post(self, request, id):
         credits_objects = Credits.objects.get(id=id)

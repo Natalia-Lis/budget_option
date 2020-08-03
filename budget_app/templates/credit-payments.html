@@ -13,14 +13,15 @@
     <br><br>
     <a href="{% url 'credit-mistake' %}">- - - w razie pomyłki w nadpłacie kredytu kliknij tu - - -</a>
 
+    <br><br><br>
+
+WPŁATY NA TEN CEL:<br>
+{% for el in repaymentday_objects %}
+    {{ el.repayment_value }} - {{ el.repayment_date }}<br>
+    {% endfor %}
+
+
     <br><br>
-    {% if credits_objects.id == 7 %}
-    <img src="{% static 'wykres-kredyt-1.png' %}" alt="Not found" ><br>
-    {% endif %}
-    {% if credits_objects.id == 12 %}
-    <img src="{% static 'wykres-kredyt-2.png' %}" alt="Not found" ><br>
-    {% endif %}
-    <br>
     Dotychczas nadpłacono: {{ repayments_this_id.collected_money }} złotych.
 
 {% endblock %}

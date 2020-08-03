@@ -80,10 +80,13 @@ DATABASES = {
         'HOST': '127.0.0.1',
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
         'NAME': 'budget_app',
-        'USER': 'postgres',
-        'PASSWORD': 'coderslab',
+        'USER': 'user-from-local',
+        'PASSWORD': 'password-from-local',
     }
 }
+if os.path.isfile(os.path.join(os.path.dirname(__file__), "settings_local.py")):
+    from .settings_local import *
+    print("Local settings succesfully imported.")
 
 
 # Password validation
