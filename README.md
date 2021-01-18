@@ -9,3 +9,5 @@ and even - if you need it - stock management.
 
 Necessary requirements: Python 3.6, Django 3.0.7, psycopg2-binary 2.8.5, 
 BeautifulSoup 4.9.1, requests 2.23, matplotlib 3.2.1, PostgreSQL 10
+
+Correct configuration of the file 'settings_local.py' is essential for proper use!

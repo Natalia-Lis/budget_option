@@ -5,14 +5,15 @@ from bs4 import BeautifulSoup
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView
-from matplotlib.pyplot import savefig
-from .models import *
-from .forms import *
 from decimal import Decimal
+from matplotlib.pyplot import savefig
 from matplotlib import pyplot as plt
 from matplotlib import style
-import numpy as np
 import matplotlib.dates as mdates
+import numpy as np
+
+from .models import Budget, PiggyBanks, MonthsBudget, Stock, AlreadyCollected, PaymentDay, Credits, Repayment, RepaymentDay, Income, AdditionalIncome
+from .forms import BudgetForm, PiggyBanksForm, MonthsBudgetForm, StockForm, CreditsForm, IncomeForm, AdditionalIncomeForm
 
 
 def wykres_month():
@@ -21,13 +22,13 @@ def wykres_month():
     plt.title('wydatki z ostatnich 12 miesięcy')
     plt.ylabel('zapisane miesięczne kwoty')
     queryset = MonthsBudget.objects.all().order_by('-month_date')
-    xmonth=[]
-    ymonth=[]
+    xmonth = []
+    ymonth = []
     for el in queryset:
         xmonth.append(el.chosen_name_of_month)
         ymonth.append(el.month_cost)
-    xmonth1=xmonth[0:12]
-    ymonth1=ymonth[0:12]
+    xmonth1 = xmonth[0:12]
+    ymonth1 = ymonth[0:12]
     xmonth1.reverse()
     ymonth1.reverse()
     plt.style.use('ggplot')

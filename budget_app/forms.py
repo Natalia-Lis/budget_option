@@ -1,5 +1,5 @@
 from django import forms
-from .models import *
+from .models import Budget, PiggyBanks, MonthsBudget, Stock, AlreadyCollected, PaymentDay, Credits, Repayment, RepaymentDay, Income, AdditionalIncome
 from .views import *
 
 
