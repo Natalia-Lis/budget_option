@@ -14,13 +14,13 @@ BeautifulSoup 4.9.1, requests 2.23, matplotlib 3.2.1, PostgreSQL 10
 
 ###### Screenshots:
 ---
-<img src="budg_pic3.jpg" height="420">
+<img src="budg_pic3.jpg" width="820">
 
 ---
 
-<img src="budg_pic2.jpg" height="420">
+<img src="budg_pic2.jpg" width="820">
 
 ---
-<img src="budg_pic1.jpg" height="420">
+<img src="budg_pic1.jpg" width="820">
 
 ---
