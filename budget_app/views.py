@@ -1,16 +1,16 @@
 import math
-from datetime import date
 import requests
+from datetime import date
+import numpy as np
 from bs4 import BeautifulSoup
+from decimal import Decimal
 from django.shortcuts import render, redirect
 from django.views import View
 from django.views.generic import CreateView, UpdateView, DeleteView
-from decimal import Decimal
 from matplotlib.pyplot import savefig
 from matplotlib import pyplot as plt
 from matplotlib import style
 import matplotlib.dates as mdates
-import numpy as np
 
 from .models import Budget, PiggyBanks, MonthsBudget, Stock, AlreadyCollected, PaymentDay, Credits, Repayment, RepaymentDay, Income, AdditionalIncome
 from .forms import BudgetForm, PiggyBanksForm, MonthsBudgetForm, StockForm, CreditsForm, IncomeForm, AdditionalIncomeForm
@@ -368,6 +368,7 @@ def wykres_income_for_spending():
 
 
 class IndexView(View):
+
     def get(self, request):
         return render(request, 'base.html')
 
@@ -523,13 +524,12 @@ class BudgetView(View):
                 else:
                     add_to = float(el)
                     my_sum += add_to
+
         def set_session(request):
             request.session["suma_przekazana"] = my_sum
         set_session(request)
-        return render(request, 'budget.html', {"counting": counting,
-                                               "my_sum": my_sum,
-                                               "pozycje": pozycje,
-                                               "form": form})
+        return render(request, 'budget.html', {"counting": counting, "my_sum": my_sum,
+                                               "pozycje": pozycje, "form": form})
 
 
 class ModifyBudget(View):
@@ -567,9 +567,11 @@ class MonthsBudgetView(View):
         form = MonthsBudgetForm()
         try:
             wykres_month()
-            return render(request, 'budget-months.html', {"this_months_budget":this_months_budget, "form":form})
+            return render(request, 'budget-months.html', {"this_months_budget":this_months_budget,
+                                                          "form":form})
         except Exception:
-            return render(request, 'budget-months.html', {"this_months_budget":this_months_budget, "form":form})
+            return render(request, 'budget-months.html', {"this_months_budget":this_months_budget,
+                                                          "form":form})
 
     def post(self, request):
         form = MonthsBudgetForm(request.POST)
@@ -629,6 +631,7 @@ class DeleteMonths(DeleteView):
 
 
 class PiggyBanksView(View):
+
     def get(self, request):
         return render(request, 'piggy-banks.html')
 
@@ -831,6 +834,7 @@ class AlreadyCollectedView(View):
 
 
 class StockView(View):
+
     def get(self, request):
         form = StockForm()
         ctx = Stock.objects.all()
@@ -846,7 +850,7 @@ class StockView(View):
         cdr_kurs2 = float(cdr_kurs.text)
         pzu_kurs = soup2.find("span", id=f"aq_{spolka2}_c2")
         pzu_kurs2 = float(pzu_kurs.text)
-        # niekiedy zmienia się id - uwaga!
+        # niekiedy zmienia się id potrzebne do webscrapingu - uwaga!
 
         if cdr_kurs2:
             cdr_interests = Stock.objects.get(name='CDR')
