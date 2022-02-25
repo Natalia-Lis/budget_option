@@ -837,6 +837,7 @@ class AlreadyCollectedView(View):
 
 
 class StockView(View):
+    """ Stock view with easy webscraping. Needs some adjustments for specific companies. """
 
     def get(self, request):
         form = StockForm()
