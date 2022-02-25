@@ -47,7 +47,7 @@ class Stock(models.Model):
     enter_price = models.FloatField(verbose_name='Cena w momencie zakupu')
     interests = models.IntegerField(verbose_name='Liczba zakupionych udziałów')
     value_of = models.FloatField(null=True, verbose_name='Wartość początkowa zakupu udziałów')
-    dividend = models.NullBooleanField(default=False, verbose_name='Czy jest wypłacana dywidenda?')
+    dividend = models.BooleanField(null=True, default=False, verbose_name='Czy jest wypłacana dywidenda?')
     type_of_market = models.CharField(max_length=64, null=True, verbose_name='Nazwa dla rodzaju rynku akcji')
     www = models.CharField(max_length=256, null=True, verbose_name='Link do strony internetowej inwestora dla akcji')
 

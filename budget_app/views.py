@@ -392,7 +392,10 @@ class IncomeView(View):
 
     def post(self, request):
         all_income = Income.objects.all()
-        additional_income = float(request.POST.get('additional_income'))
+        if request.POST.get('additional_income'):
+            additional_income = float(request.POST.get('additional_income'))
+        else:
+            additional_income = 0
         for_calculation = []
         calc = 0
         for element in all_income:
