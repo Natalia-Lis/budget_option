@@ -891,13 +891,13 @@ class StockView(View):
 class ModifyStock(View):
 
     def get(self, request, id):
-        pozycja = Stock.objects.get(id=id)
-        form = StockForm(instance=pozycja)
-        return render(request, 'modify-stock.html', {"pozycja":pozycja, "form":form})
+        stock_id = Stock.objects.get(id=id)
+        form = StockForm(instance=stock_id)
+        return render(request, 'modify-stock.html', {"stock_id":stock_id, "form":form})
 
     def post(self, request, id):
         form = StockForm(request.POST)
-        pozycja = Stock.objects.get(id=id)
+        stock_id = Stock.objects.get(id=id)
         form = StockForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
@@ -907,14 +907,14 @@ class ModifyStock(View):
             dividend = form.cleaned_data['dividend']
             type_of_market = form.cleaned_data['type_of_market']
             www = form.cleaned_data['www']
-            pozycja.name = name
-            pozycja.enter_price = enter_price
-            pozycja.interests = interests
-            pozycja.value_of = value_of
-            pozycja.dividend = dividend
-            pozycja.type_of_market = type_of_market
-            pozycja.www = www
-            pozycja.save()
+            stock_id.name = name
+            stock_id.enter_price = enter_price
+            stock_id.interests = interests
+            stock_id.value_of = value_of
+            stock_id.dividend = dividend
+            stock_id.type_of_market = type_of_market
+            stock_id.www = www
+            stock_id.save()
             return redirect('stock')
 
 
@@ -1064,13 +1064,13 @@ class StockViewWithoutScraper(View):
 class ModifyStockWithout(View):
 
     def get(self, request, id):
-        pozycja = Stock.objects.get(id=id)
-        form = StockForm(instance=pozycja)
-        return render(request, 'modify-stock.html', {"pozycja":pozycja, "form":form})
+        stock_id = Stock.objects.get(id=id)
+        form = StockForm(instance=stock_id)
+        return render(request, 'modify-stock.html', {"stock_id":stock_id, "form":form})
 
     def post(self, request, id):
         form = StockForm(request.POST)
-        pozycja = Stock.objects.get(id=id)
+        stock_id = Stock.objects.get(id=id)
         form = StockForm(request.POST)
         if form.is_valid():
             name = form.cleaned_data['name']
@@ -1080,12 +1080,12 @@ class ModifyStockWithout(View):
             dividend = form.cleaned_data['dividend']
             type_of_market = form.cleaned_data['type_of_market']
             www = form.cleaned_data['www']
-            pozycja.name = name
-            pozycja.enter_price = enter_price
-            pozycja.interests = interests
-            pozycja.value_of = value_of
-            pozycja.dividend = dividend
-            pozycja.type_of_market = type_of_market
-            pozycja.www = www
-            pozycja.save()
+            stock_id.name = name
+            stock_id.enter_price = enter_price
+            stock_id.interests = interests
+            stock_id.value_of = value_of
+            stock_id.dividend = dividend
+            stock_id.type_of_market = type_of_market
+            stock_id.www = www
+            stock_id.save()
             return redirect('stock-without')
